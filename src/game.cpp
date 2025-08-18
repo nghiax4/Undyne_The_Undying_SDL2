@@ -3,10 +3,53 @@ and may not be redistributed without written permission.*/
 
 // Using SDL and standard IO
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
+#include <string>
 #include <vector>
 
 enum class Turn { PlayerTurn, EnemyTurn };
+
+SDL_Texture *loadTexture(SDL_Renderer *renderer, std::string path) {
+    // The final texture
+    SDL_Texture *newTexture = NULL;
+
+    // Load image at specified path
+    SDL_Surface *loadedSurface = IMG_Load(path.c_str());
+    if (loadedSurface == NULL) {
+        printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
+    } else {
+        // Create texture from surface pixels
+        newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+        if (newTexture == NULL) {
+            printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
+        }
+
+        // Get rid of old loaded surface
+        SDL_FreeSurface(loadedSurface);
+    }
+
+    return newTexture;
+}
+
+struct Player {
+    SDL_Texture *player_texture;
+    SDL_Renderer *renderer;
+    int x_center, y_center, width, height;
+
+    Player(int width, int height, int x_center, int y_center, SDL_Renderer *renderer, std::string path) : width(width), height(height), x_center(x_center), y_center(y_center), renderer(renderer) {
+        player_texture = loadTexture(renderer, path.c_str());
+    }
+
+    void render() {
+        int left_x = x_center - width / 2;
+        int top_y = y_center - height / 2;
+
+        SDL_Rect *player_rect = new SDL_Rect({left_x, top_y, width, height});
+
+        SDL_RenderCopy(renderer, player_texture, NULL, player_rect);
+    }
+};
 
 struct Game {
     const int screen_width;
@@ -17,7 +60,7 @@ struct Game {
 
     SDL_Window *window;
     SDL_Renderer *renderer;
-    SDL_Rect *player_rect;
+    Player *player;
     Turn current_turn = Turn::PlayerTurn;
     SDL_Rect *battleBox;
 
@@ -54,11 +97,11 @@ struct Game {
         }
 
         // The window we'll be rendering to
-        window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN);
+        window = SDL_CreateWindow("Undyne SDL2 wip", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN);
 
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 
-        player_rect = new SDL_Rect{(screen_width - player_width) / 2, (screen_height - player_width) / 2, player_width, player_width};
+        player = new Player(player_width, player_width, 1, 1, renderer, "sprites/soul.png");
 
         menu_buttons = makeMenuButtons(MENU_BUTTON_WIDTH_FACTOR * screen_width, MENU_BUTTON_HEIGHT);
 
@@ -87,14 +130,14 @@ struct Game {
             }
         }
 
-        player_rect->x = menu_buttons[selected_menu_button].x + player_rect->w / 3;
-        player_rect->y = menu_buttons[selected_menu_button].y + (menu_buttons[selected_menu_button].h - player_rect->h) / 2;
+        player->x_center = menu_buttons[selected_menu_button].x + player->width;
+        player->y_center = menu_buttons[selected_menu_button].y + menu_buttons[selected_menu_button].h / 2;
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
         SDL_RenderClear(renderer);
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-        SDL_RenderFillRect(renderer, battleBox);
+        SDL_RenderDrawRect(renderer, battleBox);
 
         SDL_SetRenderDrawColor(renderer, 50, 50, 50, SDL_ALPHA_OPAQUE);
         for (auto &button : menu_buttons) {
@@ -102,7 +145,8 @@ struct Game {
         }
 
         SDL_SetRenderDrawColor(renderer, 100, 100, 100, SDL_ALPHA_OPAQUE);
-        SDL_RenderFillRect(renderer, player_rect);
+
+        player->render();
 
         SDL_RenderPresent(renderer);
 

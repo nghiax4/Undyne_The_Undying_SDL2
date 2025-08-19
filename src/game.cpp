@@ -4,6 +4,7 @@ and may not be redistributed without written permission.*/
 // Using SDL and standard IO
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <cassert>
 #include <stdio.h>
 #include <string>
 #include <vector>
@@ -37,9 +38,7 @@ struct Player {
     SDL_Renderer *renderer;
     int x_center, y_center, width, height;
 
-    Player(int width, int height, int x_center, int y_center, SDL_Renderer *renderer, std::string path) : width(width), height(height), x_center(x_center), y_center(y_center), renderer(renderer) {
-        player_texture = loadTexture(renderer, path.c_str());
-    }
+    Player(int width, int height, int x_center, int y_center, SDL_Renderer *renderer, std::string path) : width(width), height(height), x_center(x_center), y_center(y_center), renderer(renderer) { player_texture = loadTexture(renderer, path.c_str()); }
 
     void render() {
         int left_x = x_center - width / 2;
@@ -48,6 +47,32 @@ struct Player {
         SDL_Rect *player_rect = new SDL_Rect({left_x, top_y, width, height});
 
         SDL_RenderCopy(renderer, player_texture, NULL, player_rect);
+    }
+};
+
+struct MenuButton {
+    SDL_Texture *button_texture;
+    SDL_Renderer *renderer;
+    int x_center, y_center, width, height;
+    std::string sprite_unselected, sprite_selected;
+
+    MenuButton(int width, int height, int x_center, int y_center, SDL_Renderer *renderer, std::string sprite_unselected, std::string sprite_selected) : width(width), height(height), x_center(x_center), y_center(y_center), renderer(renderer), sprite_unselected(sprite_unselected), sprite_selected(sprite_selected) {}
+
+    void render(Player *player) {
+        int left_x = x_center - width / 2;
+        int top_y = y_center - height / 2;
+
+        button_texture = loadTexture(renderer, is_selected(player) ? sprite_selected : sprite_unselected);
+        SDL_Rect *button_rect = new SDL_Rect({left_x, top_y, width, height});
+
+        SDL_RenderCopy(renderer, button_texture, NULL, button_rect);
+    }
+
+    // Check if the button is currently selected by checking if the player's position is within the button
+    bool is_selected(Player *player) {
+        bool x_within = x_center - width / 2 <= player->x_center && player->x_center <= x_center + width / 2;
+        bool y_within = y_center - height / 2 <= player->y_center && player->y_center <= y_center + height / 2;
+        return x_within && y_within;
     }
 };
 
@@ -64,7 +89,7 @@ struct Game {
     Turn current_turn = Turn::PlayerTurn;
     SDL_Rect *battleBox;
 
-    std::vector<SDL_Rect> menu_buttons;
+    std::vector<MenuButton> menu_buttons;
 
     const int STEP_PER_FRAME = 1;
     const int ENEMY_TURN_FRAMES = 180;
@@ -73,21 +98,24 @@ struct Game {
     const int BATTLEBOX_NEG_WIDTH = 50;
     const float BATTLEBOX_HEIGHT_FACTOR = 0.3;
 
-    enum class MenuButtons { FIGHT, ACT, ITEM, MERCY };
-
-    std::vector<SDL_Rect> makeMenuButtons(int width, int height) {
-        int Y_POS = screen_height - height - height / 3;
+    std::vector<MenuButton> init_menu_buttons(int button_width, int button_height) {
+        int Y_POS = screen_height - button_height - button_height / 3;
         int NUM_BUTTONS = 4;
-        int gap_between_button_edges = (screen_width - NUM_BUTTONS * width) / (NUM_BUTTONS + 1);
+        int gap_between_button_edges = (screen_width - NUM_BUTTONS * button_width) / (NUM_BUTTONS + 1);
         std::vector<SDL_Rect> result;
 
         int cur_left_x = gap_between_button_edges;
         for (int i = 0; i < NUM_BUTTONS; i++) {
-            result.push_back(SDL_Rect{cur_left_x, Y_POS, width, height});
-            cur_left_x += width + gap_between_button_edges;
+            result.push_back(SDL_Rect{cur_left_x, Y_POS, button_width, button_height});
+            cur_left_x += button_width + gap_between_button_edges;
         }
 
-        return result;
+        MenuButton fight_button(button_width, button_height, result.at(0).x + button_width / 2, result.at(0).y + button_height / 2, renderer, "sprites/fight_unselected.png", "sprites/fight_selected.png");
+        MenuButton act_button(button_width, button_height, result.at(1).x + button_width / 2, result.at(0).y + button_height / 2, renderer, "sprites/act_unselected.png", "sprites/act_selected.png");
+        MenuButton item_button(button_width, button_height, result.at(2).x + button_width / 2, result.at(2).y + button_height / 2, renderer, "sprites/item_unselected.png", "sprites/item_selected.png");
+        MenuButton mercy_button(button_width, button_height, result.at(3).x + button_width / 2, result.at(3).y + button_height / 2, renderer, "sprites/mercy_unselected.png", "sprites/mercy_selected.png");
+
+        return {fight_button, act_button, item_button, mercy_button};
     }
 
     Game(int screen_width, int screen_height) : screen_width(screen_width), screen_height(screen_height), player_width(screen_width * 0.03) {
@@ -103,12 +131,12 @@ struct Game {
 
         player = new Player(player_width, player_width, 1, 1, renderer, "sprites/soul.png");
 
-        menu_buttons = makeMenuButtons(MENU_BUTTON_WIDTH_FACTOR * screen_width, MENU_BUTTON_HEIGHT);
+        menu_buttons = init_menu_buttons(MENU_BUTTON_WIDTH_FACTOR * screen_width, MENU_BUTTON_HEIGHT);
 
         battleBox = new SDL_Rect{};
         battleBox->w = screen_width - BATTLEBOX_NEG_WIDTH;
         battleBox->h = BATTLEBOX_HEIGHT_FACTOR * screen_height;
-        battleBox->y = menu_buttons.at(0).y - battleBox->h * 1.1f;
+        battleBox->y = menu_buttons.at(0).y_center - menu_buttons.at(0).height / 2 - battleBox->h * 1.1f;
         battleBox->x = (screen_width - battleBox->w) / 2;
 
         running = true;
@@ -130,8 +158,8 @@ struct Game {
             }
         }
 
-        player->x_center = menu_buttons[selected_menu_button].x + player->width;
-        player->y_center = menu_buttons[selected_menu_button].y + menu_buttons[selected_menu_button].h / 2;
+        player->x_center = menu_buttons[selected_menu_button].x_center - menu_buttons[selected_menu_button].width / 2 + player->width;
+        player->y_center = menu_buttons[selected_menu_button].y_center;
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
         SDL_RenderClear(renderer);
@@ -141,7 +169,7 @@ struct Game {
 
         SDL_SetRenderDrawColor(renderer, 50, 50, 50, SDL_ALPHA_OPAQUE);
         for (auto &button : menu_buttons) {
-            SDL_RenderFillRect(renderer, &button);
+            button.render(player);
         }
 
         SDL_SetRenderDrawColor(renderer, 100, 100, 100, SDL_ALPHA_OPAQUE);
@@ -150,6 +178,6 @@ struct Game {
 
         SDL_RenderPresent(renderer);
 
-        printf("Turn: %d\n", static_cast<int>(current_turn));
+        // printf("Turn: %d\n", static_cast<int>(current_turn));
     }
 };

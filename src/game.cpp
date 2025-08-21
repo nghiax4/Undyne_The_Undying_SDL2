@@ -76,7 +76,42 @@ struct MenuButton {
     }
 };
 
+struct Undyne {
+    const double UNDYNE_SPRITE_WIDTH_OVER_HEIGHT = 314.0 / 246;
+    const int MILLISECOND_BETWEEN_SPRITE_FRAME = 30;
+
+    int x_center, y_center, width, height;
+    int secondOfLastSpriteFrame = 0;
+    SDL_Renderer *renderer;
+    int current_sprite_frame = 0;
+    const int NUM_OF_SPRITE_FRAMES = 107;
+
+    Undyne(int x_center, int y_center, int height, SDL_Renderer *renderer) : x_center(x_center), y_center(y_center), height(height), width(height * UNDYNE_SPRITE_WIDTH_OVER_HEIGHT), renderer(renderer) {}
+
+    void animate(int frameTime) {
+        if (frameTime - secondOfLastSpriteFrame > MILLISECOND_BETWEEN_SPRITE_FRAME) {
+            current_sprite_frame = (current_sprite_frame + 1) % NUM_OF_SPRITE_FRAMES;
+            secondOfLastSpriteFrame = frameTime;
+        }
+
+        std::string current_sprite_frame_correctlength = std::to_string(current_sprite_frame);
+        while (current_sprite_frame_correctlength.size() < 3)
+            current_sprite_frame_correctlength = "0" + current_sprite_frame_correctlength;
+        std::string sprite_filename = "sprites/undyne_sprite/frame_" + current_sprite_frame_correctlength + ".png";
+
+        SDL_Texture *texture = loadTexture(renderer, sprite_filename);
+        SDL_Rect *rect = new SDL_Rect({x_center - width / 2, y_center - height / 2, width, height});
+        SDL_RenderCopy(renderer, texture, NULL, rect);
+    }
+};
+
 struct Game {
+    const int FPS = 60;
+    const int frameDelay = 1000 / FPS;
+
+    Uint32 frameStart;
+    int frameTime;
+
     const int screen_width;
     const int screen_height;
     const int player_width;
@@ -89,10 +124,14 @@ struct Game {
     Turn current_turn = Turn::PlayerTurn;
     SDL_Rect *battleBox;
 
+    int next_attack = 0;
+
+    Undyne *undyne;
+
+    SDL_Event event;
+
     std::vector<MenuButton> menu_buttons;
 
-    const int STEP_PER_FRAME = 1;
-    const int ENEMY_TURN_FRAMES = 180;
     const float MENU_BUTTON_WIDTH_FACTOR = 0.2;
     const float MENU_BUTTON_HEIGHT = 60;
     const int BATTLEBOX_NEG_WIDTH = 50;
@@ -127,7 +166,7 @@ struct Game {
         // The window we'll be rendering to
         window = SDL_CreateWindow("Undyne SDL2 wip", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, SDL_WINDOW_SHOWN);
 
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+        renderer = SDL_CreateRenderer(window, -1, 0);
 
         player = new Player(player_width, player_width, 1, 1, renderer, "sprites/soul.png");
 
@@ -140,13 +179,19 @@ struct Game {
         battleBox->x = (screen_width - battleBox->w) / 2;
 
         running = true;
+
+        undyne = new Undyne(screen_width * 0.57, screen_height / 4, screen_height * 0.48, renderer);
     }
 
     void update() {
-        SDL_Event event;
+        frameStart = SDL_GetTicks();
+
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT)
+            if (event.type == SDL_QUIT) {
                 running = false;
+                exit(0);
+            }
+
             if (event.type == SDL_KEYDOWN && current_turn == Turn::PlayerTurn) {
                 if (event.key.keysym.sym == SDLK_LEFT) {
                     selected_menu_button = (selected_menu_button - 1 + menu_buttons.size()) % menu_buttons.size();
@@ -158,26 +203,33 @@ struct Game {
             }
         }
 
+        clearScreen();
+
+        undyne->animate(frameStart);
+
         player->x_center = menu_buttons[selected_menu_button].x_center - menu_buttons[selected_menu_button].width / 2 + player->width;
         player->y_center = menu_buttons[selected_menu_button].y_center;
-
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-        SDL_RenderClear(renderer);
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
         SDL_RenderDrawRect(renderer, battleBox);
 
-        SDL_SetRenderDrawColor(renderer, 50, 50, 50, SDL_ALPHA_OPAQUE);
         for (auto &button : menu_buttons) {
             button.render(player);
         }
-
-        SDL_SetRenderDrawColor(renderer, 100, 100, 100, SDL_ALPHA_OPAQUE);
 
         player->render();
 
         SDL_RenderPresent(renderer);
 
-        // printf("Turn: %d\n", static_cast<int>(current_turn));
+        frameTime = SDL_GetTicks() - frameStart;
+
+        if (frameDelay > frameTime) {
+            SDL_Delay(frameDelay - frameTime);
+        }
+    }
+
+    void clearScreen() {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+        SDL_RenderClear(renderer);
     }
 };

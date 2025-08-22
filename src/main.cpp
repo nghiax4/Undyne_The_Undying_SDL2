@@ -1,8 +1,10 @@
+#include "BattleBox.h"
 #include "GameObject.h"
 #include "MenuButton.h"
 #include "Player.h"
 #include "SelectedMenuButtonContainer.h"
 #include "Turn.h"
+#include "Undyne.h"
 #include "Utils.h"
 #include <SDL2/SDL.h>
 #include <algorithm>
@@ -48,59 +50,23 @@ std::vector<MenuButton> init_menu_buttons(int button_width) {
     return {fight_button, act_button, item_button, mercy_button};
 }
 
-struct BattleBox : public GameObject {
-  public:
-    int x_center, y_center, width, height;
-
-    BattleBox(int x_center, int y_center, int width, int height) : x_center(x_center), y_center(y_center), width(width), height(height) { obj_name = "BattleBox"; }
-
-    void update() override {}
-
-    void render() override {
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-        SDL_Rect rect{x_center - width / 2, y_center - height / 2, width, height};
-        SDL_RenderDrawRect(renderer, &rect);
-    }
-};
-
-struct Undyne : public GameObject {
-    const double UNDYNE_SPRITE_WIDTH_OVER_HEIGHT = 314.0 / 246;
-    const int MILLISECOND_BETWEEN_SPRITE_FRAME = 30;
-
-    int x_center, y_center, width, height;
-    // int secondOfLastSpriteFrame = 0;
-    double time_elapsed_since_last_sprite_frame = 0;
-    int current_sprite_frame = 0;
-    const int NUM_OF_SPRITE_FRAMES = 107;
-
-    Undyne(int x_center, int y_center, int height) : x_center(x_center), y_center(y_center), height(height), width(height * UNDYNE_SPRITE_WIDTH_OVER_HEIGHT) { obj_name = "Undyne"; }
-
-    void update() override {
-        time_elapsed_since_last_sprite_frame += deltaTime;
-        if (time_elapsed_since_last_sprite_frame > MILLISECOND_BETWEEN_SPRITE_FRAME) {
-            current_sprite_frame = (current_sprite_frame + 1) % NUM_OF_SPRITE_FRAMES;
-            time_elapsed_since_last_sprite_frame = 0;
-        }
-    }
-
-    void render() override {
-        std::string current_sprite_frame_correctlength = std::to_string(current_sprite_frame);
-        while (current_sprite_frame_correctlength.size() < 3)
-            current_sprite_frame_correctlength = "0" + current_sprite_frame_correctlength;
-        std::string sprite_filename = "sprites/undyne_sprite/frame_" + current_sprite_frame_correctlength + ".png";
-
-        SDL_Texture *texture = loadTexture(renderer, sprite_filename);
-        SDL_Rect *rect = new SDL_Rect({x_center - width / 2, y_center - height / 2, width, height});
-        SDL_RenderCopy(renderer, texture, NULL, rect);
-    }
-};
-
 void _print_all_objs_names() {
     printf("All objects names:\n");
     for (const auto &obj : objs) {
         printf("- %s\n", obj->obj_name.c_str());
     }
     printf("\n");
+}
+
+void _remove_objs_that_are_to_be_removed() {
+    std::vector<GameObject *> new_objs;
+    for (const auto &obj : objs) {
+        if (!obj->to_be_removed) {
+            new_objs.push_back(obj);
+        }
+    }
+
+    objs = new_objs;
 }
 
 int main(int argc, char *args[]) {
@@ -148,6 +114,8 @@ int main(int argc, char *args[]) {
             prev_keyboard_state.resize(num_keys, 0);
         }
 
+        _remove_objs_that_are_to_be_removed();
+
         for (auto &obj : objs) {
             obj->update();
         }
@@ -158,7 +126,9 @@ int main(int argc, char *args[]) {
         sort(objs.begin(), objs.end(), [](const GameObject *obj1, const GameObject *obj2) { return obj1->z_index < obj2->z_index; });
 
         for (auto &obj : objs) {
-            obj->render();
+            if (obj->show) {
+                obj->render();
+            }
         }
 
         SDL_RenderPresent(renderer);

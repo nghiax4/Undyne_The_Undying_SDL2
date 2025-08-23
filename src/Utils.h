@@ -19,3 +19,7 @@ void _remove_objs_that_are_to_be_removed();
 void _verify_objs_correct();
 
 void _print_objs_names();
+
+void play_sound_effect(std::string path);
+
+double distance(double x1, double y1, double x2, double y2);

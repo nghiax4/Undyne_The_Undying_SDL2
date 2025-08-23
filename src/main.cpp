@@ -56,7 +56,6 @@ std::vector<MenuButton> init_menu_buttons(int button_width) {
 }
 
 void start_music() {
-    Mix_Music *m = NULL;
     song = Mix_LoadMUS("music.mp3");
     if (song == NULL) {
         throw std::runtime_error(std::string("Failed to load music: ") + Mix_GetError());
@@ -75,7 +74,6 @@ int main(int argc, char *args[]) {
         throw;
     }
 
-    // The window we'll be rendering to
     window = SDL_CreateWindow("Undyne SDL2 wip", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
     renderer = SDL_CreateRenderer(window, -1, 0);

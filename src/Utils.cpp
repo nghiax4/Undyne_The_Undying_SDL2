@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include <cassert>
 #include <stdexcept>
 #include <stdio.h>
@@ -81,4 +82,18 @@ void _print_objs_names() {
         printf("'%s', ", obj->obj_name.c_str());
     }
     printf("]\n");
+}
+
+void play_sound_effect(std::string path) {
+    Mix_Chunk *chunk = Mix_LoadWAV(path.c_str());
+    if (!chunk) {
+        throw std::runtime_error(std::string("Failed to load SFX: ") + Mix_GetError());
+    }
+    Mix_PlayChannel(-1, chunk, 0); // -1 = first free channel, 0 = play once
+}
+
+double distance(double x1, double y1, double x2, double y2) {
+    double dx = x1 - x2;
+    double dy = y1 - y2;
+    return sqrt(dx * dx + dy * dy);
 }

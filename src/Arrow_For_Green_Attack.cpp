@@ -1,4 +1,5 @@
 #include "Arrow_For_Green_Attack.h"
+#include "Shield.h"
 #include "Utils.h"
 
 Arrow_For_Green_Attack::Arrow_For_Green_Attack(double x_center, double y_center, double v_x, double v_y, Direction direction, std::string obj_name) : x_center(x_center), y_center(y_center), v_x(v_x), v_y(v_y), direction(direction) {
@@ -13,6 +14,13 @@ Arrow_For_Green_Attack::Arrow_For_Green_Attack(double x_center, double y_center,
 void Arrow_For_Green_Attack::update() {
     x_center += v_x * deltaTime;
     y_center += v_y * deltaTime;
+
+    Shield *shield = static_cast<Shield *>(find_object_by_name("Shield"));
+
+    if (distance(x_center, y_center, shield->x_center, shield->y_center) <= 20) {
+        play_sound_effect("shield_reflect.mp3");
+        this->to_be_removed = true;
+    }
 }
 
 void Arrow_For_Green_Attack::render() {

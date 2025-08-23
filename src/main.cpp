@@ -1,4 +1,5 @@
 #include "BattleBox.h"
+#include "GameManager.h"
 #include "GameObject.h"
 #include "MenuButton.h"
 #include "Player.h"
@@ -7,7 +8,9 @@
 #include "Undyne.h"
 #include "Utils.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include <algorithm>
+#include <stdexcept>
 #include <stdio.h>
 #include <vector>
 
@@ -16,6 +19,7 @@ const int SCREEN_HEIGHT = 600;
 const int FPS = 60;
 const int FRAME_DELAY = 1000 / FPS;
 
+Mix_Music *song;
 double deltaTime;
 int last_tick = 0;
 SDL_Event event;
@@ -24,6 +28,8 @@ SDL_Renderer *renderer;
 std::vector<GameObject *> objs;
 std::vector<Uint8> prev_keyboard_state;
 std::vector<Uint8> cur_keyboard_state;
+int time_since_enemy_turn = 0;
+int current_attack_idx = 0;
 Turn current_turn = Turn::PlayerTurn;
 
 std::vector<MenuButton> init_menu_buttons(int button_width) {
@@ -50,28 +56,23 @@ std::vector<MenuButton> init_menu_buttons(int button_width) {
     return {fight_button, act_button, item_button, mercy_button};
 }
 
-void _print_all_objs_names() {
-    printf("All objects names:\n");
-    for (const auto &obj : objs) {
-        printf("- %s\n", obj->obj_name.c_str());
+void start_music() {
+    Mix_Music *m = NULL;
+    song = Mix_LoadMUS("music.mp3");
+    if (song == NULL) {
+        throw std::runtime_error(std::string("Failed to load music: ") + Mix_GetError());
     }
-    printf("\n");
-}
-
-void _remove_objs_that_are_to_be_removed() {
-    std::vector<GameObject *> new_objs;
-    for (const auto &obj : objs) {
-        if (!obj->to_be_removed) {
-            new_objs.push_back(obj);
-        }
-    }
-
-    objs = new_objs;
+    Mix_PlayMusic(song, -1);
 }
 
 int main(int argc, char *args[]) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        throw;
+    }
+
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
+        printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
         throw;
     }
 
@@ -80,7 +81,7 @@ int main(int argc, char *args[]) {
 
     renderer = SDL_CreateRenderer(window, -1, 0);
 
-    objs.push_back(new Player(1, 1, SCREEN_WIDTH * 0.03, SCREEN_WIDTH * 0.03, "sprites/soul.png", 2));
+    objs.push_back(new Player(1, 1));
 
     std::vector<MenuButton> menu_buttons = init_menu_buttons(0.2 * SCREEN_WIDTH);
 
@@ -91,6 +92,9 @@ int main(int argc, char *args[]) {
     objs.push_back(new BattleBox(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.67, SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.3));
     objs.push_back(new Undyne(SCREEN_WIDTH * 0.57, SCREEN_HEIGHT / 4, SCREEN_HEIGHT * 0.48));
     objs.push_back(new SelectedMenuButtonContainer());
+    objs.push_back(new GameManager());
+
+    start_music();
 
     bool running = true;
 
@@ -102,7 +106,6 @@ int main(int argc, char *args[]) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = false;
-                exit(0);
             }
         }
 
@@ -115,6 +118,8 @@ int main(int argc, char *args[]) {
         }
 
         _remove_objs_that_are_to_be_removed();
+        // _print_objs_names();
+        _verify_objs_correct();
 
         for (auto &obj : objs) {
             obj->update();

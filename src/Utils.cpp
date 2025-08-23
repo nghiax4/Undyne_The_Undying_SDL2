@@ -39,3 +39,50 @@ GameObject *find_object_by_name(std::string obj_name) {
 
     throw std::runtime_error("Cannot find object with name " + obj_name);
 }
+
+void play_attack(int attack_idx) {
+    // throw std::runtime_error("Not implemented");
+}
+
+void _print_all_objs_names() {
+    printf("All objects names:\n");
+    for (const auto &obj : objs) {
+        printf("- %s\n", obj->obj_name.c_str());
+    }
+    printf("\n");
+}
+
+void _remove_objs_that_are_to_be_removed() {
+    std::vector<GameObject *> new_objs;
+    for (const auto &obj : objs) {
+        if (!obj->to_be_removed) {
+            new_objs.push_back(obj);
+        }
+    }
+
+    objs = new_objs;
+}
+
+void _verify_objs_correct() {
+    for (int i = 0; i < objs.size(); i++) {
+        if (objs[i]->obj_name.empty()) {
+            throw std::runtime_error("Obj at index " + std::to_string(i) + " have empty name");
+        }
+    }
+
+    for (int i = 0; i < objs.size(); i++) {
+        for (int j = i + 1; j < objs.size(); j++) {
+            if (objs[i]->obj_name == objs[j]->obj_name) {
+                throw std::runtime_error("Obj at index " + std::to_string(i) + " and " + std::to_string(j) + " have same name");
+            }
+        }
+    }
+}
+
+void _print_objs_names() {
+    printf("[");
+    for (const auto &obj : objs) {
+        printf("'%s', ", obj->obj_name.c_str());
+    }
+    printf("]\n");
+}

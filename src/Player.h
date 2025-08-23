@@ -8,7 +8,7 @@ struct Player : public GameObject {
     int x_center, y_center, width, height;
     SDL_Texture *player_texture;
 
-    Player(int x_center, int y_center, int width, int height, std::string path, int z_index);
+    Player(int x_center, int y_center);
 
     virtual void update() override;
 

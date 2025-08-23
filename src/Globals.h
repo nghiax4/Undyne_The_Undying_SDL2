@@ -7,6 +7,8 @@ extern std::vector<GameObject *> objs;
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
 extern SDL_Renderer *renderer;
+extern int time_since_enemy_turn;
+extern int current_attack_idx;
 extern double deltaTime;
 extern SDL_Event event;
 extern Turn current_turn;

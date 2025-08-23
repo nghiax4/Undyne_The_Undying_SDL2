@@ -7,7 +7,7 @@
 Shield::Shield() : width(SCREEN_WIDTH * 0.1), height(SCREEN_HEIGHT * 0.007) {
     texture = loadTexture(renderer, "sprites/shield.png");
     obj_name = "Shield";
-    z_index = 2;
+    z_index = 3;
 }
 
 void Shield::update() {

@@ -2,12 +2,19 @@
 #include "Globals.h"
 #include <SDL2/SDL.h>
 
-BattleBox::BattleBox(int x_center, int y_center, int width, int height) : x_center(x_center), y_center(y_center), width(width), height(height) { obj_name = "BattleBox"; }
+BattleBox::BattleBox(int x_center, int y_center, int width, int height) : x_center(x_center), y_center(y_center), width(width), height(height) { obj_name = "BattleBox"; z_index = 2;}
 
 void BattleBox::update() {}
 
 void BattleBox::render() {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+    const int BORDER_THICKNESS = 4;
+
     SDL_Rect rect{x_center - width / 2, y_center - height / 2, width, height};
-    SDL_RenderDrawRect(renderer, &rect);
+    SDL_Rect inner = {rect.x + BORDER_THICKNESS, rect.y + BORDER_THICKNESS, rect.w - 2 * BORDER_THICKNESS, rect.h - 2 * BORDER_THICKNESS};
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+    SDL_RenderFillRect(renderer, &rect);
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderFillRect(renderer, &inner);
 }

@@ -9,7 +9,7 @@
 Player_EnemyTurn_Green::Player_EnemyTurn_Green(int x_center, int y_center) : x_center(x_center), y_center(y_center), width(SCREEN_WIDTH * 0.03), height(SCREEN_WIDTH * 0.03) {
     player_texture = loadTexture(renderer, "sprites/soul_green.png");
     obj_name = "Player_EnemyTurn_Green";
-    z_index = 2;
+    z_index = 3;
 }
 
 void Player_EnemyTurn_Green::update() {}

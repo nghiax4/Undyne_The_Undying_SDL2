@@ -9,7 +9,7 @@ extern SDL_Renderer *renderer;
 Player::Player(int x_center, int y_center) : width(SCREEN_WIDTH * 0.03), height(SCREEN_WIDTH * 0.03), x_center(x_center), y_center(y_center) {
     player_texture = loadTexture(renderer, "sprites/soul.png");
     obj_name = "Player";
-    this->z_index = 2;
+    this->z_index = 3;
 }
 
 void Player::update() {

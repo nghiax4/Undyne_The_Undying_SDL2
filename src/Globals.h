@@ -14,3 +14,5 @@ extern SDL_Event event;
 extern Turn current_turn;
 extern std::vector<Uint8> prev_keyboard_state;
 extern std::vector<Uint8> cur_keyboard_state;
+
+enum class Direction { UP, DOWN, LEFT, RIGHT };

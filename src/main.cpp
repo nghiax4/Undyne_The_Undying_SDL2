@@ -35,7 +35,6 @@ Turn current_turn = Turn::PlayerTurn;
 std::vector<MenuButton> init_menu_buttons(int button_width) {
     const double BUTTON_WIDTH_TO_HEIGHT = 110.0 / 42;
     int button_height = button_width / BUTTON_WIDTH_TO_HEIGHT;
-    printf("Making buttons of size: %d %d\n", button_width, button_height);
 
     int Y_POS = SCREEN_HEIGHT - button_height - button_height / 3;
     int NUM_BUTTONS = 4;

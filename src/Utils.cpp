@@ -40,10 +40,6 @@ GameObject *find_object_by_name(std::string obj_name) {
     throw std::runtime_error("Cannot find object with name " + obj_name);
 }
 
-void play_attack(int attack_idx) {
-    // throw std::runtime_error("Not implemented");
-}
-
 void _print_all_objs_names() {
     printf("All objects names:\n");
     for (const auto &obj : objs) {

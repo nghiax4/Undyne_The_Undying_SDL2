@@ -13,11 +13,11 @@ void SelectedMenuButtonContainer::update() {
     if (current_turn == Turn::PlayerTurn) {
         if (cur_keyboard_state[SDL_SCANCODE_LEFT] && !prev_keyboard_state[SDL_SCANCODE_LEFT]) {
             selected_menu_button = (selected_menu_button - 1 + NUM_OF_MENU_BUTTONS) % NUM_OF_MENU_BUTTONS;
-            play_sound_effect("menu_select_sound.mp3");
+            play_sound_effect("audio/menu_select_sound.mp3");
         }
         if (cur_keyboard_state[SDL_SCANCODE_RIGHT] && !prev_keyboard_state[SDL_SCANCODE_RIGHT]) {
             selected_menu_button = (selected_menu_button + 1) % NUM_OF_MENU_BUTTONS;
-            play_sound_effect("menu_select_sound.mp3");
+            play_sound_effect("audio/menu_select_sound.mp3");
         }
     }
 }

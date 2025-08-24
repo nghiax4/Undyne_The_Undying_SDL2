@@ -3,8 +3,8 @@
 #include "Attack_Manager_Base_Class.h"
 #include "Globals.h"
 
-struct Attack_0_Manager : public Attack_Manager_Base_Class {
-    Attack_0_Manager();
+struct Attack_2_Manager : public Attack_Manager_Base_Class {
+    Attack_2_Manager();
 
     virtual void update() override;
     virtual void render() override;

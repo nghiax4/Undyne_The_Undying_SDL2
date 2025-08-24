@@ -20,6 +20,10 @@ void MenuButton::render() {
 
 // Check if the button is currently selected by checking if the player's position is within the button
 bool MenuButton::is_selected_by_player() {
+    if (!object_by_name_exists("Player")) {
+        return false;
+    }
+
     Player *player = static_cast<Player *>(find_object_by_name("Player"));
     bool x_within = x_center - width / 2 <= player->x_center && player->x_center <= x_center + width / 2;
     bool y_within = y_center - height / 2 <= player->y_center && player->y_center <= y_center + height / 2;

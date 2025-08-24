@@ -12,6 +12,8 @@ SDL_Texture *loadTexture(SDL_Renderer *renderer, std::string path);
 
 GameObject *find_object_by_name(std::string obj_name);
 
+bool object_by_name_exists(std::string obj_name);
+
 void _print_all_objs_names();
 
 void _remove_objs_that_are_to_be_removed();

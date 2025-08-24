@@ -41,6 +41,16 @@ GameObject *find_object_by_name(std::string obj_name) {
     throw std::runtime_error("Cannot find object with name " + obj_name);
 }
 
+bool object_by_name_exists(std::string obj_name) {
+    for (const auto &obj : objs) {
+        if (obj->obj_name == obj_name) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void _print_all_objs_names() {
     printf("All objects names:\n");
     for (const auto &obj : objs) {

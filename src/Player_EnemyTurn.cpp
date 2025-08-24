@@ -28,8 +28,6 @@ void Player_EnemyTurn::update() {
     x_center += x_multiplier * v_x * deltaTime;
     y_center += y_multiplier * v_y * deltaTime;
 
-    printf("new x y: %f %f\n", x_center, y_center);
-
     BattleBox *battlebox = static_cast<BattleBox *>(find_object_by_name("BattleBox"));
 
     x_center = std::max(x_center, (double)(battlebox->x_center - battlebox->width / 2));

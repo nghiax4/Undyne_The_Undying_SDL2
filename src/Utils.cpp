@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <cassert>
+#include <random>
 #include <stdexcept>
 #include <stdio.h>
 #include <string>
@@ -106,4 +107,11 @@ double distance(double x1, double y1, double x2, double y2) {
     double dx = x1 - x2;
     double dy = y1 - y2;
     return sqrt(dx * dx + dy * dy);
+}
+
+int get_random(int low, int high) {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(low, high);
+    return dis(gen);
 }

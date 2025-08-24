@@ -25,3 +25,5 @@ void _print_objs_names();
 void play_sound_effect(std::string path);
 
 double distance(double x1, double y1, double x2, double y2);
+
+int get_random(int low, int high);

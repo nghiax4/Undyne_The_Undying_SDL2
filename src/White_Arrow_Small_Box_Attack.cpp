@@ -18,6 +18,11 @@ void White_Arrow_Small_Box_Attack::update() {
 
     time_elapsed_since_state_change += deltaTime;
 
+    if (!played_ready_sound) {
+        play_sound_effect("audio/white_arrow_getting_ready.ogg");
+        played_ready_sound = true;
+    }
+
     if (state == State::GettingReady && time_elapsed_since_state_change > TIME_FOR_GETTING_READY) {
         state = State::Freeze;
         time_elapsed_since_state_change = 0;
@@ -26,6 +31,10 @@ void White_Arrow_Small_Box_Attack::update() {
     if (state == State::Freeze && time_elapsed_since_state_change > TIME_FOR_FREEZE) {
         state = State::Charge;
         time_elapsed_since_state_change = 0;
+        if (!played_charge_sound) {
+            play_sound_effect("audio/white_arrow_charge.ogg");
+            played_charge_sound = true;
+        }
     }
 
     if (state == State::Charge && time_elapsed_since_state_change > TIME_FOR_CHARGE) {

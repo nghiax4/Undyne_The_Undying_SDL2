@@ -39,6 +39,7 @@ void Attack_3_Manager::update() {
     time_elapsed_since_last_arrow = 0;
     arrows_created += 1;
 }
+
 void Attack_3_Manager::render() {}
 void Attack_3_Manager::ready_to_be_removed() {
     Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(find_object_by_name("Player_EnemyTurn"));

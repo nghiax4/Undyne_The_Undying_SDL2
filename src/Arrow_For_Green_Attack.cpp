@@ -19,14 +19,14 @@ void Arrow_For_Green_Attack::update() {
         Shield *shield = static_cast<Shield *>(find_object_by_name("Shield"));
 
         if (distance(x_center, y_center, shield->x_center, shield->y_center) <= 20) {
-            play_sound_effect("audio/shield_reflect.mp3");
+            play_sound_effect("audio/shield_reflect.ogg");
             this->to_be_removed = true;
         }
     }
 }
 
 void Arrow_For_Green_Attack::render() {
-    SDL_Rect rect{x_center - width / 2, y_center - height / 2, width, height};
+    SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), width, height};
 
     int angle;
     if (direction == Direction::DOWN) {

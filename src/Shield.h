@@ -7,13 +7,15 @@
 #include <string>
 
 struct Shield : public GameObject {
-    int x_center, y_center, width, height;
+    double x_center, y_center;
+    int width, height;
+    const double distance_from_soul = SCREEN_HEIGHT * 0.07;
+    double cur_angle = 0, target_angle = 0;
     SDL_Texture *texture;
-    int state = 0; // 0 is up, 1 is right, 2 is down, 3 is left
 
     Shield();
 
     virtual void update() override;
 
     virtual void render() override;
-};
+};  

@@ -30,11 +30,11 @@ void Player_EnemyTurn::update() {
 
     BattleBox *battlebox = static_cast<BattleBox *>(find_object_by_name("BattleBox"));
 
-    x_center = std::max(x_center, (double)(battlebox->x_center - battlebox->width / 2));
-    x_center = std::min(x_center, (double)(battlebox->x_center + battlebox->width / 2));
+    x_center = std::max(x_center, (double)(battlebox->x_center - battlebox->width / 2 + width / 2));
+    x_center = std::min(x_center, (double)(battlebox->x_center + battlebox->width / 2 - width / 2));
 
-    y_center = std::max(y_center, (double)(battlebox->y_center - battlebox->height / 2));
-    y_center = std::min(y_center, (double)(battlebox->y_center + battlebox->height / 2));
+    y_center = std::max(y_center, (double)(battlebox->y_center - battlebox->height / 2 + height / 2));
+    y_center = std::min(y_center, (double)(battlebox->y_center + battlebox->height / 2 - height / 2));
 }
 
 void Player_EnemyTurn::render() {

@@ -33,10 +33,10 @@ int current_attack_idx = 0; // TODO: remember to change this to 0 when you offic
 Turn current_turn = Turn::PlayerTurn;
 
 std::vector<MenuButton> init_menu_buttons(int button_width) {
-    const double BUTTON_WIDTH_TO_HEIGHT = 110.0 / 42;
+    const double BUTTON_WIDTH_TO_HEIGHT = 367.0 / 140;
     int button_height = button_width / BUTTON_WIDTH_TO_HEIGHT;
 
-    int Y_POS = SCREEN_HEIGHT - button_height - button_height / 3;
+    int Y_POS = SCREEN_HEIGHT * 0.9;
     int NUM_BUTTONS = 4;
     int gap_between_button_edges = (SCREEN_WIDTH - NUM_BUTTONS * button_width) / (NUM_BUTTONS + 1);
     std::vector<SDL_Rect> result;

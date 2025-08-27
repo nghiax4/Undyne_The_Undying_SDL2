@@ -4,6 +4,7 @@
 #include "Attack_2_Manager.h"
 #include "Attack_3_Manager.h"
 #include "Attack_4_Manager.h"
+#include "Attack_5_Manager.h"
 #include "Attack_Manager_Base_Class.h"
 #include "BattleBox.h"
 #include "Globals.h"
@@ -51,6 +52,8 @@ void GameManager::play_attack(int attack_idx) {
         attack = new Attack_3_Manager();
     } else if (attack_idx == 4) {
         attack = new Attack_4_Manager();
+    } else if (attack_idx == 5) {
+        attack = new Attack_5_Manager();
     } else {
         throw std::runtime_error(std::string("attack_idx=") + std::to_string(attack_idx) + std::string(" not supported yet."));
     }

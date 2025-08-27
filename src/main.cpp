@@ -1,6 +1,7 @@
 #include "BattleBox.h"
 #include "GameManager.h"
 #include "GameObject.h"
+#include "HealthPointText.h"
 #include "MenuButton.h"
 #include "Player.h"
 #include "SelectedMenuButtonContainer.h"
@@ -9,6 +10,7 @@
 #include "Utils.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include <algorithm>
 #include <stdexcept>
 #include <stdio.h>
@@ -29,7 +31,7 @@ std::vector<GameObject *> objs;
 std::vector<Uint8> prev_keyboard_state;
 std::vector<Uint8> cur_keyboard_state;
 int time_since_enemy_turn = 0;
-int current_attack_idx = 0; // TODO: remember to change this to 0 when you officially play it
+int current_attack_idx = 4; // TODO: remember to change this to 0 when you officially play it
 Turn current_turn = Turn::PlayerTurn;
 
 std::vector<MenuButton> init_menu_buttons(int button_width) {
@@ -74,6 +76,11 @@ int main(int argc, char *args[]) {
         throw;
     }
 
+    if (TTF_Init() == -1) {
+        printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+        throw;
+    }
+
     window = SDL_CreateWindow("Undyne SDL2 wip", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
     renderer = SDL_CreateRenderer(window, -1, 0);
@@ -86,10 +93,12 @@ int main(int argc, char *args[]) {
         objs.push_back(&menu_button);
     }
 
-    objs.push_back(new BattleBox(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.67, SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.3));
+    BattleBox *battlebox = new BattleBox(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.67, SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.3);
+    objs.push_back(battlebox);
     objs.push_back(new Undyne(SCREEN_WIDTH * 0.57, SCREEN_HEIGHT / 4, SCREEN_HEIGHT * 0.48));
     objs.push_back(new SelectedMenuButtonContainer());
     objs.push_back(new GameManager());
+    objs.push_back(new HealthPointText(SCREEN_WIDTH / 2, (battlebox->y_center + battlebox->height / 2 + menu_buttons.at(0).y_center - menu_buttons.at(0).height / 2) / 2));
 
     start_music();
 

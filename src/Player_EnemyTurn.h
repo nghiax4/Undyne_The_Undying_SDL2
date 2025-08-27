@@ -7,6 +7,11 @@ struct Player_EnemyTurn : public GameObject {
     double x_center, y_center;
     int width, height;
     SDL_Texture *texture;
+    int time_elapsed_since_invisibility_frame = 0;
+    bool enable_invisbility_frame = 0;
+    // Render transparently for the invisibility frame (it flickers between transparent and opaque)
+    bool render_texture_transparent = false;
+    int time_elapsed_since_transparent = 0;
     Player_EnemyTurn(int x_center, int y_center);
 
     virtual void update() override;

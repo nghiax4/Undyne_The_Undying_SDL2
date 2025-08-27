@@ -115,3 +115,11 @@ int get_random(int low, int high) {
     std::uniform_int_distribution<> dis(low, high);
     return dis(gen);
 }
+
+double get_random(double low, double high) {
+    static std::random_device rd;  // seed source (non-deterministic)
+    static std::mt19937 gen(rd()); // Mersenne Twister engine
+
+    std::uniform_real_distribution<double> dist(low, high);
+    return dist(gen);
+}

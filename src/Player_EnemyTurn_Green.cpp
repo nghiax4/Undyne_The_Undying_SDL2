@@ -1,6 +1,7 @@
 #include "Player_EnemyTurn_Green.h"
 #include "Arrow_For_Green_Attack.h"
 #include "GameObject.h"
+#include "HealthPointText.h"
 #include "Utils.h"
 #include "stdio.h"
 #include "stdlib.h"
@@ -21,7 +22,6 @@ void Player_EnemyTurn_Green::update() {
         if (time_elapsed_since_transparent >= 140) {
             render_texture_transparent = !render_texture_transparent;
             time_elapsed_since_transparent = 0;
-            time_elapsed_since_invisibility_frame = 0;
         }
 
         if (time_elapsed_since_invisibility_frame >= 700) {
@@ -36,11 +36,14 @@ void Player_EnemyTurn_Green::update() {
         if (arrow == nullptr)
             continue;
 
+        HealthPointText *healthpoint = static_cast<HealthPointText *>(find_object_by_name("HealthPointText"));
+
         if (distance(x_center, y_center, arrow->x_center, arrow->y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
             if (!enable_invisbility_frame) {
                 enable_invisbility_frame = true;
                 render_texture_transparent = true;
                 time_elapsed_since_invisibility_frame = 0;
+                healthpoint->hp -= 13;
                 play_sound_effect("audio/damage_taken.ogg");
             }
             obj->to_be_removed = true;

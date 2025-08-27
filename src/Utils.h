@@ -1,3 +1,4 @@
+#pragma once
 #include "GameObject.h"
 #include "Globals.h"
 #include <SDL2/SDL.h>
@@ -27,3 +28,5 @@ void play_sound_effect(std::string path);
 double distance(double x1, double y1, double x2, double y2);
 
 int get_random(int low, int high);
+
+double get_random(double low, double high);

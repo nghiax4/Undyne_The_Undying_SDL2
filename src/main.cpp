@@ -12,6 +12,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 #include <algorithm>
+#include <emscripten.h>
 #include <stdexcept>
 #include <stdio.h>
 #include <vector>
@@ -31,8 +32,9 @@ std::vector<GameObject *> objs;
 std::vector<Uint8> prev_keyboard_state;
 std::vector<Uint8> cur_keyboard_state;
 int time_since_enemy_turn = 0;
-int current_attack_idx = 5; // TODO: remember to change this to 0 when you officially play it
+int current_attack_idx = 0; // TODO: remember to change this to 0 when you officially play it
 Turn current_turn = Turn::PlayerTurn;
+bool any_button_has_been_pressed = false;
 
 std::vector<MenuButton> init_menu_buttons(int button_width) {
     const double BUTTON_WIDTH_TO_HEIGHT = 367.0 / 140;
@@ -63,6 +65,57 @@ void start_music() {
         throw std::runtime_error(std::string("Failed to load music: ") + Mix_GetError());
     }
     Mix_PlayMusic(song, -1);
+}
+
+void mainloop(void *arg) {
+    Uint32 now = SDL_GetTicks();
+    deltaTime = now - last_tick;
+    last_tick = now;
+
+    int num_keys;
+    const Uint8 *sdl_keys = SDL_GetKeyboardState(&num_keys);
+    cur_keyboard_state.assign(sdl_keys, sdl_keys + num_keys);
+
+    if (prev_keyboard_state.empty()) {
+        prev_keyboard_state.resize(num_keys, 0);
+    }
+
+    // For web games, we need to force the user to press anything before playing any audio
+    for (auto i : cur_keyboard_state) {
+        if (i && !any_button_has_been_pressed) {
+            any_button_has_been_pressed = true;
+            start_music();
+        }
+    }
+
+    _remove_objs_that_are_to_be_removed();
+    // _print_objs_names();
+    _verify_objs_correct();
+
+    for (auto &obj : objs) {
+        obj->update();
+    }
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RenderClear(renderer);
+
+    sort(objs.begin(), objs.end(), [](const GameObject *obj1, const GameObject *obj2) { return obj1->z_index < obj2->z_index; });
+
+    for (auto &obj : objs) {
+        if (obj->show) {
+            obj->render();
+        }
+    }
+
+    SDL_RenderPresent(renderer);
+
+    int frameTime = SDL_GetTicks() - now;
+
+    if (FRAME_DELAY > frameTime) {
+        SDL_Delay(FRAME_DELAY - frameTime);
+    }
+
+    prev_keyboard_state = cur_keyboard_state;
 }
 
 int main(int argc, char *args[]) {
@@ -100,57 +153,9 @@ int main(int argc, char *args[]) {
     objs.push_back(new GameManager());
     objs.push_back(new HealthPointText(SCREEN_WIDTH / 2, (battlebox->y_center + battlebox->height / 2 + menu_buttons.at(0).y_center - menu_buttons.at(0).height / 2) / 2));
 
-    start_music();
+    // start_music();
 
-    bool running = true;
+    emscripten_set_main_loop_arg(mainloop, NULL, -1, -1);
 
-    while (running) {
-        Uint32 now = SDL_GetTicks();
-        deltaTime = now - last_tick;
-        last_tick = now;
-
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                running = false;
-            }
-        }
-
-        int num_keys;
-        const Uint8 *sdl_keys = SDL_GetKeyboardState(&num_keys);
-        cur_keyboard_state.assign(sdl_keys, sdl_keys + num_keys);
-
-        if (prev_keyboard_state.empty()) {
-            prev_keyboard_state.resize(num_keys, 0);
-        }
-
-        _remove_objs_that_are_to_be_removed();
-        // _print_objs_names();
-        _verify_objs_correct();
-
-        for (auto &obj : objs) {
-            obj->update();
-        }
-
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-        SDL_RenderClear(renderer);
-
-        sort(objs.begin(), objs.end(), [](const GameObject *obj1, const GameObject *obj2) { return obj1->z_index < obj2->z_index; });
-
-        for (auto &obj : objs) {
-            if (obj->show) {
-                obj->render();
-            }
-        }
-
-        SDL_RenderPresent(renderer);
-
-        int frameTime = SDL_GetTicks() - now;
-
-        if (FRAME_DELAY > frameTime) {
-            SDL_Delay(FRAME_DELAY - frameTime);
-        }
-
-        prev_keyboard_state = cur_keyboard_state;
-    }
     return 0;
 }

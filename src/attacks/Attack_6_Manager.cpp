@@ -1,4 +1,3 @@
-#pragma once
 #include "Attack_6_Manager.h"
 
 Attack_6_Manager::Attack_6_Manager() {}

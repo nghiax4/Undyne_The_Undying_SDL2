@@ -1,0 +1,12 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: sudo apt update && sudo apt-get install -y python3
+    - run: python3 scripts/check_attack_manager_files.py 
+    - run: python3 scripts/check_pragma_once.py

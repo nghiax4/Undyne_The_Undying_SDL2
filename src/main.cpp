@@ -31,7 +31,7 @@ std::vector<GameObject *> objs;
 std::vector<Uint8> prev_keyboard_state;
 std::vector<Uint8> cur_keyboard_state;
 int time_since_enemy_turn = 0;
-int current_attack_idx = 5; // TODO: remember to change this to 0 when you officially play it
+int current_attack_idx = 6; // TODO: remember to change this to 0 when you officially play it
 Turn current_turn = Turn::PlayerTurn;
 
 std::vector<MenuButton> init_menu_buttons(int button_width) {

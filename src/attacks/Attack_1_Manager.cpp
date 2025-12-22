@@ -59,20 +59,9 @@ Attack_1_Manager::Attack_1_Manager() {
     objs.push_back(arrow_14);
 }
 
-void Attack_1_Manager::update() { time_elapsed_since_creation += deltaTime; }
 void Attack_1_Manager::render() {}
 void Attack_1_Manager::ready_to_be_removed() {
-    this->to_be_removed = true;
-    Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(find_object_by_name("Player_EnemyTurn_Green"));
-    Shield *shield = static_cast<Shield *>(find_object_by_name("Shield"));
-    player->to_be_removed = true;
-    shield->to_be_removed = true;
-
-    for (auto &obj : objs) {
-        if (obj->obj_name.find("Attack_1") == 0) {
-            obj->to_be_removed = true;
-        }
-    }
+    _teardown_green_mode("Attack_1");
 }
 
 static AutoRegisterAttack<Attack_1_Manager> register_attack_1(1);

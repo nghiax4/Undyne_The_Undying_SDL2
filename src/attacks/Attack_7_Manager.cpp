@@ -1,10 +1,9 @@
 #include "Attack_7_Manager.h"
 #include "AttackRegistry.h"
 
-Attack_7_Manager::Attack_7_Manager() {}
-
-void Attack_7_Manager::update() {}
-void Attack_7_Manager::render() {}
-void Attack_7_Manager::ready_to_be_removed() {}
+Attack_7_Manager::Attack_7_Manager() {
+    obj_name = "Attack_Manager_7";
+    MILLISECONDS_LENGTH = 5000;
+}
 
 static AutoRegisterAttack<Attack_7_Manager> register_attack_7(7);

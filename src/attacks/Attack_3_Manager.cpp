@@ -21,7 +21,8 @@ Attack_3_Manager::Attack_3_Manager() {
 }
 
 void Attack_3_Manager::update() {
-    time_elapsed_since_creation += deltaTime;
+    Attack_Manager_Base_Class::update();
+    
     time_elapsed_since_last_arrow += deltaTime;
 
     if (time_elapsed_since_last_arrow <= TIME_PER_ARROW)

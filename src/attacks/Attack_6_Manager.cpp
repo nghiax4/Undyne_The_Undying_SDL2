@@ -1,9 +1,9 @@
 #include "Attack_6_Manager.h"
 #include "Arrow_For_Green_Attack.h"
+#include "AttackRegistry.h"
 #include "BattleBox.h"
 #include "Player_EnemyTurn_Green.h"
 #include "Shield.h"
-#include "AttackRegistry.h"
 
 Attack_6_Manager::Attack_6_Manager() {
     obj_name = "Attack_Manager_6";
@@ -70,22 +70,8 @@ Attack_6_Manager::Attack_6_Manager() {
     objs.push_back(arrow_20);
 }
 
-void Attack_6_Manager::update() { time_elapsed_since_creation += deltaTime; }
-
 void Attack_6_Manager::render() {}
 
-void Attack_6_Manager::ready_to_be_removed() {
-    this->to_be_removed = true;
-    Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(find_object_by_name("Player_EnemyTurn_Green"));
-    Shield *shield = static_cast<Shield *>(find_object_by_name("Shield"));
-    player->to_be_removed = true;
-    shield->to_be_removed = true;
-
-    for (auto &obj : objs) {
-        if (dynamic_cast<Arrow_For_Green_Attack *>(obj) != nullptr) {
-            obj->to_be_removed = true;
-        }
-    }
-}
+void Attack_6_Manager::ready_to_be_removed() { _teardown_green_mode("Attack_6"); }
 
 static AutoRegisterAttack<Attack_6_Manager> register_attack_6(6);

@@ -70,22 +70,10 @@ Attack_2_Manager::Attack_2_Manager() {
     objs.push_back(arrow_19);
 }
 
-void Attack_2_Manager::update() { time_elapsed_since_creation += deltaTime; }
-
 void Attack_2_Manager::render() {}
 
 void Attack_2_Manager::ready_to_be_removed() {
-    this->to_be_removed = true;
-    Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(find_object_by_name("Player_EnemyTurn_Green"));
-    Shield *shield = static_cast<Shield *>(find_object_by_name("Shield"));
-    player->to_be_removed = true;
-    shield->to_be_removed = true;
-
-    for (auto &obj : objs) {
-        if (obj->obj_name.find("Attack_2") == 0) {
-            obj->to_be_removed = true;
-        }
-    }
+    _teardown_green_mode("Attack_2");
 }
 
 static AutoRegisterAttack<Attack_2_Manager> register_attack_2(2);

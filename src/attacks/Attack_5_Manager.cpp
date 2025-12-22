@@ -41,22 +41,10 @@ Attack_5_Manager::Attack_5_Manager() {
     objs.push_back(arrow_8);
 }
 
-void Attack_5_Manager::update() { time_elapsed_since_creation += deltaTime; }
-
 void Attack_5_Manager::render() {}
 
 void Attack_5_Manager::ready_to_be_removed() {
-    this->to_be_removed = true;
-    Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(find_object_by_name("Player_EnemyTurn_Green"));
-    Shield *shield = static_cast<Shield *>(find_object_by_name("Shield"));
-    player->to_be_removed = true;
-    shield->to_be_removed = true;
-
-    for (auto &obj : objs) {
-        if (dynamic_cast<Arrow_For_Green_Attack *>(obj) != nullptr) {
-            obj->to_be_removed = true;
-        }
-    }
+    _teardown_green_mode("Attack_5");
 }
 
 static AutoRegisterAttack<Attack_5_Manager> register_attack_5(5);

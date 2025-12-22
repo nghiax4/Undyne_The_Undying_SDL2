@@ -1,5 +1,6 @@
 #include "Attack_5_Manager.h"
 #include "Arrow_For_Green_Attack.h"
+#include "AttackRegistry.h"
 #include "BattleBox.h"
 #include "Player_EnemyTurn_Green.h"
 #include "Shield.h"
@@ -57,3 +58,5 @@ void Attack_5_Manager::ready_to_be_removed() {
         }
     }
 }
+
+static AutoRegisterAttack<Attack_5_Manager> register_attack_5(5);

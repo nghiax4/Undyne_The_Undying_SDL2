@@ -5,6 +5,7 @@
 #include "Player_EnemyTurn.h"
 #include "Utils.h"
 #include "White_Arrow_Medium_Box_Attack.h"
+#include "AttackRegistry.h"
 
 Attack_4_Manager::Attack_4_Manager() {
     obj_name = "Attack_Manager_4";
@@ -59,3 +60,5 @@ void Attack_4_Manager::ready_to_be_removed() {
         }
     }
 }
+
+static AutoRegisterAttack<Attack_4_Manager> register_attack_4(4);

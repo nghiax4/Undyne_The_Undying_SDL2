@@ -1,4 +1,5 @@
 #include "Attack_3_Manager.h"
+#include "AttackRegistry.h"
 #include "BattleBox.h"
 #include "Player_EnemyTurn.h"
 #include "Utils.h"
@@ -52,3 +53,5 @@ void Attack_3_Manager::ready_to_be_removed() {
         }
     }
 }
+
+static AutoRegisterAttack<Attack_3_Manager> register_attack_3(3);

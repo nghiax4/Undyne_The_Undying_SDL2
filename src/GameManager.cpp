@@ -1,11 +1,5 @@
 #include "GameManager.h"
-#include "Attack_0_Manager.h"
-#include "Attack_1_Manager.h"
-#include "Attack_2_Manager.h"
-#include "Attack_3_Manager.h"
-#include "Attack_4_Manager.h"
-#include "Attack_5_Manager.h"
-#include "Attack_6_Manager.h"
+#include "AttackRegistry.h"
 #include "Attack_Manager_Base_Class.h"
 #include "BattleBox.h"
 #include "Globals.h"
@@ -42,25 +36,7 @@ void GameManager::update() {
 void GameManager::render() {}
 
 void GameManager::play_attack(int attack_idx) {
-    Attack_Manager_Base_Class *attack;
-    if (attack_idx == 0) {
-        attack = new Attack_0_Manager();
-    } else if (attack_idx == 1) {
-        attack = new Attack_1_Manager();
-    } else if (attack_idx == 2) {
-        attack = new Attack_2_Manager();
-    } else if (attack_idx == 3) {
-        attack = new Attack_3_Manager();
-    } else if (attack_idx == 4) {
-        attack = new Attack_4_Manager();
-    } else if (attack_idx == 5) {
-        attack = new Attack_5_Manager();
-    } else if (attack_idx == 6) {
-        attack = new Attack_6_Manager();
-    } else {
-        throw std::runtime_error(std::string("attack_idx=") + std::to_string(attack_idx) + std::string(" not supported yet."));
-    }
-
+    Attack_Manager_Base_Class *attack = AttackRegistry::create_attack(attack_idx);
     objs.push_back(attack);
 }
 

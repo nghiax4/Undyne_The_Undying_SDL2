@@ -3,9 +3,10 @@
 #include "BattleBox.h"
 #include "Player_EnemyTurn_Green.h"
 #include "Shield.h"
+#include "AttackRegistry.h"
 
 Attack_6_Manager::Attack_6_Manager() {
-    obj_name = "Attack_Manager_5";
+    obj_name = "Attack_Manager_6";
     MILLISECONDS_LENGTH = 5500;
 
     BattleBox *battlebox = static_cast<BattleBox *>(find_object_by_name("BattleBox"));
@@ -86,3 +87,5 @@ void Attack_6_Manager::ready_to_be_removed() {
         }
     }
 }
+
+static AutoRegisterAttack<Attack_6_Manager> register_attack_6(6);

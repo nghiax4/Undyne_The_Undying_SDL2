@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "Player_EnemyTurn_Green.h"
 #include "Shield.h"
+#include "AttackRegistry.h"
 
 Attack_0_Manager::Attack_0_Manager() {
     obj_name = "Attack_Manager_0";
@@ -70,3 +71,5 @@ void Attack_0_Manager::ready_to_be_removed() {
         }
     }
 }
+
+static AutoRegisterAttack<Attack_0_Manager> register_attack_0(0);

@@ -23,10 +23,6 @@ struct AttackRegistry {
 
     static Attack_Manager_Base_Class* create_attack(int attack_id) {
         std::map<int, AttackFactoryFunction>& map = get_registry_map();
-        if (map.find(attack_id) == map.end()) {
-            std::string error_msg = "Attack ID " + std::to_string(attack_id) + " not registered.";
-            throw std::runtime_error(error_msg);
-        }
         return map[attack_id]();
     }
 };

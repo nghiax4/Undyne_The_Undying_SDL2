@@ -33,6 +33,7 @@ std::vector<Uint8> cur_keyboard_state;
 int time_since_enemy_turn = 0;
 int current_attack_idx = 0;
 Turn current_turn = Turn::PlayerTurn;
+BattleBox *global_battlebox = nullptr;
 
 std::vector<MenuButton> init_menu_buttons(int button_width) {
     const double BUTTON_WIDTH_TO_HEIGHT = 367.0 / 140;
@@ -93,12 +94,12 @@ int main(int argc, char *args[]) {
         objs.push_back(&menu_button);
     }
 
-    BattleBox *battlebox = new BattleBox(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.67, SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.3);
-    objs.push_back(battlebox);
+    global_battlebox = new BattleBox(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.67, SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.3);
+    objs.push_back(global_battlebox);
     objs.push_back(new Undyne(SCREEN_WIDTH * 0.57, SCREEN_HEIGHT / 4, SCREEN_HEIGHT * 0.48));
     objs.push_back(new SelectedMenuButtonContainer());
     objs.push_back(new GameManager());
-    objs.push_back(new HealthPointText(SCREEN_WIDTH / 2, (battlebox->y_center + battlebox->height / 2 + menu_buttons.at(0).y_center - menu_buttons.at(0).height / 2) / 2));
+    objs.push_back(new HealthPointText(SCREEN_WIDTH / 2, (global_battlebox->y_center + global_battlebox->height / 2 + menu_buttons.at(0).y_center - menu_buttons.at(0).height / 2) / 2));
 
     start_music();
 

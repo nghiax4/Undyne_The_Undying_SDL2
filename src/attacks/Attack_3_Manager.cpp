@@ -9,30 +9,27 @@ Attack_3_Manager::Attack_3_Manager() {
     obj_name = "Attack_Manager_3";
     MILLISECONDS_LENGTH = 8500;
 
-    BattleBox *battlebox = static_cast<BattleBox *>(find_object_by_name("BattleBox"));
-    battlebox->x_center = SCREEN_WIDTH / 2;
-    battlebox->y_center = SCREEN_HEIGHT * 0.72;
-    battlebox->width = SCREEN_WIDTH * 0.12;
-    battlebox->height = SCREEN_HEIGHT * 0.19;
+    global_battlebox->x_center = SCREEN_WIDTH / 2;
+    global_battlebox->y_center = SCREEN_HEIGHT * 0.72;
+    global_battlebox->width = SCREEN_WIDTH * 0.12;
+    global_battlebox->height = SCREEN_HEIGHT * 0.19;
 
-    Player_EnemyTurn *player = new Player_EnemyTurn(battlebox->x_center, battlebox->y_center);
+    Player_EnemyTurn *player = new Player_EnemyTurn(global_battlebox->x_center, global_battlebox->y_center);
 
     objs.push_back(player);
 }
 
 void Attack_3_Manager::update() {
     Attack_Manager_Base_Class::update();
-    
+
     time_elapsed_since_last_arrow += deltaTime;
 
     if (time_elapsed_since_last_arrow <= TIME_PER_ARROW)
         return;
 
-    BattleBox *battlebox = static_cast<BattleBox *>(find_object_by_name("BattleBox"));
-
     std::vector<double> x_multiplier = {0.8 / 4, 1.0 / 2, 3.2 / 4};
-    double x_center_of_arrow = battlebox->x_center - battlebox->width / 2 + battlebox->width * x_multiplier.at(get_random(0, 2));
-    double y_center_of_arrow = battlebox->y_center + battlebox->height;
+    double x_center_of_arrow = global_battlebox->x_center - global_battlebox->width / 2 + global_battlebox->width * x_multiplier.at(get_random(0, 2));
+    double y_center_of_arrow = global_battlebox->y_center + global_battlebox->height;
 
     White_Arrow_Small_Box_Attack *arrow = new White_Arrow_Small_Box_Attack(x_center_of_arrow, y_center_of_arrow, "Attack_3_White_Arrow_" + std::to_string(arrows_created));
 

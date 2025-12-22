@@ -1,12 +1,14 @@
 #pragma once
 #include "GameObject.h"
 #include "Turn.h"
+#include "BattleBox.h"
 #include <vector>
 
 extern std::vector<GameObject *> objs;
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
 extern SDL_Renderer *renderer;
+extern BattleBox *global_battlebox;
 extern int time_since_enemy_turn;
 extern int current_attack_idx;
 extern double deltaTime;

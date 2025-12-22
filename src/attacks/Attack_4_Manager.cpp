@@ -1,23 +1,22 @@
 #include "Attack_4_Manager.h"
+#include "AttackRegistry.h"
 #include "Attack_Manager_Base_Class.h"
 #include "BattleBox.h"
 #include "Globals.h"
 #include "Player_EnemyTurn.h"
 #include "Utils.h"
 #include "White_Arrow_Medium_Box_Attack.h"
-#include "AttackRegistry.h"
 
 Attack_4_Manager::Attack_4_Manager() {
     obj_name = "Attack_Manager_4";
     MILLISECONDS_LENGTH = 8500;
 
-    BattleBox *battlebox = static_cast<BattleBox *>(find_object_by_name("BattleBox"));
-    battlebox->x_center = SCREEN_WIDTH / 2;
-    battlebox->y_center = SCREEN_HEIGHT * 0.63;
-    battlebox->width = SCREEN_WIDTH * 0.28;
-    battlebox->height = battlebox->width;
+    global_battlebox->x_center = SCREEN_WIDTH / 2;
+    global_battlebox->y_center = SCREEN_HEIGHT * 0.63;
+    global_battlebox->width = SCREEN_WIDTH * 0.28;
+    global_battlebox->height = global_battlebox->width;
 
-    Player_EnemyTurn *player = new Player_EnemyTurn(battlebox->x_center, battlebox->y_center);
+    Player_EnemyTurn *player = new Player_EnemyTurn(global_battlebox->x_center, global_battlebox->y_center);
 
     objs.push_back(player);
 }
@@ -26,7 +25,6 @@ void Attack_4_Manager::update() {
     Attack_Manager_Base_Class::update();
     time_elapsed_since_last_arrow += deltaTime;
 
-    BattleBox *battlebox = static_cast<BattleBox *>(find_object_by_name("BattleBox"));
     Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(find_object_by_name("Player_EnemyTurn"));
 
     const double MIN_RADIUS = SCREEN_WIDTH * 0.2;
@@ -38,8 +36,8 @@ void Attack_4_Manager::update() {
     double random_radius = get_random(MIN_RADIUS, MAX_RADIUS);
     double angle = get_random(0, 360);
 
-    double x_center = battlebox->x_center + random_radius * cos(angle * M_PI / 180);
-    double y_center = battlebox->y_center + random_radius * sin(angle * M_PI / 180);
+    double x_center = global_battlebox->x_center + random_radius * cos(angle * M_PI / 180);
+    double y_center = global_battlebox->y_center + random_radius * sin(angle * M_PI / 180);
 
     White_Arrow_Medium_Box_Attack *arrow = new White_Arrow_Medium_Box_Attack(x_center, y_center, player->x_center, player->y_center, "Attack_4_White_Arrow_" + std::to_string(arrows_created));
 

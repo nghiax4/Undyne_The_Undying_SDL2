@@ -3,8 +3,8 @@
 #include "Utils.h"
 
 White_Arrow_Small_Box_Attack::White_Arrow_Small_Box_Attack(double x_center, double y_center, std::string obj_name) : x_center(x_center), y_center(y_center) {
-    BattleBox *battlebox = static_cast<BattleBox *>(find_object_by_name("BattleBox"));
-    width = battlebox->width * 0.25;
+
+    width = global_battlebox->width * 0.25;
     height = width / SPRITE_WIDTH_TO_HEIGHT;
     texture = loadTexture(renderer, "sprites/white_arrow.png");
     this->obj_name = obj_name;

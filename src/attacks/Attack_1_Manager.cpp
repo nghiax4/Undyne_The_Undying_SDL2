@@ -10,11 +10,10 @@ Attack_1_Manager::Attack_1_Manager() {
     obj_name = "Attack_Manager_1";
     MILLISECONDS_LENGTH = 5000;
 
-    BattleBox *battlebox = static_cast<BattleBox *>(find_object_by_name("BattleBox"));
-    battlebox->x_center = SCREEN_WIDTH / 2;
-    battlebox->y_center = SCREEN_HEIGHT / 2;
-    battlebox->width = SCREEN_WIDTH * 0.13;
-    battlebox->height = SCREEN_WIDTH * 0.13;
+    global_battlebox->x_center = SCREEN_WIDTH / 2;
+    global_battlebox->y_center = SCREEN_HEIGHT / 2;
+    global_battlebox->width = SCREEN_WIDTH * 0.13;
+    global_battlebox->height = SCREEN_WIDTH * 0.13;
 
     Player_EnemyTurn_Green *player = new Player_EnemyTurn_Green(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
     Shield *shield = new Shield();
@@ -60,8 +59,6 @@ Attack_1_Manager::Attack_1_Manager() {
 }
 
 void Attack_1_Manager::render() {}
-void Attack_1_Manager::ready_to_be_removed() {
-    _teardown_green_mode("Attack_1");
-}
+void Attack_1_Manager::ready_to_be_removed() { _teardown_green_mode("Attack_1"); }
 
 static AutoRegisterAttack<Attack_1_Manager> register_attack_1(1);

@@ -47,13 +47,11 @@ void Player_EnemyTurn::update() {
     x_center += x_multiplier * v_x * deltaTime;
     y_center += y_multiplier * v_y * deltaTime;
 
-    BattleBox *battlebox = static_cast<BattleBox *>(find_object_by_name("BattleBox"));
+    x_center = std::max(x_center, (double)(global_battlebox->x_center - global_battlebox->width / 2 + width / 2));
+    x_center = std::min(x_center, (double)(global_battlebox->x_center + global_battlebox->width / 2 - width / 2));
 
-    x_center = std::max(x_center, (double)(battlebox->x_center - battlebox->width / 2 + width / 2));
-    x_center = std::min(x_center, (double)(battlebox->x_center + battlebox->width / 2 - width / 2));
-
-    y_center = std::max(y_center, (double)(battlebox->y_center - battlebox->height / 2 + height / 2));
-    y_center = std::min(y_center, (double)(battlebox->y_center + battlebox->height / 2 - height / 2));
+    y_center = std::max(y_center, (double)(global_battlebox->y_center - global_battlebox->height / 2 + height / 2));
+    y_center = std::min(y_center, (double)(global_battlebox->y_center + global_battlebox->height / 2 - height / 2));
 
     const int PLAYER_ARROW_COLLISION_DISTANCE = 20;
 

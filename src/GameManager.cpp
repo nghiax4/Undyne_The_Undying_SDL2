@@ -18,11 +18,10 @@ void GameManager::update() {
         current_turn = Turn::PlayerTurn;
         attack_manager->ready_to_be_removed();
 
-        BattleBox *battlebox = static_cast<BattleBox *>(find_object_by_name("BattleBox"));
-        battlebox->x_center = SCREEN_WIDTH / 2;
-        battlebox->y_center = SCREEN_HEIGHT * 0.67;
-        battlebox->width = SCREEN_WIDTH * 0.9;
-        battlebox->height = SCREEN_HEIGHT * 0.3;
+        global_battlebox->x_center = SCREEN_WIDTH / 2;
+        global_battlebox->y_center = SCREEN_HEIGHT * 0.67;
+        global_battlebox->width = SCREEN_WIDTH * 0.9;
+        global_battlebox->height = SCREEN_HEIGHT * 0.3;
 
         current_attack_idx += 1;
     }

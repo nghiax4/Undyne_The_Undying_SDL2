@@ -1,7 +1,7 @@
 #pragma once
+#include "BattleBox.h"
 #include "GameObject.h"
 #include "Turn.h"
-#include "BattleBox.h"
 #include <vector>
 
 extern std::vector<GameObject *> objs;
@@ -17,4 +17,5 @@ extern Turn current_turn;
 extern std::vector<Uint8> prev_keyboard_state;
 extern std::vector<Uint8> cur_keyboard_state;
 
+// Direction represents where the arrow points
 enum class Direction { UP, DOWN, LEFT, RIGHT };

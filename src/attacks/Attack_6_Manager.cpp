@@ -18,32 +18,59 @@ Attack_6_Manager::Attack_6_Manager() : Attack_Manager_Base_Class(6) {
     objs.push_back(player);
     objs.push_back(shield);
 
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 0.2, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 1));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 0.35, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 2));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 0.5, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 3));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 0.65, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 4));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 0.2, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 1));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 0.35, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 2));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 0.5, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 3));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 0.65, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 4));
 
-    objs.push_back(create_arrow_for_green_attack(-SCREEN_WIDTH * 0.9, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, 5));
+    // objs.push_back(create_arrow_for_green_attack(-SCREEN_WIDTH * 0.9, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, 5));
 
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 1.15, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 6));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 1.3, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 7));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 1.45, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 8));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 1.6, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 9));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 1.15, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 6));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 1.3, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 7));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 1.45, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 8));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 1.6, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 9));
 
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH * 2.75, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, 10));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH * 2.75, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, 10));
 
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 2.1, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 11));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 2.25, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 12));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 2.4, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 13));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 2.55, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 14));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 2.1, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 11));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 2.25, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 12));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 2.4, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 13));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 2.55, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 14));
 
-    objs.push_back(create_arrow_for_green_attack(-SCREEN_WIDTH * 2.72, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, 15));
+    // objs.push_back(create_arrow_for_green_attack(-SCREEN_WIDTH * 2.72, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, 15));
 
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 3.05, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 16));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 3.2, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 17));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 3.35, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 18));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 3.5, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 19));
-    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH * 4.55, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, 20));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 3.05, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 16));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 3.2, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 17));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 3.35, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 18));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 3.5, 0, SCREEN_HEIGHT * 0.001, Direction::DOWN, 19));
+    // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH * 4.55, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, 20));
+
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 700, 1));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 850, 2));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 1000, 3));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 1150, 4));
+
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::RIGHT, SCREEN_WIDTH * 0.001, 1400, 5));
+
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 1650, 6));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 1800, 7));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 1950, 8));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 2100, 9));
+
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::LEFT, SCREEN_WIDTH * 0.001, 2250, 10));
+
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 2600, 11));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 2750, 12));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 2900, 13));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 3050, 14));
+
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::RIGHT, SCREEN_WIDTH * 0.001, 3220, 15));
+
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 3550, 16));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 3700, 17));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 3850, 18));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.001, 4000, 19));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::LEFT, SCREEN_WIDTH * 0.001, 4050, 20));
 }
 
 void Attack_6_Manager::render() {}

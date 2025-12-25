@@ -7,8 +7,7 @@
 #include "Utils.h"
 #include "White_Arrow_Medium_Box_Attack.h"
 
-Attack_4_Manager::Attack_4_Manager() {
-    obj_name = "Attack_Manager_4";
+Attack_4_Manager::Attack_4_Manager() : Attack_Manager_Base_Class(4) {
     MILLISECONDS_LENGTH = 8500;
 
     global_battlebox->x_center = SCREEN_WIDTH / 2;
@@ -39,7 +38,7 @@ void Attack_4_Manager::update() {
     double x_center = global_battlebox->x_center + random_radius * cos(angle * M_PI / 180);
     double y_center = global_battlebox->y_center + random_radius * sin(angle * M_PI / 180);
 
-    White_Arrow_Medium_Box_Attack *arrow = new White_Arrow_Medium_Box_Attack(x_center, y_center, player->x_center, player->y_center, "Attack_4_White_Arrow_" + std::to_string(arrows_created));
+    White_Arrow_Medium_Box_Attack *arrow = new White_Arrow_Medium_Box_Attack(x_center, y_center, player->x_center, player->y_center, attack_prefix + "_White_Arrow_" + std::to_string(arrows_created));
 
     objs.push_back(arrow);
     arrows_created++;

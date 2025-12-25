@@ -6,8 +6,7 @@
 #include "Shield.h"
 #include <AttackRegistry.h>
 
-Attack_1_Manager::Attack_1_Manager() {
-    obj_name = "Attack_Manager_1";
+Attack_1_Manager::Attack_1_Manager() : Attack_Manager_Base_Class(1) {
     MILLISECONDS_LENGTH = 5000;
 
     global_battlebox->x_center = SCREEN_WIDTH / 2;
@@ -20,45 +19,30 @@ Attack_1_Manager::Attack_1_Manager() {
     objs.push_back(player);
     objs.push_back(shield);
 
-    Arrow_For_Green_Attack *arrow_1 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 1, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, "Attack_1_Arrow_For_Green_Attack_1");
-    Arrow_For_Green_Attack *arrow_2 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 1.3, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, "Attack_1_Arrow_For_Green_Attack_2");
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 1, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, 1));
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 1.3, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, 2));
 
-    Arrow_For_Green_Attack *arrow_3 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 1.6, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, "Attack_1_Arrow_For_Green_Attack_3");
-    Arrow_For_Green_Attack *arrow_4 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 1.75, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, "Attack_1_Arrow_For_Green_Attack_4");
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 1.6, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, 3));
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 1.75, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, 4));
 
-    Arrow_For_Green_Attack *arrow_5 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 2.05, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, "Attack_1_Arrow_For_Green_Attack_5");
-    Arrow_For_Green_Attack *arrow_6 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 2.35, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, "Attack_1_Arrow_For_Green_Attack_6");
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 2.05, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, 5));
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 2.35, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, 6));
 
-    Arrow_For_Green_Attack *arrow_7 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 2.75, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, "Attack_1_Arrow_For_Green_Attack_7");
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 2.75, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, 7));
 
-    Arrow_For_Green_Attack *arrow_8 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 3, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, "Attack_1_Arrow_For_Green_Attack_8");
-    Arrow_For_Green_Attack *arrow_9 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 3.15, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, "Attack_1_Arrow_For_Green_Attack_9");
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 3, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, 8));
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 3.15, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, 9));
 
-    Arrow_For_Green_Attack *arrow_10 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 3.45, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, "Attack_1_Arrow_For_Green_Attack_10");
-    Arrow_For_Green_Attack *arrow_11 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 3.7, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, "Attack_1_Arrow_For_Green_Attack_11");
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 3.45, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, 10));
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 3.7, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, 11));
 
-    Arrow_For_Green_Attack *arrow_12 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 4, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, "Attack_1_Arrow_For_Green_Attack_12");
-    Arrow_For_Green_Attack *arrow_13 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 4.3, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, "Attack_1_Arrow_For_Green_Attack_13");
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 4, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, 12));
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 + SCREEN_WIDTH * 4.3, SCREEN_HEIGHT / 2, -SCREEN_WIDTH * 0.001, 0, Direction::LEFT, 13));
 
-    Arrow_For_Green_Attack *arrow_14 = new Arrow_For_Green_Attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 4.6, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, "Attack_1_Arrow_For_Green_Attack_14");
-
-    objs.push_back(arrow_1);
-    objs.push_back(arrow_2);
-    objs.push_back(arrow_3);
-    objs.push_back(arrow_4);
-    objs.push_back(arrow_5);
-    objs.push_back(arrow_6);
-    objs.push_back(arrow_7);
-    objs.push_back(arrow_8);
-    objs.push_back(arrow_9);
-    objs.push_back(arrow_10);
-    objs.push_back(arrow_11);
-    objs.push_back(arrow_12);
-    objs.push_back(arrow_13);
-    objs.push_back(arrow_14);
+    objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2 - SCREEN_WIDTH * 4.6, SCREEN_HEIGHT / 2, SCREEN_WIDTH * 0.001, 0, Direction::RIGHT, 14));
 }
 
 void Attack_1_Manager::render() {}
-void Attack_1_Manager::ready_to_be_removed() { _teardown_green_mode("Attack_1"); }
+void Attack_1_Manager::ready_to_be_removed() { _teardown_green_mode(); }
 
 static AutoRegisterAttack<Attack_1_Manager> register_attack_1(1);

@@ -128,8 +128,9 @@ int main(int argc, char *args[]) {
         // _print_objs_names();
         _verify_objs_correct();
 
-        for (auto &obj : objs) {
-            obj->update();
+        // Use index instead of iterator to handle vector resizing during update
+        for (size_t i = 0; i < objs.size(); i++) {
+            objs[i]->update();
         }
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);

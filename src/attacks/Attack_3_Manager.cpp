@@ -5,8 +5,7 @@
 #include "Utils.h"
 #include "White_Arrow_Small_Box_Attack.h"
 
-Attack_3_Manager::Attack_3_Manager() {
-    obj_name = "Attack_Manager_3";
+Attack_3_Manager::Attack_3_Manager() : Attack_Manager_Base_Class(3) {
     MILLISECONDS_LENGTH = 8500;
 
     global_battlebox->x_center = SCREEN_WIDTH / 2;
@@ -31,7 +30,7 @@ void Attack_3_Manager::update() {
     double x_center_of_arrow = global_battlebox->x_center - global_battlebox->width / 2 + global_battlebox->width * x_multiplier.at(get_random(0, 2));
     double y_center_of_arrow = global_battlebox->y_center + global_battlebox->height;
 
-    White_Arrow_Small_Box_Attack *arrow = new White_Arrow_Small_Box_Attack(x_center_of_arrow, y_center_of_arrow, "Attack_3_White_Arrow_" + std::to_string(arrows_created));
+    White_Arrow_Small_Box_Attack *arrow = new White_Arrow_Small_Box_Attack(x_center_of_arrow, y_center_of_arrow, attack_prefix + "_White_Arrow_" + std::to_string(arrows_created));
 
     objs.push_back(arrow);
 
@@ -46,7 +45,7 @@ void Attack_3_Manager::ready_to_be_removed() {
     this->to_be_removed = true;
 
     for (auto &obj : objs) {
-        if (obj->obj_name.find("Attack_3") == 0) {
+        if (obj->obj_name.find(attack_prefix) == 0) {
             obj->to_be_removed = true;
         }
     }

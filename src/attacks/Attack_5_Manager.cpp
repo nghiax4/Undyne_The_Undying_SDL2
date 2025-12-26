@@ -29,16 +29,16 @@ Attack_5_Manager::Attack_5_Manager() : Attack_Manager_Base_Class(5) {
     // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, -SCREEN_HEIGHT * 1.25, 0, SCREEN_HEIGHT * 0.0004, Direction::DOWN, 7));
     // objs.push_back(create_arrow_for_green_attack(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 2.5, 0, -SCREEN_HEIGHT * 0.0004, Direction::UP, 8));
 
-    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::RIGHT, SCREEN_WIDTH * 0.0007, 1000, 1));
-    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.0004, 1750, 2));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::RIGHT, SCREEN_WIDTH * 0.0007, 1000, 1, ArrowType::Blue));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.0004, 1750, 2, ArrowType::Blue));
 
-    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::LEFT, SCREEN_WIDTH * 0.0007, 2143, 3));
-    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::UP, SCREEN_HEIGHT * 0.0004, 2500, 4));
-    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::LEFT, SCREEN_WIDTH * 0.0007, 2857, 5));
-    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::RIGHT, SCREEN_WIDTH * 0.0004, 3750, 6));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::LEFT, SCREEN_WIDTH * 0.0007, 2143, 3, ArrowType::Blue));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::UP, SCREEN_HEIGHT * 0.0004, 2500, 4, ArrowType::Blue));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::LEFT, SCREEN_WIDTH * 0.0007, 2857, 5, ArrowType::Blue));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::RIGHT, SCREEN_WIDTH * 0.0004, 3750, 6, ArrowType::Blue));
 
-    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.0004, 4375, 7));
-    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::UP, SCREEN_HEIGHT * 0.0004, 5000, 8));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::DOWN, SCREEN_HEIGHT * 0.0004, 4375, 7, ArrowType::Blue));
+    objs.push_back(create_arrow_for_green_attack_with_impact_time(Direction::UP, SCREEN_HEIGHT * 0.0004, 5000, 8, ArrowType::Blue));
 }
 
 void Attack_5_Manager::render() {}

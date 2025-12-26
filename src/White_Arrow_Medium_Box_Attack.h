@@ -3,7 +3,7 @@
 #include "Globals.h"
 
 struct White_Arrow_Medium_Box_Attack : public GameObject {
-    const double SPRITE_WIDTH_TO_HEIGHT = 60.0 / 196;
+    constexpr static double SPRITE_WIDTH_TO_HEIGHT = 60.0 / 196;
     int x_center, y_center, x_target, y_target, width, height;
     double dx, dy;
 

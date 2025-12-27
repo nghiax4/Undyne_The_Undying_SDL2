@@ -31,7 +31,7 @@ std::vector<GameObject *> objs;
 std::vector<Uint8> prev_keyboard_state;
 std::vector<Uint8> cur_keyboard_state;
 int time_since_enemy_turn = 0;
-int current_attack_idx = 10;
+int current_attack_idx = 14;
 Turn current_turn = Turn::PlayerTurn;
 BattleBox *global_battlebox = nullptr;
 

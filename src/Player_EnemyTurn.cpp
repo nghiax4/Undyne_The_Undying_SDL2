@@ -1,6 +1,7 @@
 #include "Player_EnemyTurn.h"
 #include "BattleBox.h"
 #include "HealthPointText.h"
+#include "Ring_Spear.h"
 #include "Spinning_Arrow.h"
 #include "Utils.h"
 #include "White_Arrow_Medium_Box_Attack.h"

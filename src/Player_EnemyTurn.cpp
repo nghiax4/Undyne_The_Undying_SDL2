@@ -7,6 +7,36 @@
 #include "White_Arrow_Medium_Box_Attack.h"
 #include "White_Arrow_Small_Box_Attack.h"
 
+template <typename AttackType>
+void apply_collision_logic_for_type(Player_EnemyTurn *player) {
+    const double PLAYER_ARROW_COLLISION_DISTANCE = 20.0;
+    const int DAMAGE_AMOUNT = 13;
+
+    HealthPointText *hp_text_obj = static_cast<HealthPointText *>(find_object_by_name("HealthPointText"));
+
+    for (auto &game_obj : objs) {
+        AttackType *specific_attack = dynamic_cast<AttackType *>(game_obj);
+
+        if (specific_attack == nullptr)
+            continue;
+
+        double distance_to_attack = distance(player->x_center, player->y_center, specific_attack->x_center, specific_attack->y_center);
+        bool is_colliding = distance_to_attack <= PLAYER_ARROW_COLLISION_DISTANCE;
+
+        if (is_colliding) {
+            if (!player->enable_invisbility_frame) {
+                player->enable_invisbility_frame = true;
+                player->render_texture_transparent = true;
+                player->time_elapsed_since_invisibility_frame = 0;
+
+                hp_text_obj->hp -= DAMAGE_AMOUNT;
+                play_sound_effect("audio/damage_taken.ogg");
+            }
+            game_obj->to_be_removed = true;
+        }
+    }
+}
+
 Player_EnemyTurn::Player_EnemyTurn(int x_center, int y_center) : width(SCREEN_WIDTH * 0.03), height(SCREEN_WIDTH * 0.03) {
     texture = loadTexture(renderer, "sprites/soul.png");
     obj_name = "Player_EnemyTurn";
@@ -55,91 +85,10 @@ void Player_EnemyTurn::update() {
     y_center = std::max(y_center, (double)(global_battlebox->y_center - global_battlebox->height / 2 + height / 2));
     y_center = std::min(y_center, (double)(global_battlebox->y_center + global_battlebox->height / 2 - height / 2));
 
-    const int PLAYER_ARROW_COLLISION_DISTANCE = 20;
-
-    // First check for White_Arrow_Small_Box_Attack
-    for (auto &obj : objs) {
-        White_Arrow_Small_Box_Attack *arrow = dynamic_cast<White_Arrow_Small_Box_Attack *>(obj);
-        if (arrow == nullptr)
-            continue;
-
-        HealthPointText *healthpoint = static_cast<HealthPointText *>(find_object_by_name("HealthPointText"));
-
-        if (distance(x_center, y_center, arrow->x_center, arrow->y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
-            if (!enable_invisbility_frame) {
-                enable_invisbility_frame = true;
-                render_texture_transparent = true;
-                time_elapsed_since_invisibility_frame = 0;
-                healthpoint->hp -= 13;
-                play_sound_effect("audio/damage_taken.ogg");
-            }
-            obj->to_be_removed = true;
-            break;
-        }
-    }
-
-    // Second check for White_Arrow_Medium_Box_Attack
-    for (auto &obj : objs) {
-        White_Arrow_Medium_Box_Attack *arrow = dynamic_cast<White_Arrow_Medium_Box_Attack *>(obj);
-        if (arrow == nullptr)
-            continue;
-
-        HealthPointText *healthpoint = static_cast<HealthPointText *>(find_object_by_name("HealthPointText"));
-
-        if (distance(x_center, y_center, arrow->x_center, arrow->y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
-            if (!enable_invisbility_frame) {
-                enable_invisbility_frame = true;
-                render_texture_transparent = true;
-                time_elapsed_since_invisibility_frame = 0;
-                healthpoint->hp -= 13;
-                play_sound_effect("audio/damage_taken.ogg");
-            }
-            obj->to_be_removed = true;
-            break;
-        }
-    }
-
-    // Third check for Spinning_Arrow
-    for (auto &obj : objs) {
-        Spinning_Arrow *arrow = dynamic_cast<Spinning_Arrow *>(obj);
-        if (arrow == nullptr)
-            continue;
-
-        HealthPointText *healthpoint = static_cast<HealthPointText *>(find_object_by_name("HealthPointText"));
-
-        if (distance(x_center, y_center, arrow->x_center, arrow->y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
-            if (!enable_invisbility_frame) {
-                enable_invisbility_frame = true;
-                render_texture_transparent = true;
-                time_elapsed_since_invisibility_frame = 0;
-                healthpoint->hp -= 13;
-                play_sound_effect("audio/damage_taken.ogg");
-            }
-            obj->to_be_removed = true;
-            break;
-        }
-    }
-
-    // Fourth check for Ring_Spear
-    for (auto &obj : objs) {
-        Ring_Spear *spear = dynamic_cast<Ring_Spear *>(obj);
-        if (spear == nullptr)
-            continue;
-
-        HealthPointText *healthpoint = static_cast<HealthPointText *>(find_object_by_name("HealthPointText"));
-
-        if (distance(x_center, y_center, spear->x_center, spear->y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
-            if (!enable_invisbility_frame) {
-                enable_invisbility_frame = true;
-                render_texture_transparent = true;
-                time_elapsed_since_invisibility_frame = 0;
-                healthpoint->hp -= 13;
-                play_sound_effect("audio/damage_taken.ogg");
-            }
-            obj->to_be_removed = true;
-            break;
-        }
-    }
+    apply_collision_logic_for_type<White_Arrow_Small_Box_Attack>(this);
+    apply_collision_logic_for_type<White_Arrow_Medium_Box_Attack>(this);
+    apply_collision_logic_for_type<Spinning_Arrow>(this);
+    apply_collision_logic_for_type<Ring_Spear>(this);
 }
 
 void Player_EnemyTurn::render() {

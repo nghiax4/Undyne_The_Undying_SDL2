@@ -1,7 +1,0 @@
-#pragma once
-#include "Green_Mode_Manager.h"
-
-struct Attack_11_Manager : public Green_Mode_Manager {
-    Attack_11_Manager();
-    void render() override;
-};

@@ -1,36 +1,27 @@
 #include "Attack_4_Manager.h"
 #include "AttackRegistry.h"
-#include "Attack_Manager_Base_Class.h"
 #include "BattleBox.h"
-#include "Globals.h"
 #include "Player_EnemyTurn.h"
 #include "Utils.h"
 #include "White_Arrow_Medium_Box_Attack.h"
 
-Attack_4_Manager::Attack_4_Manager() : Attack_Manager_Base_Class(4) {
-    MILLISECONDS_LENGTH = 8500;
-
-    global_battlebox->x_center = SCREEN_WIDTH / 2;
-    global_battlebox->y_center = SCREEN_HEIGHT * 0.63;
-    global_battlebox->width = SCREEN_WIDTH * 0.28;
-    global_battlebox->height = global_battlebox->width;
-
-    Player_EnemyTurn *player = new Player_EnemyTurn(global_battlebox->x_center, global_battlebox->y_center);
-
-    objs.push_back(player);
-}
+// Attack 4 uses a square box based on 28% of Width.
+// To satisfy Red_Mode_Manager (which wants height ratio), we calculate:
+// target_height = SCREEN_WIDTH * 0.28
+// ratio = target_height / SCREEN_HEIGHT
+Attack_4_Manager::Attack_4_Manager() : Red_Mode_Manager(4, 8500, 0.63, 0.28, (SCREEN_WIDTH * 0.28) / SCREEN_HEIGHT) {}
 
 void Attack_4_Manager::update() {
-    Attack_Manager_Base_Class::update();
+    Red_Mode_Manager::update();
     time_elapsed_since_last_arrow += deltaTime;
+
+    if (time_elapsed_since_last_arrow <= 400)
+        return;
 
     Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(find_object_by_name("Player_EnemyTurn"));
 
     const double MIN_RADIUS = SCREEN_WIDTH * 0.2;
     const double MAX_RADIUS = SCREEN_WIDTH * 0.3;
-
-    if (time_elapsed_since_last_arrow <= 400)
-        return;
 
     double random_radius = get_random(MIN_RADIUS, MAX_RADIUS);
     double angle = get_random(0, 360);
@@ -45,17 +36,7 @@ void Attack_4_Manager::update() {
 
     time_elapsed_since_last_arrow = 0;
 }
-void Attack_4_Manager::render() {}
-void Attack_4_Manager::ready_to_be_removed() {
-    Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(find_object_by_name("Player_EnemyTurn"));
-    player->to_be_removed = true;
-    this->to_be_removed = true;
 
-    for (auto &obj : objs) {
-        if (dynamic_cast<White_Arrow_Medium_Box_Attack *>(obj) != nullptr) {
-            obj->to_be_removed = true;
-        }
-    }
-}
+void Attack_4_Manager::render() {}
 
 static AutoRegisterAttack<Attack_4_Manager> register_attack_4(4);

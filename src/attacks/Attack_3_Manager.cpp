@@ -1,25 +1,15 @@
 #include "Attack_3_Manager.h"
 #include "AttackRegistry.h"
 #include "BattleBox.h"
-#include "Player_EnemyTurn.h"
+#include "Globals.h" // For SCREEN_WIDTH/HEIGHT access if needed
 #include "Utils.h"
 #include "White_Arrow_Small_Box_Attack.h"
+#include <vector>
 
-Attack_3_Manager::Attack_3_Manager() : Attack_Manager_Base_Class(3) {
-    MILLISECONDS_LENGTH = 8500;
-
-    global_battlebox->x_center = SCREEN_WIDTH / 2;
-    global_battlebox->y_center = SCREEN_HEIGHT * 0.72;
-    global_battlebox->width = SCREEN_WIDTH * 0.12;
-    global_battlebox->height = SCREEN_HEIGHT * 0.19;
-
-    Player_EnemyTurn *player = new Player_EnemyTurn(global_battlebox->x_center, global_battlebox->y_center);
-
-    objs.push_back(player);
-}
+Attack_3_Manager::Attack_3_Manager() : Red_Mode_Manager(3, 8500, 0.72, 0.12, 0.19) {}
 
 void Attack_3_Manager::update() {
-    Attack_Manager_Base_Class::update();
+    Red_Mode_Manager::update();
 
     time_elapsed_since_last_arrow += deltaTime;
 
@@ -39,16 +29,5 @@ void Attack_3_Manager::update() {
 }
 
 void Attack_3_Manager::render() {}
-void Attack_3_Manager::ready_to_be_removed() {
-    Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(find_object_by_name("Player_EnemyTurn"));
-    player->to_be_removed = true;
-    this->to_be_removed = true;
-
-    for (auto &obj : objs) {
-        if (obj->obj_name.find(attack_prefix) == 0) {
-            obj->to_be_removed = true;
-        }
-    }
-}
 
 static AutoRegisterAttack<Attack_3_Manager> register_attack_3(3);

@@ -118,6 +118,27 @@ void Player_EnemyTurn::update() {
             break;
         }
     }
+
+    // Fourth check for Ring_Spear
+    for (auto &obj : objs) {
+        Ring_Spear *spear = dynamic_cast<Ring_Spear *>(obj);
+        if (spear == nullptr)
+            continue;
+
+        HealthPointText *healthpoint = static_cast<HealthPointText *>(find_object_by_name("HealthPointText"));
+
+        if (distance(x_center, y_center, spear->x_center, spear->y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
+            if (!enable_invisbility_frame) {
+                enable_invisbility_frame = true;
+                render_texture_transparent = true;
+                time_elapsed_since_invisibility_frame = 0;
+                healthpoint->hp -= 13;
+                play_sound_effect("audio/damage_taken.ogg");
+            }
+            obj->to_be_removed = true;
+            break;
+        }
+    }
 }
 
 void Player_EnemyTurn::render() {

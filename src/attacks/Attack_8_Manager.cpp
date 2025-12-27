@@ -28,7 +28,6 @@ void Attack_8_Manager::update() {
         double center_x = player->x_center;
         double center_y = player->y_center;
 
-        // Random offset for the rotation start angle so patterns aren't identical
         double angle_offset = get_random(0, 360);
 
         int arrows_per_ring = 7;
@@ -38,6 +37,18 @@ void Attack_8_Manager::update() {
             Spinning_Arrow *arrow = new Spinning_Arrow(center_x, center_y, angle, SPAWN_RADIUS, attack_prefix + std::string("_Spinning_Arrow_") + std::to_string(number_of_arrows_created));
             objs.push_back(arrow);
             number_of_arrows_created++;
+        }
+    }
+}
+
+void Attack_8_Manager::ready_to_be_removed() {
+    Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(find_object_by_name("Player_EnemyTurn"));
+    player->to_be_removed = true;
+    this->to_be_removed = true;
+
+    for (auto &obj : objs) {
+        if (dynamic_cast<Spinning_Arrow *>(obj) != nullptr) {
+            obj->to_be_removed = true;
         }
     }
 }

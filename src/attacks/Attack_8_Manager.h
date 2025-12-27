@@ -4,7 +4,7 @@
 
 struct Attack_8_Manager : public Attack_Manager_Base_Class {
     const int SPAWN_INTERVAL_MS = 933;
-    int time_until_next_spawn = 0;
+    int time_until_next_spawn = SPAWN_INTERVAL_MS;
 
     // Radius of the spawn circle
     const double SPAWN_RADIUS = SCREEN_WIDTH * 0.35;
@@ -12,5 +12,7 @@ struct Attack_8_Manager : public Attack_Manager_Base_Class {
     int number_of_arrows_created = 0;
 
     Attack_8_Manager();
+
     void update() override;
+    void ready_to_be_removed() override;
 };

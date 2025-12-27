@@ -1,6 +1,7 @@
 #include "Player_EnemyTurn.h"
 #include "BattleBox.h"
 #include "HealthPointText.h"
+#include "Spinning_Arrow.h"
 #include "Utils.h"
 #include "White_Arrow_Medium_Box_Attack.h"
 #include "White_Arrow_Small_Box_Attack.h"
@@ -79,6 +80,27 @@ void Player_EnemyTurn::update() {
     // Second check for White_Arrow_Medium_Box_Attack
     for (auto &obj : objs) {
         White_Arrow_Medium_Box_Attack *arrow = dynamic_cast<White_Arrow_Medium_Box_Attack *>(obj);
+        if (arrow == nullptr)
+            continue;
+
+        HealthPointText *healthpoint = static_cast<HealthPointText *>(find_object_by_name("HealthPointText"));
+
+        if (distance(x_center, y_center, arrow->x_center, arrow->y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
+            if (!enable_invisbility_frame) {
+                enable_invisbility_frame = true;
+                render_texture_transparent = true;
+                time_elapsed_since_invisibility_frame = 0;
+                healthpoint->hp -= 13;
+                play_sound_effect("audio/damage_taken.ogg");
+            }
+            obj->to_be_removed = true;
+            break;
+        }
+    }
+
+    // Third check for Spinning_Arrow
+    for (auto &obj : objs) {
+        Spinning_Arrow *arrow = dynamic_cast<Spinning_Arrow *>(obj);
         if (arrow == nullptr)
             continue;
 

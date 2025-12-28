@@ -80,7 +80,7 @@ void Arrow_For_Green_Attack::update() {
 }
 
 void Arrow_For_Green_Attack::render() {
-    SDL_Rect rect{x_center - width / 2, y_center - height / 2, width, height};
+    SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), width, height};
 
     int angle;
     if (direction == Direction::DOWN) {

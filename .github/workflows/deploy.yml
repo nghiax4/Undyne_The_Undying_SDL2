@@ -1,0 +1,43 @@
+# Name of this workflow
+name: Build and host my game
+
+# When to trigger this runner
+on:
+  push:
+    branches: ["main"] # Only run when push code to main branch
+
+# Grants the runner permission to modify some repo settings
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+
+jobs:
+  build_and_deploy_my_game:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.final_step.outputs.page_url }}
+
+    steps:
+      - name: Download my code
+        uses: actions/checkout@v4
+
+      - name: Install Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: latest
+
+      - name: Compile the game
+        run: make web
+
+      - name: Prepare website files
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "build/web"
+
+      - name: Publish to Github Pages
+        id: final_step
+        uses: actions/deploy-pages@v4

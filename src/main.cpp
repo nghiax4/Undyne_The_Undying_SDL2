@@ -31,7 +31,7 @@ std::vector<GameObject *> objs;
 std::vector<Uint8> prev_keyboard_state;
 std::vector<Uint8> cur_keyboard_state;
 int time_since_enemy_turn = 0;
-int current_attack_idx = 14;
+int current_attack_idx = 0;
 Turn current_turn = Turn::PlayerTurn;
 BattleBox *global_battlebox = nullptr;
 
@@ -136,7 +136,9 @@ int main(int argc, char *args[]) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
         SDL_RenderClear(renderer);
 
-        sort(objs.begin(), objs.end(), [](const GameObject *obj1, const GameObject *obj2) { return obj1->z_index < obj2->z_index; });
+        sort(objs.begin(), objs.end(), [](const GameObject *obj1, const GameObject *obj2) {
+            return obj1->z_index < obj2->z_index;
+        });
 
         for (auto &obj : objs) {
             if (obj->show) {
@@ -151,6 +153,10 @@ int main(int argc, char *args[]) {
         if (FRAME_DELAY > frameTime) {
             SDL_Delay(FRAME_DELAY - frameTime);
         }
+
+        // Gemini's solution to making the code work in both desktop and emscripten
+        // Gemini explained: yields the CPU to the operating system’s scheduler
+        SDL_Delay(0);
 
         prev_keyboard_state = cur_keyboard_state;
     }

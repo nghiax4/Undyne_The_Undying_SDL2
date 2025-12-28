@@ -7,15 +7,9 @@
 #include "White_Arrow_Medium_Box_Attack.h"
 #include "White_Arrow_Small_Box_Attack.h"
 
-// --- 1. Green Mode ---
-Generic_Green_Mode_Manager::Generic_Green_Mode_Manager(int attack_id, int duration_ms, SetupFunc setup_logic) : Green_Mode_Manager(attack_id, duration_ms), setup_logic(setup_logic) {
-    this->setup_logic(this);
-}
+Three_Lane_Rising_Arrow_Attack::Three_Lane_Rising_Arrow_Attack(int attack_id, int duration_ms, int time_between_arrows_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.72, 0.12, 0.19), time_between_arrows_ms(time_between_arrows_ms) {}
 
-// --- 2. Falling Sky Arrows ---
-Falling_Sky_Arrows_Manager::Falling_Sky_Arrows_Manager(int attack_id, int duration_ms, int time_between_arrows_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.72, 0.12, 0.19), time_between_arrows_ms(time_between_arrows_ms) {}
-
-void Falling_Sky_Arrows_Manager::update() {
+void Three_Lane_Rising_Arrow_Attack::update() {
     Red_Mode_Manager::update();
     time_elapsed_since_last_arrow += deltaTime;
 
@@ -31,10 +25,9 @@ void Falling_Sky_Arrows_Manager::update() {
     }
 }
 
-// --- 3. Targeted Arrows ---
-Player_Targeted_Arrows_Manager::Player_Targeted_Arrows_Manager(int attack_id, int duration_ms, int time_between_arrows_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.63, 0.28, (double)(SCREEN_WIDTH * 0.28) / SCREEN_HEIGHT), time_between_arrows_ms(time_between_arrows_ms) {}
+Random_Spawn_Player_Aimed_Arrow_Attack::Random_Spawn_Player_Aimed_Arrow_Attack(int attack_id, int duration_ms, int time_between_arrows_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.63, 0.28, (double)(SCREEN_WIDTH * 0.28) / SCREEN_HEIGHT), time_between_arrows_ms(time_between_arrows_ms) {}
 
-void Player_Targeted_Arrows_Manager::update() {
+void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
     Red_Mode_Manager::update();
     time_elapsed_since_last_arrow += deltaTime;
 
@@ -53,10 +46,9 @@ void Player_Targeted_Arrows_Manager::update() {
     }
 }
 
-// --- 4. Spinning Arrow Circles ---
-Generic_Spinning_Arrow_Circle_Manager::Generic_Spinning_Arrow_Circle_Manager(int attack_id, int duration_ms, int interval_ms) : Circle_Spawn_Manager(attack_id, duration_ms, interval_ms, SCREEN_WIDTH * 0.35) {}
+Inward_Spiraling_Arrow_Ring_Attack::Inward_Spiraling_Arrow_Ring_Attack(int attack_id, int duration_ms, int interval_ms) : Circle_Spawn_Manager(attack_id, duration_ms, interval_ms, SCREEN_WIDTH * 0.35) {}
 
-void Generic_Spinning_Arrow_Circle_Manager::spawn_on_ring(double center_x, double center_y) {
+void Inward_Spiraling_Arrow_Ring_Attack::spawn_on_ring(double center_x, double center_y) {
     double angle_offset = get_random(0, 360);
     const int ARROWS_PER_RING = 7;
 
@@ -67,16 +59,15 @@ void Generic_Spinning_Arrow_Circle_Manager::spawn_on_ring(double center_x, doubl
     }
 }
 
-// --- 5. Ring Spears ---
-Generic_Ring_Spear_Manager::Generic_Ring_Spear_Manager(int attack_id, int duration_ms, double radius, IntervalCalculator get_interval_func) : Circle_Spawn_Manager(attack_id, duration_ms, get_interval_func(0), radius), get_interval_func(get_interval_func) {}
+Contracting_Rotating_Spear_Ring_Attack::Contracting_Rotating_Spear_Ring_Attack(int attack_id, int duration_ms, double radius, IntervalCalculator get_interval_func) : Circle_Spawn_Manager(attack_id, duration_ms, get_interval_func(0), radius), get_interval_func(get_interval_func) {}
 
-void Generic_Ring_Spear_Manager::update() {
+void Contracting_Rotating_Spear_Ring_Attack::update() {
     // Update interval dynamically based on time
     current_interval = get_interval_func(time_elapsed_since_creation);
     Circle_Spawn_Manager::update();
 }
 
-void Generic_Ring_Spear_Manager::spawn_on_ring(double center_x, double center_y) {
+void Contracting_Rotating_Spear_Ring_Attack::spawn_on_ring(double center_x, double center_y) {
     double angle_offset = get_random(0, 360);
     const int SPEARS_PER_RING = 6;
 

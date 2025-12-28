@@ -5,7 +5,7 @@
 #include "Player_EnemyTurn_Green.h"
 #include "Shield.h"
 
-Green_Mode_Manager::Green_Mode_Manager(int attack_id, int duration_ms) : Attack_Manager_Base_Class(attack_id) {
+Green_Mode_Manager::Green_Mode_Manager(int attack_id, int duration_ms, std::vector<GreenModeArrowData> arrows_data) : Attack_Manager_Base_Class(attack_id) {
     MILLISECONDS_LENGTH = duration_ms;
 
     global_battlebox->x_center = SCREEN_WIDTH / 2;
@@ -13,16 +13,15 @@ Green_Mode_Manager::Green_Mode_Manager(int attack_id, int duration_ms) : Attack_
     global_battlebox->width = SCREEN_WIDTH * 0.13;
     global_battlebox->height = SCREEN_WIDTH * 0.13;
 
-    Player_EnemyTurn_Green *player = new Player_EnemyTurn_Green(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-    Shield *shield = new Shield();
+    objs.push_back(new Player_EnemyTurn_Green(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2));
+    objs.push_back(new Shield());
 
-    objs.push_back(player);
-    objs.push_back(shield);
+    for (const auto &data : arrows_data) {
+        arrow_counter_for_unique_names++;
+        objs.push_back(create_arrow_for_green_attack_with_impact_time(data.direction, data.speed, data.time_to_impact_ms, arrow_counter_for_unique_names, data.type));
+    }
 }
 
-void Green_Mode_Manager::ready_to_be_removed() { _teardown_green_mode(); }
-
-void Green_Mode_Manager::schedule_arrow(Direction direction, int time_to_impact_ms, double speed_val, ArrowType arrow_type) {
-    arrow_counter_for_unique_names++;
-    objs.push_back(create_arrow_for_green_attack_with_impact_time(direction, speed_val, time_to_impact_ms, arrow_counter_for_unique_names, arrow_type));
+void Green_Mode_Manager::ready_to_be_removed() {
+    _teardown_green_mode();
 }

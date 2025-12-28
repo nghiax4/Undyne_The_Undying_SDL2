@@ -7,19 +7,21 @@
 
 struct Three_Lane_Rising_Arrow_Attack : public Red_Mode_Manager {
     int time_between_arrows_ms;
+    int arrow_prep_time_ms;
     int time_elapsed_since_last_arrow = 0;
     int arrows_created_counter = 0;
 
-    Three_Lane_Rising_Arrow_Attack(int attack_id, int duration_ms, int time_between_arrows_ms);
+    Three_Lane_Rising_Arrow_Attack(int attack_id, int duration_ms, int time_between_arrows_ms, int arrow_prep_time_ms = 750);
     void update() override;
 };
 
 struct Random_Spawn_Player_Aimed_Arrow_Attack : public Red_Mode_Manager {
     int time_between_arrows_ms;
+    int arrow_rotation_time_ms;
     int time_elapsed_since_last_arrow = 0;
     int arrows_created_counter = 0;
 
-    Random_Spawn_Player_Aimed_Arrow_Attack(int attack_id, int duration_ms, int time_between_arrows_ms);
+    Random_Spawn_Player_Aimed_Arrow_Attack(int attack_id, int duration_ms, int time_between_arrows_ms, int arrow_rotation_time_ms = 1000);
     void update() override;
 };
 

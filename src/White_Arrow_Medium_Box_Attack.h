@@ -11,13 +11,14 @@ struct White_Arrow_Medium_Box_Attack : public GameObject {
 
     SDL_Texture *texture;
     int time_elapsed_since_creation = 0;
+    int delay_before_charge_ms;
 
     double angle = 0;
     double target_angle;
 
     bool played_flying_sound = false;
 
-    White_Arrow_Medium_Box_Attack(int x_center, int y_center, int x_target, int y_target, std::string obj_name);
+    White_Arrow_Medium_Box_Attack(int x_center, int y_center, int x_target, int y_target, std::string obj_name, int delay_before_charge_ms = 1000);
 
     void update() override;
     void render() override;

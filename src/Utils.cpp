@@ -112,8 +112,10 @@ double distance(double x1, double y1, double x2, double y2) {
 int get_random(int low, int high) {
     static std::random_device rd;
     static std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(low, high);
-    return dis(gen);
+    std::uniform_int_distribution<int> dis(low, high);
+    int result = dis(gen);
+    // printf("[DEBUG] get_random(%d, %d) returned %d\n", low, high, result);
+    return result;
 }
 
 double get_random(double low, double high) {

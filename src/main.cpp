@@ -31,7 +31,7 @@ std::vector<GameObject *> objs;
 std::vector<Uint8> prev_keyboard_state;
 std::vector<Uint8> cur_keyboard_state;
 int time_since_enemy_turn = 0;
-int current_attack_idx = 0;
+int current_attack_idx = 14;
 Turn current_turn = Turn::PlayerTurn;
 BattleBox *global_battlebox = nullptr;
 
@@ -125,7 +125,7 @@ int main(int argc, char *args[]) {
         }
 
         _remove_objs_that_are_to_be_removed();
-        _print_objs_names();
+        // _print_objs_names();
         _verify_objs_correct();
 
         // Use index instead of iterator to handle vector resizing during update

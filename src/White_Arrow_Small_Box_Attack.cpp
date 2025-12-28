@@ -1,19 +1,19 @@
 #include "White_Arrow_Small_Box_Attack.h"
 #include "BattleBox.h"
 #include "Utils.h"
+#include <algorithm>
 
-White_Arrow_Small_Box_Attack::White_Arrow_Small_Box_Attack(double x_center, double y_center, std::string obj_name) : x_center(x_center), y_center(y_center) {
-
+White_Arrow_Small_Box_Attack::White_Arrow_Small_Box_Attack(double x_center, double y_center, std::string obj_name, int total_time_before_charge_ms) : x_center(x_center), y_center(y_center) {
     width = global_battlebox->width * 0.25;
     height = width / SPRITE_WIDTH_TO_HEIGHT;
     texture = loadTexture(renderer, "sprites/white_arrow.png");
     this->obj_name = obj_name;
     this->z_index = 5;
+
+    time_getting_ready_ms = std::max(0, total_time_before_charge_ms - TIME_FOR_FREEZE);
 }
 
 void White_Arrow_Small_Box_Attack::update() {
-    const int TIME_FOR_GETTING_READY = 500;
-    const int TIME_FOR_FREEZE = 250;
     const int TIME_FOR_CHARGE = 700;
 
     time_elapsed_since_state_change += deltaTime;
@@ -23,7 +23,7 @@ void White_Arrow_Small_Box_Attack::update() {
         played_ready_sound = true;
     }
 
-    if (state == State::GettingReady && time_elapsed_since_state_change > TIME_FOR_GETTING_READY) {
+    if (state == State::GettingReady && time_elapsed_since_state_change > time_getting_ready_ms) {
         state = State::Freeze;
         time_elapsed_since_state_change = 0;
     }

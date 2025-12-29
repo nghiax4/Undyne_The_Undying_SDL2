@@ -12,7 +12,7 @@ Red_Mode_Manager::Red_Mode_Manager(int attack_id, int duration_ms, double box_ce
     global_battlebox->height = SCREEN_HEIGHT * box_height_ratio;
 
     Player_EnemyTurn *player = new Player_EnemyTurn(global_battlebox->x_center, global_battlebox->y_center);
-    objs.push_back(player);
+    objs.push_back(std::unique_ptr<Player_EnemyTurn>(player));
 }
 
 void Red_Mode_Manager::ready_to_be_removed() {

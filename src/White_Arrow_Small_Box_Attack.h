@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Globals.h"
+#include "Utils.h"
 
 struct White_Arrow_Small_Box_Attack : public GameObject {
     const double SPRITE_WIDTH_TO_HEIGHT = 60.0 / 196;
@@ -21,7 +22,7 @@ struct White_Arrow_Small_Box_Attack : public GameObject {
     int time_getting_ready_ms;
     const int TIME_FOR_FREEZE = 250;
 
-    SDL_Texture *texture;
+    SmartTexture texture;
 
     White_Arrow_Small_Box_Attack(double x_center, double y_center, std::string obj_name, int total_time_before_charge_ms = 750);
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Globals.h"
+#include "Utils.h"
 
 struct Ring_Spear : public GameObject {
     const double SPIN_DURATION_MS = 567.0;
@@ -14,7 +15,7 @@ struct Ring_Spear : public GameObject {
     double time_alive = 0;
     double charge_speed;
 
-    SDL_Texture *texture;
+    SmartTexture texture;
     int width, height;
 
     Ring_Spear(double x, double y, double angle_deg, double radius, std::string name);

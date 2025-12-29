@@ -11,4 +11,6 @@ class GameObject {
     int z_index = 0;
     virtual void update();
     virtual void render();
+
+    virtual ~GameObject() = default;
 };

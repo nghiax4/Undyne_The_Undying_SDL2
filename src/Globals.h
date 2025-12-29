@@ -3,8 +3,9 @@
 #include "GameObject.h"
 #include "Turn.h"
 #include <vector>
+#include <memory>
 
-extern std::vector<GameObject *> objs;
+extern std::vector<std::unique_ptr<GameObject>> objs;
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
 extern SDL_Renderer *renderer;

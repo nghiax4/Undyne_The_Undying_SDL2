@@ -12,6 +12,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 #include <algorithm>
+#include <memory>
 #include <stdexcept>
 #include <stdio.h>
 #include <vector>
@@ -27,7 +28,7 @@ int last_tick = 0;
 SDL_Event event;
 SDL_Window *window;
 SDL_Renderer *renderer;
-std::vector<GameObject *> objs;
+std::vector<std::unique_ptr<GameObject>> objs;
 std::vector<Uint8> prev_keyboard_state;
 std::vector<Uint8> cur_keyboard_state;
 int time_since_enemy_turn = 0;
@@ -35,7 +36,7 @@ int current_attack_idx = 0;
 Turn current_turn = Turn::PlayerTurn;
 BattleBox *global_battlebox = nullptr;
 
-std::vector<MenuButton> init_menu_buttons(int button_width) {
+std::vector<std::unique_ptr<MenuButton>> init_menu_buttons(int button_width) {
     const double BUTTON_WIDTH_TO_HEIGHT = 367.0 / 140;
     int button_height = button_width / BUTTON_WIDTH_TO_HEIGHT;
 
@@ -55,7 +56,13 @@ std::vector<MenuButton> init_menu_buttons(int button_width) {
     MenuButton item_button(result.at(2).x + button_width / 2, result.at(2).y + button_height / 2, button_width, button_height, "sprites/item_unselected.png", "sprites/item_selected.png", 2);
     MenuButton mercy_button(result.at(3).x + button_width / 2, result.at(3).y + button_height / 2, button_width, button_height, "sprites/mercy_unselected.png", "sprites/mercy_selected.png", 3);
 
-    return {fight_button, act_button, item_button, mercy_button};
+    std::vector<std::unique_ptr<MenuButton>> result_vector;
+    result_vector.push_back(std::make_unique<MenuButton>(std::move(fight_button)));
+    result_vector.push_back(std::make_unique<MenuButton>(std::move(act_button)));
+    result_vector.push_back(std::make_unique<MenuButton>(std::move(item_button)));
+    result_vector.push_back(std::make_unique<MenuButton>(std::move(mercy_button)));
+
+    return result_vector;
 }
 
 void start_music() {
@@ -86,20 +93,23 @@ int main(int argc, char *args[]) {
 
     renderer = SDL_CreateRenderer(window, -1, 0);
 
-    objs.push_back(new Player(1, 1));
+    objs.push_back(std::make_unique<Player>(1, 1));
 
-    std::vector<MenuButton> menu_buttons = init_menu_buttons(0.2 * SCREEN_WIDTH);
+    std::vector<std::unique_ptr<MenuButton>> menu_buttons = init_menu_buttons(0.2 * SCREEN_WIDTH);
+    const int first_btn_y_center = menu_buttons.at(0)->y_center;
+    const int first_btn_height = menu_buttons.at(0)->height;
 
     for (auto &menu_button : menu_buttons) {
-        objs.push_back(&menu_button);
+        objs.push_back(std::move(menu_button));
     }
 
-    global_battlebox = new BattleBox(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.67, SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.3);
-    objs.push_back(global_battlebox);
-    objs.push_back(new Undyne(SCREEN_WIDTH * 0.57, SCREEN_HEIGHT / 4, SCREEN_HEIGHT * 0.48));
-    objs.push_back(new SelectedMenuButtonContainer());
-    objs.push_back(new GameManager());
-    objs.push_back(new HealthPointText(SCREEN_WIDTH / 2, (global_battlebox->y_center + global_battlebox->height / 2 + menu_buttons.at(0).y_center - menu_buttons.at(0).height / 2) / 2));
+    auto battlebox = std::make_unique<BattleBox>(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.67, SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.3);
+    global_battlebox = battlebox.get();
+    objs.push_back(std::move(battlebox));
+    objs.push_back(std::make_unique<Undyne>(SCREEN_WIDTH * 0.57, SCREEN_HEIGHT / 4, SCREEN_HEIGHT * 0.48));
+    objs.push_back(std::make_unique<SelectedMenuButtonContainer>());
+    objs.push_back(std::make_unique<GameManager>());
+    objs.push_back(std::make_unique<HealthPointText>(SCREEN_WIDTH / 2, (global_battlebox->y_center + global_battlebox->height / 2 + first_btn_y_center - first_btn_height / 2) / 2));
 
     start_music();
 
@@ -136,7 +146,7 @@ int main(int argc, char *args[]) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
         SDL_RenderClear(renderer);
 
-        sort(objs.begin(), objs.end(), [](const GameObject *obj1, const GameObject *obj2) {
+        sort(objs.begin(), objs.end(), [](const std::unique_ptr<GameObject> &obj1, const std::unique_ptr<GameObject> &obj2) {
             return obj1->z_index < obj2->z_index;
         });
 

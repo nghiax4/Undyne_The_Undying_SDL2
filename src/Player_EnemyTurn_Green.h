@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Utils.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include <SDL2/SDL.h>
@@ -14,7 +15,7 @@ struct Player_EnemyTurn_Green : public GameObject {
     bool render_texture_transparent = false;
     int time_elapsed_since_transparent = 0;
 
-    SDL_Texture *texture;
+    SmartTexture texture;
 
     Player_EnemyTurn_Green(int x_center, int y_center);
 

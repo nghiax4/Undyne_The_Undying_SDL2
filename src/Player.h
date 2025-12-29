@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Utils.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include <SDL2/SDL.h>
@@ -7,7 +8,7 @@
 
 struct Player : public GameObject {
     int x_center, y_center, width, height;
-    SDL_Texture *player_texture;
+    SmartTexture player_texture;
 
     Player(int x_center, int y_center);
 

@@ -7,7 +7,9 @@
 #include "Shield.h"
 #include "Utils.h"
 
-GameManager::GameManager() { obj_name = "GameManager"; }
+GameManager::GameManager() {
+    obj_name = "GameManager";
+}
 
 void GameManager::update() {
     if (current_turn == Turn::EnemyTurn) {
@@ -36,13 +38,13 @@ void GameManager::render() {}
 
 void GameManager::play_attack(int attack_idx) {
     Attack_Manager_Base_Class *attack = AttackRegistry::create_attack(attack_idx);
-    objs.push_back(attack);
+    objs.push_back(std::unique_ptr<Attack_Manager_Base_Class>(attack));
 }
 
 Attack_Manager_Base_Class *GameManager::find_attack_manager() {
     for (auto &obj : objs) {
         if (obj->obj_name.find("Attack_Manager_") == 0) {
-            return static_cast<Attack_Manager_Base_Class *>(obj);
+            return static_cast<Attack_Manager_Base_Class *>(obj.get());
         }
     }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Globals.h"
+#include "Utils.h"
 
 struct Spinning_Arrow : public GameObject {
     const double RADIAL_SPEED_PIXELS_PER_MS = SCREEN_WIDTH * 0.00017;
@@ -19,7 +20,7 @@ struct Spinning_Arrow : public GameObject {
 
     double time_elapsed_since_spawn = 0;
 
-    SDL_Texture *texture;
+    SmartTexture texture;
     bool played_sound = false;
 
     Spinning_Arrow(double origin_x, double origin_y, double start_angle_deg, double start_radius, std::string obj_name);

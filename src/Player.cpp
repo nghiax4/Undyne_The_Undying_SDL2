@@ -7,7 +7,7 @@
 extern SDL_Renderer *renderer;
 
 Player::Player(int x_center, int y_center) : width(SCREEN_WIDTH * 0.03), height(SCREEN_WIDTH * 0.03), x_center(x_center), y_center(y_center) {
-    player_texture = loadTexture(renderer, "sprites/soul.png");
+    player_texture.reset(loadTexture(renderer, "sprites/soul.png"));
     obj_name = "Player";
     this->z_index = 3;
 }
@@ -25,7 +25,7 @@ void Player::render() {
     int left_x = x_center - width / 2;
     int top_y = y_center - height / 2;
 
-    SDL_Rect *player_rect = new SDL_Rect({left_x, top_y, width, height});
+    SDL_Rect player_rect = {left_x, top_y, width, height};
 
-    SDL_RenderCopy(renderer, player_texture, NULL, player_rect);
+    SDL_RenderCopy(renderer, player_texture.get(), NULL, &player_rect);
 }

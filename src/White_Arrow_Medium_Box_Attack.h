@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Globals.h"
+#include "Utils.h"
 
 struct White_Arrow_Medium_Box_Attack : public GameObject {
     constexpr static double SPRITE_WIDTH_TO_HEIGHT = 60.0 / 196;
@@ -9,7 +10,7 @@ struct White_Arrow_Medium_Box_Attack : public GameObject {
 
     const double v_x = SCREEN_WIDTH * 0.0008, v_y = SCREEN_HEIGHT * 0.0008;
 
-    SDL_Texture *texture;
+    SmartTexture texture;
     int time_elapsed_since_creation = 0;
     int delay_before_charge_ms;
 

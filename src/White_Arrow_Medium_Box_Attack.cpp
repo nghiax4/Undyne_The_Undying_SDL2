@@ -9,7 +9,7 @@ White_Arrow_Medium_Box_Attack::White_Arrow_Medium_Box_Attack(int x_center, int y
     this->obj_name = obj_name;
     width = SCREEN_WIDTH * 0.025;
     height = width / SPRITE_WIDTH_TO_HEIGHT;
-    texture = loadTexture(renderer, "sprites/white_arrow.png");
+    texture.reset(loadTexture(renderer, "sprites/white_arrow.png"));
     angle = get_random(0, 360);
     this->z_index = 5;
     play_sound_effect("audio/white_arrow_getting_ready.ogg");
@@ -35,5 +35,5 @@ void White_Arrow_Medium_Box_Attack::update() {
 
 void White_Arrow_Medium_Box_Attack::render() {
     SDL_Rect rect{x_center - width / 2, y_center - height / 2, width, height};
-    SDL_RenderCopyEx(renderer, texture, nullptr, &rect, angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, texture.get(), nullptr, &rect, angle, NULL, SDL_FLIP_NONE);
 }

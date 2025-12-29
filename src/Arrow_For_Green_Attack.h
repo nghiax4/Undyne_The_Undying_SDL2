@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Globals.h"
+#include "Utils.h"
 
 struct Arrow_For_Green_Attack : public GameObject {
     const double SPRITE_WIDTH_TO_HEIGHT_RATIO = 43.0 / 83;
@@ -12,7 +13,9 @@ struct Arrow_For_Green_Attack : public GameObject {
     Direction direction;
     ArrowType arrow_type;
 
-    enum class State { APPROACHING_BEFORE_ROTATE, ROTATING, APPROACHING_AFTER_ROTATE };
+    enum class State { APPROACHING_BEFORE_ROTATE,
+                       ROTATING,
+                       APPROACHING_AFTER_ROTATE };
     State state = State::APPROACHING_BEFORE_ROTATE;
 
     // Orbit variables for rotating the yellow arrow
@@ -21,7 +24,7 @@ struct Arrow_For_Green_Attack : public GameObject {
     double orbit_radius = 0;
     bool clockwise_rotation = true;
 
-    SDL_Texture *texture;
+    SmartTexture texture;
 
     Arrow_For_Green_Attack(double x_center, double y_center, double v_x, double v_y, Direction direction, std::string obj_name, ArrowType arrow_type);
     virtual void update() override;

@@ -15,12 +15,12 @@ Spinning_Arrow::Spinning_Arrow(double origin_x, double origin_y, double start_an
     height = width / White_Arrow_Medium_Box_Attack::SPRITE_WIDTH_TO_HEIGHT;
 
     // Reusing the white arrow texture
-    texture = loadTexture(renderer, "sprites/white_arrow.png");
+    texture.reset(loadTexture(renderer, "sprites/white_arrow.png"));
 
     // Set blend mode to support transparency
-    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureBlendMode(texture.get(), SDL_BLENDMODE_BLEND);
     // Set zero opacity
-    SDL_SetTextureAlphaMod(texture, 0);
+    SDL_SetTextureAlphaMod(texture.get(), 0);
 }
 
 void Spinning_Arrow::update() {
@@ -49,7 +49,7 @@ void Spinning_Arrow::update() {
 void Spinning_Arrow::render() {
     double alpha_ratio = std::min(1.0, time_elapsed_since_spawn / FADE_DURATION_MS);
     Uint8 alpha = static_cast<Uint8>(alpha_ratio * 255);
-    SDL_SetTextureAlphaMod(texture, alpha);
+    SDL_SetTextureAlphaMod(texture.get(), alpha);
     
     SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), width, height};
 
@@ -60,5 +60,5 @@ void Spinning_Arrow::render() {
     // We add 180 to make it point INWARD.
     double render_angle = angle_deg + 90 + 180;
 
-    SDL_RenderCopyEx(renderer, texture, nullptr, &rect, render_angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, texture.get(), nullptr, &rect, render_angle, NULL, SDL_FLIP_NONE);
 }

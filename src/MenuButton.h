@@ -1,15 +1,17 @@
 #pragma once
 #include "GameObject.h"
+#include "Utils.h"
 #include <SDL2/SDL.h>
 #include <string>
 
 struct MenuButton : public GameObject {
   public:
-    SDL_Texture *button_texture;
+    SmartTexture texture_unselected_obj;
+    SmartTexture texture_selected_obj;
     int x_center, y_center, width, height;
-    std::string sprite_unselected, sprite_selected;
+    std::string sprite_unselected_path, sprite_selected_path;
 
-    MenuButton(int x_center, int y_center, int width, int height, std::string sprite_unselected, std::string sprite_selected, int button_index);
+    MenuButton(int x_center, int y_center, int width, int height, std::string sprite_unselected_path, std::string sprite_selected_path, int button_index);
 
     virtual void update() override;
 

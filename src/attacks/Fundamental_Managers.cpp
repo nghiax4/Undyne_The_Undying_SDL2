@@ -19,7 +19,7 @@ void Three_Lane_Rising_Arrow_Attack::update() {
         double y_pos = global_battlebox->y_center + global_battlebox->height;
 
         std::string name = attack_prefix + "_Falling_Arrow_" + std::to_string(arrows_created_counter++);
-        objs.push_back(new White_Arrow_Small_Box_Attack(x_pos, y_pos, name, arrow_prep_time_ms));
+        objs.push_back(std::make_unique<White_Arrow_Small_Box_Attack>(x_pos, y_pos, name, arrow_prep_time_ms));
 
         time_elapsed_since_last_arrow = 0;
     }
@@ -40,7 +40,7 @@ void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
         double spawn_y = global_battlebox->y_center + spawn_radius * sin(angle_deg * M_PI / 180.0);
 
         std::string name = attack_prefix + "_Targeted_Arrow_" + std::to_string(arrows_created_counter++);
-        objs.push_back(new White_Arrow_Medium_Box_Attack(spawn_x, spawn_y, player->x_center, player->y_center, name, arrow_rotation_time_ms));
+        objs.push_back(std::make_unique<White_Arrow_Medium_Box_Attack>(spawn_x, spawn_y, player->x_center, player->y_center, name, arrow_rotation_time_ms));
 
         time_elapsed_since_last_arrow = 0;
     }
@@ -55,7 +55,7 @@ void Inward_Spiraling_Arrow_Ring_Attack::spawn_on_ring(double center_x, double c
     for (int i = 0; i < ARROWS_PER_RING; i++) {
         double angle = angle_offset + (360.0 / ARROWS_PER_RING) * i;
         std::string name = attack_prefix + "_Spinning_" + std::to_string(items_created_counter++);
-        objs.push_back(new Spinning_Arrow(center_x, center_y, angle, spawn_radius, name));
+        objs.push_back(std::make_unique<Spinning_Arrow>(center_x, center_y, angle, spawn_radius, name));
     }
 }
 
@@ -73,6 +73,6 @@ void Contracting_Rotating_Spear_Ring_Attack::spawn_on_ring(double center_x, doub
     for (int i = 0; i < SPEARS_PER_RING; i++) {
         double angle = angle_offset + (360.0 / SPEARS_PER_RING) * i;
         std::string name = attack_prefix + "_Spear_" + std::to_string(items_created_counter++);
-        objs.push_back(new Ring_Spear(center_x, center_y, angle, spawn_radius, name));
+        objs.push_back(std::make_unique<Ring_Spear>(center_x, center_y, angle, spawn_radius, name));
     }
 }

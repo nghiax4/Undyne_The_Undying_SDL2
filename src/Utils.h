@@ -4,10 +4,21 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <cassert>
+#include <memory>
 #include <stdexcept>
 #include <stdio.h>
 #include <string>
 #include <vector>
+
+// Define a functor (a struct that acts like a function) to destroy textures
+struct TextureDeleter {
+    void operator()(SDL_Texture *t) const {
+        if (t)
+            SDL_DestroyTexture(t);
+    }
+};
+
+using SmartTexture = std::unique_ptr<SDL_Texture, TextureDeleter>;
 
 SDL_Texture *loadTexture(SDL_Renderer *renderer, std::string path);
 

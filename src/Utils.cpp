@@ -3,7 +3,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
+#include <algorithm>
 #include <cassert>
+#include <map>
 #include <random>
 #include <stdexcept>
 #include <stdio.h>
@@ -35,7 +37,7 @@ SDL_Texture *loadTexture(SDL_Renderer *renderer, std::string path) {
 GameObject *find_object_by_name(std::string obj_name) {
     for (auto &obj : objs) {
         if (obj->obj_name == obj_name) {
-            return obj;
+            return obj.get();
         }
     }
 
@@ -61,14 +63,12 @@ void _print_all_objs_names() {
 }
 
 void _remove_objs_that_are_to_be_removed() {
-    std::vector<GameObject *> new_objs;
-    for (const auto &obj : objs) {
-        if (!obj->to_be_removed) {
-            new_objs.push_back(obj);
-        }
-    }
-
-    objs = new_objs;
+    objs.erase(
+        std::remove_if(objs.begin(), objs.end(),
+                       [](const std::unique_ptr<GameObject> &obj) {
+                           return obj->to_be_removed;
+                       }),
+        objs.end());
 }
 
 void _verify_objs_correct() {
@@ -96,10 +96,21 @@ void _print_objs_names() {
 }
 
 void play_sound_effect(std::string path) {
-    Mix_Chunk *chunk = Mix_LoadWAV(path.c_str());
-    if (!chunk) {
-        throw std::runtime_error(std::string("Failed to load SFX: ") + Mix_GetError());
+    // Instead of using Mix_FreeChunk, use a cache to keep chunks in memory so we don't accidentally free audio while it's playing (and to avoid slow disk I/O!)
+    static std::map<std::string, Mix_Chunk *> sound_cache;
+
+    Mix_Chunk *chunk = nullptr;
+
+    if (sound_cache.find(path) == sound_cache.end()) {
+        chunk = Mix_LoadWAV(path.c_str());
+        if (!chunk) {
+            throw std::runtime_error(std::string("Failed to load SFX: ") + Mix_GetError());
+        }
+        sound_cache[path] = chunk;
+    } else {
+        chunk = sound_cache[path];
     }
+
     Mix_PlayChannel(-1, chunk, 0); // -1 = first free channel, 0 = play once
 }
 

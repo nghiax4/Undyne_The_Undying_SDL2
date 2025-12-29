@@ -4,7 +4,11 @@
 
 extern SDL_Renderer *renderer;
 
-MenuButton::MenuButton(int x_center, int y_center, int width, int height, std::string sprite_unselected, std::string sprite_selected, int button_index) : width(width), height(height), x_center(x_center), y_center(y_center), sprite_unselected(sprite_unselected), sprite_selected(sprite_selected) { obj_name = "Menu_Button_" + std::to_string(button_index); }
+MenuButton::MenuButton(int x_center, int y_center, int width, int height, std::string sprite_unselected_path, std::string sprite_selected_path, int button_index) : width(width), height(height), x_center(x_center), y_center(y_center), sprite_unselected_path(sprite_unselected_path), sprite_selected_path(sprite_selected_path) {
+    obj_name = "Menu_Button_" + std::to_string(button_index);
+    texture_unselected_obj.reset(loadTexture(renderer, sprite_unselected_path));
+    texture_selected_obj.reset(loadTexture(renderer, sprite_selected_path));
+}
 
 void MenuButton::update() {}
 
@@ -12,10 +16,10 @@ void MenuButton::render() {
     int left_x = x_center - width / 2;
     int top_y = y_center - height / 2;
 
-    button_texture = loadTexture(renderer, is_selected_by_player() ? sprite_selected : sprite_unselected);
-    SDL_Rect *button_rect = new SDL_Rect({left_x, top_y, width, height});
+    SDL_Texture *texture_to_draw = is_selected_by_player() ? texture_selected_obj.get() : texture_unselected_obj.get();
+    SDL_Rect button_rect = {left_x, top_y, width, height};
 
-    SDL_RenderCopy(renderer, button_texture, NULL, button_rect);
+    SDL_RenderCopy(renderer, texture_to_draw, NULL, &button_rect);
 }
 
 // Check if the button is currently selected by checking if the player's position is within the button

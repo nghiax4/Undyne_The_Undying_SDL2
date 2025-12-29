@@ -13,12 +13,13 @@ Green_Mode_Manager::Green_Mode_Manager(int attack_id, int duration_ms, std::vect
     global_battlebox->width = SCREEN_WIDTH * 0.13;
     global_battlebox->height = SCREEN_WIDTH * 0.13;
 
-    objs.push_back(new Player_EnemyTurn_Green(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2));
-    objs.push_back(new Shield());
+    objs.push_back(std::make_unique<Player_EnemyTurn_Green>(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2));
+    objs.push_back(std::make_unique<Shield>());
 
     for (const auto &data : arrows_data) {
         arrow_counter_for_unique_names++;
-        objs.push_back(create_arrow_for_green_attack_with_impact_time(data.direction, data.speed, data.time_to_impact_ms, arrow_counter_for_unique_names, data.type));
+        Arrow_For_Green_Attack *arrow = create_arrow_for_green_attack_with_impact_time(data.direction, data.speed, data.time_to_impact_ms, arrow_counter_for_unique_names, data.type);
+        objs.push_back(std::unique_ptr<Arrow_For_Green_Attack>(arrow));
     }
 }
 

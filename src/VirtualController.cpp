@@ -14,28 +14,42 @@ VirtualController::VirtualController() {
     SDL_SetTextureBlendMode(enter_texture.get(), SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(enter_texture.get(), 128);
 
-    int button_dimension = SCREEN_WIDTH * 0.13;
-    int spacing = SCREEN_WIDTH * 0.01;
+    // -- CONFIGURATION --
+    int btn_size = SCREEN_WIDTH * 0.14; // Slightly larger for better touch area
 
-    int start_x = spacing;
-    int start_y = SCREEN_HEIGHT - button_dimension - spacing;
+    // "dpad_radius": How far the buttons are from the center point.
+    // If radius = btn_size, they barely touch.
+    // If radius < btn_size, they overlap (good for diagonals).
+    int dpad_radius = btn_size * 0.85;
 
-    // Left Arrow (Rotated -90 or 270)
-    buttons.push_back({{start_x, start_y, button_dimension, button_dimension}, 270.0, SDL_SCANCODE_LEFT, false});
+    int padding = SCREEN_WIDTH * 0.04;
 
-    // Down Arrow (Rotated 180)
-    buttons.push_back({{start_x + button_dimension + spacing, start_y, button_dimension, button_dimension}, 180.0, SDL_SCANCODE_DOWN, false});
+    int dpad_center_x = padding + btn_size;
+    int dpad_center_y = SCREEN_HEIGHT - padding - btn_size;
 
-    // Right Arrow (Rotated 90)
-    buttons.push_back({{start_x + (button_dimension + spacing) * 2, start_y, button_dimension, button_dimension}, 90.0, SDL_SCANCODE_RIGHT, false});
+    // Helper lambda to create a centered rectangle
+    auto make_rect = [&](int center_x, int center_y, int w, int h) {
+        return SDL_Rect{center_x - w / 2, center_y - h / 2, w, h};
+    };
 
-    // Up Arrow (No Rotation, sits above Down Arrow)
-    buttons.push_back({{start_x + button_dimension + spacing, start_y - button_dimension - spacing, button_dimension, button_dimension}, 0.0, SDL_SCANCODE_UP, false});
+    // UP
+    buttons.push_back({make_rect(dpad_center_x, dpad_center_y - dpad_radius, btn_size, btn_size), 0.0, SDL_SCANCODE_UP, false});
 
-    // Enter key
-    int enter_width = button_dimension * 1.5;
-    int enter_x = SCREEN_WIDTH - enter_width - spacing;
-    buttons.push_back({{enter_x, start_y, enter_width, button_dimension}, 0.0, SDL_SCANCODE_RETURN, true});
+    // DOWN
+    buttons.push_back({make_rect(dpad_center_x, dpad_center_y + dpad_radius, btn_size, btn_size), 180.0, SDL_SCANCODE_DOWN, false});
+
+    // LEFT
+    buttons.push_back({make_rect(dpad_center_x - dpad_radius, dpad_center_y, btn_size, btn_size), 270.0, SDL_SCANCODE_LEFT, false});
+
+    // RIGHT
+    buttons.push_back({make_rect(dpad_center_x + dpad_radius, dpad_center_y, btn_size, btn_size), 90.0, SDL_SCANCODE_RIGHT, false});
+
+    // -- ENTER KEY --
+    int enter_width = btn_size * 1.5;
+    int enter_center_x = SCREEN_WIDTH - padding - (enter_width / 2);
+    int enter_center_y = dpad_center_y;
+
+    buttons.push_back({make_rect(enter_center_x, enter_center_y, enter_width, btn_size), 0.0, SDL_SCANCODE_RETURN, true});
 }
 
 void VirtualController::update() {

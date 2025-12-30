@@ -8,6 +8,7 @@
 #include "Turn.h"
 #include "Undyne.h"
 #include "Utils.h"
+#include "VirtualController.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
@@ -35,6 +36,7 @@ int time_since_enemy_turn = 0;
 int current_attack_idx = 0;
 Turn current_turn = Turn::PlayerTurn;
 BattleBox *global_battlebox = nullptr;
+VirtualController *global_virtual_controller = nullptr;
 
 std::vector<std::unique_ptr<MenuButton>> init_menu_buttons(int button_width) {
     const double BUTTON_WIDTH_TO_HEIGHT = 367.0 / 140;
@@ -111,6 +113,10 @@ int main(int argc, char *args[]) {
     objs.push_back(std::make_unique<GameManager>());
     objs.push_back(std::make_unique<HealthPointText>(SCREEN_WIDTH / 2, (global_battlebox->y_center + global_battlebox->height / 2 + first_btn_y_center - first_btn_height / 2) / 2));
 
+    std::unique_ptr<VirtualController> virtual_controller_ptr = std::make_unique<VirtualController>();
+    global_virtual_controller = virtual_controller_ptr.get();
+    objs.push_back(std::move(virtual_controller_ptr));
+
     start_music();
 
     bool running = true;
@@ -133,6 +139,9 @@ int main(int argc, char *args[]) {
         if (prev_keyboard_state.empty()) {
             prev_keyboard_state.resize(num_keys, 0);
         }
+
+        // Force virtual controller to update first before any other objects
+        global_virtual_controller->update();
 
         _remove_objs_that_are_to_be_removed();
         // _print_objs_names();

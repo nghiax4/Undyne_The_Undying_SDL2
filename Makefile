@@ -48,8 +48,8 @@ web: $(SOURCE_FILES)
 
 # TASK: Run a local web server to test the game
 serve:
-	echo "Opening server at http://localhost:8000"
-	python3 -m http.server -d $(WEB_OUTPUT_DIRECTORY)
+	echo "Opening server at http://0.0.0.0:8000"
+	python3 -m http.server 8000 --bind 0.0.0.0 -d $(WEB_OUTPUT_DIRECTORY)
 
 # TASK: Delete all build files to start fresh
 clean:

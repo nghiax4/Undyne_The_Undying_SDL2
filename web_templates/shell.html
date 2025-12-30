@@ -1,0 +1,98 @@
+<!-- Written by Gemini -->
+
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+
+    <title>Undyne SDL2</title>
+
+    <style>
+        :root {
+            /* NAMED CONSTANT: 
+               This margin provides a visual buffer above the iPhone "Home Bar" 
+               so the game doesn't touch the very bottom edge of the screen.
+            */
+            --canvas-bottom-margin: 10px;
+        }
+
+        body {
+            margin: 0;
+            /* Remove default white borders */
+            background-color: black;
+            /* The void */
+
+            /* These 4 lines force the game to stay perfectly in the center */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Use the calculated height to avoid the address bar issue on iOS Safari */
+            height: calc(var(--vh, 1vh) * 100);
+
+            /* IMPORTANT for mobile: Prevents "pull to refresh" or scrolling while playing */
+            touch-action: none;
+        }
+
+        /* CSS for the game window itself */
+        canvas {
+            display: block;
+            /* Removes tiny scrollbars sometimes caused by inline images */
+
+            /* Ensure the game scales down if the screen is too small, but never scales up pixelated beyond its true size. */
+            max-width: 100%;
+            /* Fit within the screen, but leave room for the home bar */
+            max-height: calc(100% - env(safe-area-inset-bottom) - var(--canvas-bottom-margin));
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+
+    <script type='text/javascript'>
+        // This calculates the real height of the visible area (subtracting address bars)
+        function setRealHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        // Run on load and whenever the user rotates/resizes
+        window.addEventListener('resize', setRealHeight);
+        window.addEventListener('orientationchange', setRealHeight);
+        setRealHeight();
+
+        // The "Module" object is the configuration object for Emscripten.
+        var Module = {
+
+            // 1. Where do 'printf' messages go? -> To the browser console (F12 Developer Tools)
+            print: (function () {
+                return function (text) {
+                    console.log(text);
+                };
+            })(),
+
+            // 2. Where do error messages go? -> To the browser console
+            printErr: function (text) {
+                console.error(text);
+            },
+
+            // 3. Connect the C++ SDL window to the HTML <canvas> tag above
+            canvas: (function () {
+                var canvas = document.getElementById('canvas');
+                return canvas;
+            })()
+        };
+
+        // Optional but helpful: If the user clicks the black background, focus the game window so keyboard inputs work immediately.
+        window.onclick = function () { window.focus(); };
+    </script>
+
+    <!-- Emscripten replaces {{{ SCRIPT }}} at build time with the generated loader/bootstrapping code -->
+    {{{ SCRIPT }}}
+
+</body>
+
+</html>

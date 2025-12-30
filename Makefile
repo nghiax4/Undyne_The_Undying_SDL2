@@ -22,7 +22,7 @@ DESKTOP_EXECUTABLE = $(DESKTOP_OUTPUT_DIRECTORY)/$(APP_NAME)
 WEB_COMPILER = emcc
 
 # ASYNCIFY Allows standard infinite loops (while(true)) to run in browser
-WEB_FLAGS = -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_MIXER=2 -s USE_SDL_TTF=2 -s INITIAL_MEMORY=134217728 --use-preload-plugins -s ASYNCIFY
+WEB_FLAGS = -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_MIXER=2 -s USE_SDL_TTF=2 -s INITIAL_MEMORY=134217728 --use-preload-plugins -s ASYNCIFY --shell-file web_templates/shell.html
 
 # Asset preloading (maps your local folders to the web browser's virtual file system)
 ASSET_FLAGS = --preload-file sprites --preload-file audio --preload-file font.ttf
@@ -55,3 +55,9 @@ serve:
 clean:
 	echo "Deleting build directory..."
 	rm -rf $(BUILD_DIRECTORY)
+
+# Expose the local web server to the internet using ngrok
+# Note: Must run 'make serve' in a separate terminal first
+share-web-publicly:
+	echo "Starting public tunnel to port 8000..."
+	ngrok http 8000

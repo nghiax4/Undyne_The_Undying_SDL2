@@ -1,4 +1,5 @@
 #include "BattleBox.h"
+#include "BattleText.h"
 #include "GameManager.h"
 #include "GameObject.h"
 #include "HealthPointText.h"
@@ -113,6 +114,7 @@ int main(int argc, char *args[]) {
     objs.push_back(std::make_unique<SelectedMenuButtonContainer>());
     objs.push_back(std::make_unique<GameManager>());
     objs.push_back(std::make_unique<HealthPointText>(SCREEN_WIDTH / 2, (global_battlebox->y_center + global_battlebox->height / 2 + first_btn_y_center - first_btn_height / 2) / 2));
+    objs.push_back(std::make_unique<BattleText>());
     objs.push_back(std::make_unique<HelpText>());
 
     std::unique_ptr<VirtualController> virtual_controller_ptr = std::make_unique<VirtualController>();

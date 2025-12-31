@@ -2,6 +2,7 @@
 #include "AttackRegistry.h"
 #include "Attack_Manager_Base_Class.h"
 #include "BattleBox.h"
+#include "BattleText.h"
 #include "Globals.h"
 #include "Player_EnemyTurn_Green.h"
 #include "Shield.h"
@@ -26,6 +27,10 @@ void GameManager::update() {
         global_battlebox->height = SCREEN_HEIGHT * 0.3;
 
         current_attack_idx += 1;
+
+        if (!object_by_name_exists("BattleText")) {
+            objs.push_back(std::make_unique<BattleText>());
+        }
     }
 
     if (current_turn == Turn::PlayerTurn && cur_keyboard_state[SDL_SCANCODE_RETURN]) {

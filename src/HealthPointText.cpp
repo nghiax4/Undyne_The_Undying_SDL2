@@ -6,7 +6,7 @@
 
 HealthPointText::HealthPointText(int x_center, int y_center) : x_center(x_center), y_center(y_center) {
     obj_name = "HealthPointText";
-    font.reset(TTF_OpenFont("font.ttf", SCREEN_HEIGHT * 0.03));
+    font.reset(TTF_OpenFont("fonts/font.ttf", SCREEN_HEIGHT * 0.03));
     if (!font) {
         printf("Failed to load font: %s\n", TTF_GetError());
         throw;

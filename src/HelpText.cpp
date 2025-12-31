@@ -7,7 +7,7 @@ HelpText::HelpText() {
     z_index = 1000;
 
     int font_size = SCREEN_HEIGHT * 0.05;
-    font.reset(TTF_OpenFont("ui_font.ttf", font_size));
+    font.reset(TTF_OpenFont("fonts/ui_font.ttf", font_size));
 }
 
 void HelpText::update() {}

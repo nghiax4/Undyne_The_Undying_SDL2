@@ -8,7 +8,8 @@ BattleText::BattleText() {
     z_index = 3;
 
     int font_size = SCREEN_HEIGHT * 0.07;
-    font.reset(TTF_OpenFont("determination-mono.otf", font_size));
+    font.reset(TTF_OpenFont("fonts/determination-mono.otf", font_size));
+    printf("[DEBUG] BattleText created\n");
 }
 
 void BattleText::update() {

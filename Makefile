@@ -25,7 +25,7 @@ WEB_COMPILER = emcc
 WEB_FLAGS = -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s USE_SDL_MIXER=2 -s USE_SDL_TTF=2 -s INITIAL_MEMORY=134217728 --use-preload-plugins -s ASYNCIFY --shell-file web_templates/shell.html
 
 # Asset preloading (maps your local folders to the web browser's virtual file system)
-ASSET_FLAGS = --preload-file sprites --preload-file audio --preload-file font.ttf
+ASSET_FLAGS = --preload-file sprites --preload-file audio --preload-file fonts
 
 # The final web file path
 WEB_EXECUTABLE = $(WEB_OUTPUT_DIRECTORY)/index.html

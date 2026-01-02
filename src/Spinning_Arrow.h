@@ -20,7 +20,7 @@ struct Spinning_Arrow : public GameObject {
 
     double time_elapsed_since_spawn = 0;
 
-    SmartTexture texture;
+    SDL_Texture *texture;
     bool played_sound = false;
 
     Spinning_Arrow(double origin_x, double origin_y, double start_angle_deg, double start_radius, std::string obj_name);

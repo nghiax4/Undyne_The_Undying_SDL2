@@ -38,7 +38,7 @@ void apply_collision_logic_for_type(Player_EnemyTurn *player) {
 }
 
 Player_EnemyTurn::Player_EnemyTurn(int x_center, int y_center) : width(SCREEN_WIDTH * 0.03), height(SCREEN_WIDTH * 0.03) {
-    texture.reset(loadTexture(renderer, "sprites/soul.png"));
+    texture = loadTexture(renderer, "sprites/soul.png");
     obj_name = "Player_EnemyTurn";
     this->z_index = 3;
 }
@@ -93,7 +93,7 @@ void Player_EnemyTurn::update() {
 
 void Player_EnemyTurn::render() {
     SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), (int)width, (int)height};
-    SDL_SetTextureBlendMode(texture.get(), SDL_BLENDMODE_BLEND);
-    SDL_SetTextureAlphaMod(texture.get(), render_texture_transparent ? 128 : 255);
-    SDL_RenderCopy(renderer, texture.get(), NULL, &rect);
+    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureAlphaMod(texture, render_texture_transparent ? 128 : 255);
+    SDL_RenderCopy(renderer, texture, NULL, &rect);
 }

@@ -5,7 +5,7 @@
 #include "Utils.h"
 
 Shield::Shield() : width(SCREEN_WIDTH * 0.1), height(SCREEN_HEIGHT * 0.007) {
-    texture.reset(loadTexture(renderer, "sprites/shield.png"));
+    texture = loadTexture(renderer, "sprites/shield.png");
     obj_name = "Shield";
     z_index = 3;
 }
@@ -43,5 +43,5 @@ void Shield::update() {
 
 void Shield::render() {
     SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), width, height};
-    SDL_RenderCopyEx(renderer, texture.get(), NULL, &rect, cur_angle + 90, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, texture, NULL, &rect, cur_angle + 90, NULL, SDL_FLIP_NONE);
 }

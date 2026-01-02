@@ -15,7 +15,7 @@ struct Ring_Spear : public GameObject {
     double time_alive = 0;
     double charge_speed;
 
-    SmartTexture texture;
+    SDL_Texture *texture;
     int width, height;
 
     Ring_Spear(double x, double y, double angle_deg, double radius, std::string name);

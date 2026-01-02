@@ -15,7 +15,7 @@ struct Player_EnemyTurn_Green : public GameObject {
     bool render_texture_transparent = false;
     int time_elapsed_since_transparent = 0;
 
-    SmartTexture texture;
+    SDL_Texture *texture;
 
     Player_EnemyTurn_Green(int x_center, int y_center);
 

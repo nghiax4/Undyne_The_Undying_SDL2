@@ -22,7 +22,7 @@ struct White_Arrow_Small_Box_Attack : public GameObject {
     int time_getting_ready_ms;
     const int TIME_FOR_FREEZE = 250;
 
-    SmartTexture texture;
+    SDL_Texture *texture;
 
     White_Arrow_Small_Box_Attack(double x_center, double y_center, std::string obj_name, int total_time_before_charge_ms = 750);
 

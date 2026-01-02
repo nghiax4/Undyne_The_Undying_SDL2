@@ -1,8 +1,8 @@
 #include "Spinning_Arrow.h"
 #include "Utils.h"
 #include "White_Arrow_Medium_Box_Attack.h"
-#include <cmath>
 #include <algorithm>
+#include <cmath>
 
 Spinning_Arrow::Spinning_Arrow(double origin_x, double origin_y, double start_angle_deg, double start_radius, std::string obj_name) : origin_x(origin_x), origin_y(origin_y), current_radius(start_radius), initial_radius(start_radius), radial_speed(start_radius / TRAVEL_DURATION_MS) {
     this->obj_name = obj_name;
@@ -15,12 +15,12 @@ Spinning_Arrow::Spinning_Arrow(double origin_x, double origin_y, double start_an
     height = width / White_Arrow_Medium_Box_Attack::SPRITE_WIDTH_TO_HEIGHT;
 
     // Reusing the white arrow texture
-    texture.reset(loadTexture(renderer, "sprites/white_arrow.png"));
+    texture = loadTexture(renderer, "sprites/white_arrow.png");
 
     // Set blend mode to support transparency
-    SDL_SetTextureBlendMode(texture.get(), SDL_BLENDMODE_BLEND);
+    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
     // Set zero opacity
-    SDL_SetTextureAlphaMod(texture.get(), 0);
+    SDL_SetTextureAlphaMod(texture, 0);
 }
 
 void Spinning_Arrow::update() {
@@ -49,8 +49,8 @@ void Spinning_Arrow::update() {
 void Spinning_Arrow::render() {
     double alpha_ratio = std::min(1.0, time_elapsed_since_spawn / FADE_DURATION_MS);
     Uint8 alpha = static_cast<Uint8>(alpha_ratio * 255);
-    SDL_SetTextureAlphaMod(texture.get(), alpha);
-    
+    SDL_SetTextureAlphaMod(texture, alpha);
+
     SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), width, height};
 
     // Rotate texture to point inward to the center (+90 degree adjustment for sprite orientation)
@@ -60,5 +60,5 @@ void Spinning_Arrow::render() {
     // We add 180 to make it point INWARD.
     double render_angle = angle_deg + 90 + 180;
 
-    SDL_RenderCopyEx(renderer, texture.get(), nullptr, &rect, render_angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, texture, nullptr, &rect, render_angle, NULL, SDL_FLIP_NONE);
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include "Attack_Manager_Base_Class.h"
-#include "Globals.h"
 
 struct Red_Mode_Manager : public Attack_Manager_Base_Class {
     // box_center_y_ratio: 0.5 means center of screen vertically

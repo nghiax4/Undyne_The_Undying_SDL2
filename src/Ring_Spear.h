@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "Globals.h"
+
 #include "Utils.h"
 
 struct Ring_Spear : public GameObject {

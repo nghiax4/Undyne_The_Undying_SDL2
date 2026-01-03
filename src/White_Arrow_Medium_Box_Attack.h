@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "Globals.h"
+
 #include "Utils.h"
 
 struct White_Arrow_Medium_Box_Attack : public GameObject {

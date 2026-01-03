@@ -1,11 +1,11 @@
 #include "Shield.h"
 #include "GameObject.h"
-#include "Globals.h"
+
 #include "Player_EnemyTurn_Green.h"
 #include "Utils.h"
 #include "core/Engine.h"
-#include "core/Scene.h"
 #include "core/Input.h"
+#include "core/Scene.h"
 
 Shield::Shield() : width(Engine::get().get_screen_width() * 0.1), height(Engine::get().get_screen_height() * 0.007), distance_from_soul(Engine::get().get_screen_height() * 0.07) {
     texture = ResourceManager::get().get_texture("sprites/shield.png");

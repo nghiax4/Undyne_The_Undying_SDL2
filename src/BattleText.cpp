@@ -1,6 +1,10 @@
 #include "BattleText.h"
-#include "Globals.h"
+#include "BattleBox.h"
+#include "GameManager.h"
+#include "GameplayTypes.h"
+#include "Turn.h"
 #include "core/Engine.h"
+#include "core/Scene.h"
 #include <algorithm>
 #include <cassert>
 
@@ -9,14 +13,14 @@ BattleText::BattleText() {
     z_index = 3;
 
     int font_size = Engine::get().get_screen_height() * 0.07;
-    font.reset(TTF_OpenFont("fonts/determination-mono.otf", font_size));
+    font = ResourceManager::get().get_font("fonts/determination-mono.otf", font_size);
     // printf("[DEBUG] BattleText created\n");
 }
 
 void BattleText::update() {
     time_elapsed_since_spawn += Engine::get().get_delta_time();
 
-    if (current_turn != Turn::PlayerTurn) {
+    if (static_cast<GameManager *>(Scene::get().find_object_by_name("GameManager"))->current_turn != Turn::PlayerTurn) {
         this->to_be_removed = true;
         return;
     }
@@ -31,7 +35,7 @@ void BattleText::render() {
     std::string current_text = full_text.substr(0, char_count);
 
     SDL_Color color{255, 255, 255, 0};
-    int wrap_width = global_battlebox->width * 0.9;
+    int wrap_width = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width * 0.9;
 
     // TTF_RenderText_Blended_Wrapped may return NULL if current_text is empty
     if (!current_text.empty()) {
@@ -42,8 +46,8 @@ void BattleText::render() {
         int padding_x = Engine::get().get_screen_width() * 0.023;
         int padding_y = Engine::get().get_screen_height() * 0.048;
 
-        int x_pos = (global_battlebox->x_center - global_battlebox->width / 2) + padding_x;
-        int y_pos = (global_battlebox->y_center - global_battlebox->height / 2) + padding_y;
+        int x_pos = (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width / 2) + padding_x;
+        int y_pos = (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height / 2) + padding_y;
 
         SDL_Rect dst_rect = {x_pos, y_pos, surface->w, surface->h};
         SDL_RenderCopy(Engine::get().get_renderer(), texture, NULL, &dst_rect);

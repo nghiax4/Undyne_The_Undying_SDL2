@@ -1,6 +1,6 @@
 #include "White_Arrow_Medium_Box_Attack.h"
 #include "GameObject.h"
-#include "Globals.h"
+
 #include "Utils.h"
 #include "core/Engine.h"
 #include <string>

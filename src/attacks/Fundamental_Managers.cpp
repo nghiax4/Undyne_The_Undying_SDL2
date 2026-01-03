@@ -17,8 +17,8 @@ void Three_Lane_Rising_Arrow_Attack::update() {
 
     if (time_elapsed_since_last_arrow > time_between_arrows_ms) {
         std::vector<double> x_multipliers = {0.2, 0.5, 0.8};
-        double x_pos = global_battlebox->x_center - global_battlebox->width / 2 + global_battlebox->width * x_multipliers.at(get_random(0, 2));
-        double y_pos = global_battlebox->y_center + global_battlebox->height;
+        double x_pos = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width / 2 + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width * x_multipliers.at(get_random(0, 2));
+        double y_pos = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height;
 
         std::string name = attack_prefix + "_Falling_Arrow_" + std::to_string(arrows_created_counter++);
         Scene::get().spawn(std::make_unique<White_Arrow_Small_Box_Attack>(x_pos, y_pos, name, arrow_prep_time_ms));
@@ -38,8 +38,8 @@ void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
 
         double spawn_radius = get_random(Engine::get().get_screen_width() * 0.2, Engine::get().get_screen_width() * 0.3);
         double angle_deg = get_random(0, 360);
-        double spawn_x = global_battlebox->x_center + spawn_radius * cos(angle_deg * M_PI / 180.0);
-        double spawn_y = global_battlebox->y_center + spawn_radius * sin(angle_deg * M_PI / 180.0);
+        double spawn_x = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center + spawn_radius * cos(angle_deg * M_PI / 180.0);
+        double spawn_y = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center + spawn_radius * sin(angle_deg * M_PI / 180.0);
 
         std::string name = attack_prefix + "_Targeted_Arrow_" + std::to_string(arrows_created_counter++);
         Scene::get().spawn(std::make_unique<White_Arrow_Medium_Box_Attack>(spawn_x, spawn_y, player->x_center, player->y_center, name, arrow_rotation_time_ms));

@@ -1,6 +1,6 @@
 #include "Utils.h"
 #include "GameObject.h"
-#include "Globals.h"
+
 #include "core/Engine.h"
 #include "core/Scene.h"
 #include <SDL2/SDL_image.h>

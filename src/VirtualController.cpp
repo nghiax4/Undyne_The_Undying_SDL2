@@ -1,5 +1,5 @@
 #include "VirtualController.h"
-#include "Globals.h"
+
 #include "Utils.h"
 #include "core/Engine.h"
 #include "core/Input.h"

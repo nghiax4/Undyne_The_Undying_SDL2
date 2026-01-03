@@ -3,9 +3,10 @@
 #include "Attack_Manager_Base_Class.h"
 #include "BattleBox.h"
 #include "BattleText.h"
-#include "Globals.h"
+#include "GameplayTypes.h"
 #include "Player_EnemyTurn_Green.h"
 #include "Shield.h"
+#include "Turn.h"
 #include "Utils.h"
 #include "core/Engine.h"
 #include "core/Input.h"
@@ -24,10 +25,10 @@ void GameManager::update() {
         current_turn = Turn::PlayerTurn;
         attack_manager->ready_to_be_removed();
 
-        battlebox->x_center = Engine::get().get_screen_width() / 2;
-        battlebox->y_center = Engine::get().get_screen_height() * 0.67;
-        battlebox->width = Engine::get().get_screen_width() * 0.9;
-        battlebox->height = Engine::get().get_screen_height() * 0.3;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center = Engine::get().get_screen_width() / 2;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center = Engine::get().get_screen_height() * 0.67;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width = Engine::get().get_screen_width() * 0.9;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height = Engine::get().get_screen_height() * 0.3;
 
         current_attack_idx += 1;
 

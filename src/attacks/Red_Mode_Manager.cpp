@@ -8,12 +8,12 @@
 Red_Mode_Manager::Red_Mode_Manager(int attack_id, int duration_ms, double box_center_y_ratio, double box_width_ratio, double box_height_ratio) : Attack_Manager_Base_Class(attack_id) {
     MILLISECONDS_LENGTH = duration_ms;
 
-    global_battlebox->x_center = Engine::get().get_screen_width() / 2;
-    global_battlebox->y_center = Engine::get().get_screen_height() * box_center_y_ratio;
-    global_battlebox->width = Engine::get().get_screen_width() * box_width_ratio;
-    global_battlebox->height = Engine::get().get_screen_height() * box_height_ratio;
+    static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->x_center = Engine::get().get_screen_width() / 2;
+    static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->y_center = Engine::get().get_screen_height() * box_center_y_ratio;
+    static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->width = Engine::get().get_screen_width() * box_width_ratio;
+    static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->height = Engine::get().get_screen_height() * box_height_ratio;
 
-    Player_EnemyTurn *player = new Player_EnemyTurn(global_battlebox->x_center, global_battlebox->y_center);
+    Player_EnemyTurn *player = new Player_EnemyTurn(static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->x_center, static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->y_center);
     Scene::get().spawn(std::unique_ptr<Player_EnemyTurn>(player));
 }
 

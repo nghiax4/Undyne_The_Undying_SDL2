@@ -2,10 +2,11 @@
 #include "BattleBox.h"
 #include "Utils.h"
 #include "core/Engine.h"
+#include "core/Scene.h"
 #include <algorithm>
 
 White_Arrow_Small_Box_Attack::White_Arrow_Small_Box_Attack(double x_center, double y_center, std::string obj_name, int total_time_before_charge_ms) : x_center(x_center), y_center(y_center) {
-    width = global_battlebox->width * 0.25;
+    width = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width * 0.25;
     height = width / SPRITE_WIDTH_TO_HEIGHT;
     texture = ResourceManager::get().get_texture("sprites/white_arrow.png");
     this->obj_name = obj_name;

@@ -1,7 +1,8 @@
 #include "SelectedMenuButtonContainer.h"
-#include "Globals.h"
+#include "GameManager.h"
 #include "Utils.h"
 #include "core/Input.h"
+#include "core/Scene.h"
 
 SelectedMenuButtonContainer::SelectedMenuButtonContainer() {
     selected_menu_button = 0;
@@ -11,7 +12,7 @@ SelectedMenuButtonContainer::SelectedMenuButtonContainer() {
 void SelectedMenuButtonContainer::update() {
     const int NUM_OF_MENU_BUTTONS = 4;
 
-    if (current_turn == Turn::PlayerTurn) {
+    if (static_cast<GameManager *>(Scene::get().find_object_by_name("GameManager"))->current_turn == Turn::PlayerTurn) {
         if (Input::get().is_key_pressed(SDL_SCANCODE_LEFT)) {
             selected_menu_button = (selected_menu_button - 1 + NUM_OF_MENU_BUTTONS) % NUM_OF_MENU_BUTTONS;
             play_sound_effect("audio/menu_select_sound.ogg");

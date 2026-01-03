@@ -34,7 +34,7 @@ const int FRAME_DELAY = 1000 / FPS;
 // std::vector<std::unique_ptr<GameObject>> objs;
 // std::vector<Uint8> prev_keyboard_state;
 // std::vector<Uint8> cur_keyboard_state;
-int time_since_enemy_turn = 0;
+// int time_since_enemy_turn = 0;
 // int current_attack_idx = 0;
 // Turn current_turn = Turn::PlayerTurn;
 // BattleBox *global_battlebox = nullptr;
@@ -88,17 +88,15 @@ int main(int, char *[]) {
         Scene::get().spawn(std::move(menu_button));
     }
 
-    auto battlebox = std::make_unique<BattleBox>(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.67, SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.3);
-    Scene::get().spawn(std::move(battlebox));
+    Scene::get().spawn(std::make_unique<BattleBox>(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.67, SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.3));
     Scene::get().spawn(std::make_unique<Undyne>(SCREEN_WIDTH * 0.57, SCREEN_HEIGHT / 4, SCREEN_HEIGHT * 0.48));
     Scene::get().spawn(std::make_unique<SelectedMenuButtonContainer>());
     Scene::get().spawn(std::make_unique<GameManager>());
-    Scene::get().spawn(std::make_unique<HealthPointText>(SCREEN_WIDTH / 2, (battlebox->y_center + battlebox->height / 2 + first_btn_y_center - first_btn_height / 2) / 2));
+    Scene::get().spawn(std::make_unique<HealthPointText>(SCREEN_WIDTH / 2, (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height / 2 + first_btn_y_center - first_btn_height / 2) / 2));
     Scene::get().spawn(std::make_unique<BattleText>());
     Scene::get().spawn(std::make_unique<HelpText>());
 
-    std::unique_ptr<VirtualController> virtual_controller_ptr = std::make_unique<VirtualController>();
-    Scene::get().spawn(std::move(virtual_controller_ptr));
+    Scene::get().spawn(std::make_unique<VirtualController>());
 
     start_music();
 
@@ -118,7 +116,7 @@ int main(int, char *[]) {
         }
 
         // Force virtual controller and input handler to update first before any other objects
-        virtual_controller_ptr->update();
+        static_cast<VirtualController *>(Scene::get().find_object_by_name("VirtualController"))->update();
         Input::get().update();
 
         Scene::get().cleanup_marked_objects();

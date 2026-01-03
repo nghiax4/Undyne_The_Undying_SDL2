@@ -1,6 +1,6 @@
 #pragma once
 #include "Attack_Manager_Base_Class.h"
-#include "Globals.h"
+
 #include <vector>
 
 struct GreenModeArrowData {

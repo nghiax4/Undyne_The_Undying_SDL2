@@ -1,6 +1,7 @@
 #pragma once
 #include "Attack_Manager_Base_Class.h"
 #include "GameObject.h"
+#include "Turn.h"
 
 struct GameManager : public GameObject {
   public:

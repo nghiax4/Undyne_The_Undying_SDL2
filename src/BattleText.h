@@ -10,7 +10,7 @@ struct BattleText : public GameObject {
     const double TOTAL_DURATION_MS = 669.0;
     
     double time_elapsed_since_spawn = 0;
-    std::unique_ptr<TTF_Font, FontDeleter> font;
+    SmartFont font;
 
     BattleText();
     void update() override;

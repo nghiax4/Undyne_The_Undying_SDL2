@@ -1,6 +1,6 @@
 #include "Attack_Manager_Base_Class.h"
 #include "Arrow_For_Green_Attack.h"
-#include "Globals.h"
+
 #include "Utils.h"
 #include "core/Engine.h"
 #include "core/Scene.h"

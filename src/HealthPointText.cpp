@@ -1,6 +1,4 @@
 #include "HealthPointText.h"
-#include "GameObject.h"
-#include "Globals.h"
 #include "core/Engine.h"
 #include <SDL2/SDL_ttf.h>
 #include <string>

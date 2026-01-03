@@ -1,5 +1,4 @@
 #include "HelpText.h"
-#include "Globals.h"
 #include "core/Engine.h"
 #include <string>
 

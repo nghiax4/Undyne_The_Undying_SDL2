@@ -1,5 +1,5 @@
 APP_NAME = game
-SOURCE_FILES = $(wildcard src/*.cpp) $(wildcard src/attacks/*.cpp)
+SOURCE_FILES = $(wildcard src/*.cpp) $(wildcard src/attacks/*.cpp) $(wildcard src/core/*.cpp)
 
 BUILD_DIRECTORY = build
 DESKTOP_OUTPUT_DIRECTORY = $(BUILD_DIRECTORY)/native

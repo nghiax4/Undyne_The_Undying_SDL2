@@ -8,7 +8,7 @@
 #include <map>
 #include <random>
 
-SDL_Texture *loadTexture(SDL_Renderer *renderer, std::string path) {
+SDL_Texture *loadTexture(std::string path) {
     static std::map<std::string, SDL_Texture *> texture_cache;
 
     auto texture_cache_find_iterator = texture_cache.find(path);

@@ -2,6 +2,7 @@
 #include "Attack_Manager_Base_Class.h"
 #include "Fundamental_Managers.h"
 #include "Utils.h"
+#include "core/Engine.h"
 #include <functional>
 #include <map>
 #include <stdexcept>
@@ -32,7 +33,7 @@ struct AttackRegistry {
             const int DURATION = 10000;
 
             if (random_pick == 0) {
-                return new Contracting_Rotating_Spear_Ring_Attack(attack_id, DURATION, SCREEN_WIDTH * 0.25, [](int time_elapsed) {
+                return new Contracting_Rotating_Spear_Ring_Attack(attack_id, DURATION, Engine::get().get_screen_width() * 0.25, [](int time_elapsed) {
                     return (time_elapsed > 5000) ? 333 : 633;
                 });
             } else if (random_pick == 1) {

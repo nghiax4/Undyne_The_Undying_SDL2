@@ -11,6 +11,7 @@
 #include "Undyne.h"
 #include "Utils.h"
 #include "VirtualController.h"
+#include "core/Engine.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
@@ -25,7 +26,7 @@ const int SCREEN_HEIGHT = 600;
 const int FPS = 100;
 const int FRAME_DELAY = 1000 / FPS;
 
-Mix_Music *song;
+Mix_Music *song = nullptr;
 double deltaTime;
 int last_tick = 0;
 SDL_Event event;
@@ -78,24 +79,7 @@ void start_music() {
 }
 
 int main(int argc, char *args[]) {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-        throw;
-    }
-
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
-        printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-        throw;
-    }
-
-    if (TTF_Init() == -1) {
-        printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-        throw;
-    }
-
-    window = SDL_CreateWindow("Undyne SDL2 wip", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-
-    renderer = SDL_CreateRenderer(window, -1, 0);
+    Engine::get().init("Undyne SDL2 Refactored", SCREEN_WIDTH, SCREEN_HEIGHT);
 
     objs.push_back(std::make_unique<Player>(1, 1));
 
@@ -126,9 +110,9 @@ int main(int argc, char *args[]) {
     bool running = true;
 
     while (running) {
-        Uint32 now = SDL_GetTicks();
-        deltaTime = now - last_tick;
-        last_tick = now;
+        Uint32 frameStart = SDL_GetTicks();
+
+        Engine::get().update_time();
 
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -139,7 +123,6 @@ int main(int argc, char *args[]) {
         int num_keys;
         const Uint8 *sdl_keys = SDL_GetKeyboardState(&num_keys);
         cur_keyboard_state.assign(sdl_keys, sdl_keys + num_keys);
-
         if (prev_keyboard_state.empty()) {
             prev_keyboard_state.resize(num_keys, 0);
         }
@@ -156,8 +139,7 @@ int main(int argc, char *args[]) {
             objs[i]->update();
         }
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-        SDL_RenderClear(renderer);
+        Engine::get().clear_screen();
 
         sort(objs.begin(), objs.end(), [](const std::unique_ptr<GameObject> &obj1, const std::unique_ptr<GameObject> &obj2) {
             return obj1->z_index < obj2->z_index;
@@ -169,10 +151,9 @@ int main(int argc, char *args[]) {
             }
         }
 
-        SDL_RenderPresent(renderer);
+        Engine::get().present_screen();
 
-        int frameTime = SDL_GetTicks() - now;
-
+        int frameTime = SDL_GetTicks() - frameStart;
         if (FRAME_DELAY > frameTime) {
             SDL_Delay(FRAME_DELAY - frameTime);
         }

@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Globals.h"
 #include "Utils.h"
+#include "core/Engine.h"
 
 struct White_Arrow_Small_Box_Attack : public GameObject {
     const double SPRITE_WIDTH_TO_HEIGHT = 60.0 / 196;

@@ -5,10 +5,14 @@
 struct GameManager : public GameObject {
   public:
     GameManager();
-    virtual void update() override;
-    virtual void render() override;
+
+    Turn current_turn = Turn::PlayerTurn;
+    int current_attack_idx = 0;
+
+    void update() override;
+    void render() override;
 
   private:
-    virtual void play_attack(int attack_idx);
+    void play_attack(int attack_idx);
     Attack_Manager_Base_Class *find_attack_manager();
 };

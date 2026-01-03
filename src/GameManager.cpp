@@ -8,8 +8,8 @@
 #include "Shield.h"
 #include "Utils.h"
 #include "core/Engine.h"
-#include "core/Scene.h"
 #include "core/Input.h"
+#include "core/Scene.h"
 
 GameManager::GameManager() {
     obj_name = "GameManager";
@@ -24,10 +24,10 @@ void GameManager::update() {
         current_turn = Turn::PlayerTurn;
         attack_manager->ready_to_be_removed();
 
-        global_battlebox->x_center = Engine::get().get_screen_width() / 2;
-        global_battlebox->y_center = Engine::get().get_screen_height() * 0.67;
-        global_battlebox->width = Engine::get().get_screen_width() * 0.9;
-        global_battlebox->height = Engine::get().get_screen_height() * 0.3;
+        battlebox->x_center = Engine::get().get_screen_width() / 2;
+        battlebox->y_center = Engine::get().get_screen_height() * 0.67;
+        battlebox->width = Engine::get().get_screen_width() * 0.9;
+        battlebox->height = Engine::get().get_screen_height() * 0.3;
 
         current_attack_idx += 1;
 

@@ -3,6 +3,7 @@
 #include "Shield.h"
 #include "Utils.h"
 #include "core/Engine.h"
+#include "core/Scene.h"
 #include <algorithm>
 
 Arrow_For_Green_Attack::Arrow_For_Green_Attack(double x_center, double y_center, double v_x, double v_y, Direction direction, std::string obj_name, ArrowType arrow_type) : x_center(x_center), y_center(y_center), v_x(v_x), v_y(v_y), direction(direction), arrow_type(arrow_type) {
@@ -22,7 +23,7 @@ void Arrow_For_Green_Attack::update() {
         y_center += v_y * Engine::get().get_delta_time();
     }
 
-    Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(find_object_by_name("Player_EnemyTurn_Green"));
+    Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(Scene::get().find_object_by_name("Player_EnemyTurn_Green"));
 
     if (arrow_type == ArrowType::Yellow && state == State::APPROACHING_BEFORE_ROTATE) {
         double dist = distance(x_center, y_center, player->x_center, player->y_center);
@@ -70,8 +71,8 @@ void Arrow_For_Green_Attack::update() {
         }
     }
 
-    if (object_by_name_exists("Shield")) {
-        Shield *shield = static_cast<Shield *>(find_object_by_name("Shield"));
+    if (Scene::get().object_exists("Shield")) {
+        Shield *shield = static_cast<Shield *>(Scene::get().find_object_by_name("Shield"));
 
         if (distance(x_center, y_center, shield->x_center, shield->y_center) <= 20) {
             play_sound_effect("audio/shield_reflect.ogg");

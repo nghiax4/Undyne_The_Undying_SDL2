@@ -10,7 +10,7 @@ HelpText::HelpText() {
     int font_size = Engine::get().get_screen_height() * 0.05;
     font.reset(TTF_OpenFont("fonts/ui_font.ttf", font_size));
 
-    SDL_Color text_color = {255, 255, 255};
+    SDL_Color text_color = {255, 255, 255, 0};
     const int ALPHA_TRANSPARENCY = 128; // 0-255, where 128 is ~50% transparent
     const int PADDING_LEFT = 10;
     const int PADDING_TOP = 10;

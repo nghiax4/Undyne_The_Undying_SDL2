@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Globals.h"
 #include "core/Engine.h"
+#include "core/Scene.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <algorithm>
@@ -35,53 +36,24 @@ SDL_Texture *loadTexture(std::string path) {
     return newTexture;
 }
 
-GameObject *find_object_by_name(std::string obj_name) {
-    for (auto &obj : objs) {
-        if (obj->obj_name == obj_name) {
-            return obj.get();
-        }
-    }
-
-    throw std::runtime_error("Cannot find object with name " + obj_name);
-}
-
-bool object_by_name_exists(std::string obj_name) {
-    for (const auto &obj : objs) {
-        if (obj->obj_name == obj_name) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 void _print_all_objs_names() {
     printf("All objects names:\n");
-    for (const auto &obj : objs) {
+    for (const auto &obj : Scene::get().get_objects()) {
         printf("- %s\n", obj->obj_name.c_str());
     }
     printf("\n");
 }
 
-void _remove_objs_that_are_to_be_removed() {
-    objs.erase(
-        std::remove_if(objs.begin(), objs.end(),
-                       [](const std::unique_ptr<GameObject> &obj) {
-                           return obj->to_be_removed;
-                       }),
-        objs.end());
-}
-
 void _verify_objs_correct() {
-    for (int i = 0; i < objs.size(); i++) {
-        if (objs[i]->obj_name.empty()) {
+    for (int i = 0; i < (int)Scene::get().get_objects().size(); i++) {
+        if (Scene::get().get_objects()[i]->obj_name.empty()) {
             throw std::runtime_error("Obj at index " + std::to_string(i) + " have empty name");
         }
     }
 
-    for (int i = 0; i < objs.size(); i++) {
-        for (int j = i + 1; j < objs.size(); j++) {
-            if (objs[i]->obj_name == objs[j]->obj_name) {
+    for (int i = 0; i < (int)Scene::get().get_objects().size(); i++) {
+        for (int j = i + 1; j < (int)Scene::get().get_objects().size(); j++) {
+            if (Scene::get().get_objects()[i]->obj_name == Scene::get().get_objects()[j]->obj_name) {
                 throw std::runtime_error("Obj at index " + std::to_string(i) + " and " + std::to_string(j) + " have same name");
             }
         }
@@ -90,7 +62,7 @@ void _verify_objs_correct() {
 
 void _print_objs_names() {
     printf("[");
-    for (const auto &obj : objs) {
+    for (const auto &obj : Scene::get().get_objects()) {
         printf("'%s', ", obj->obj_name.c_str());
     }
     printf("]\n");

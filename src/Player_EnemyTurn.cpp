@@ -7,15 +7,16 @@
 #include "White_Arrow_Medium_Box_Attack.h"
 #include "White_Arrow_Small_Box_Attack.h"
 #include "core/Engine.h"
+#include "core/Scene.h"
 
 template <typename AttackType>
 void apply_collision_logic_for_type(Player_EnemyTurn *player) {
     const double PLAYER_ARROW_COLLISION_DISTANCE = 20.0;
     const int DAMAGE_AMOUNT = 13;
 
-    HealthPointText *hp_text_obj = static_cast<HealthPointText *>(find_object_by_name("HealthPointText"));
+    HealthPointText *hp_text_obj = static_cast<HealthPointText *>(Scene::get().find_object_by_name("HealthPointText"));
 
-    for (auto &game_obj : objs) {
+    for (auto &game_obj : Scene::get().get_objects()) {
         AttackType *specific_attack = dynamic_cast<AttackType *>(game_obj.get());
 
         if (specific_attack == nullptr)
@@ -38,7 +39,7 @@ void apply_collision_logic_for_type(Player_EnemyTurn *player) {
     }
 }
 
-Player_EnemyTurn::Player_EnemyTurn(int x_center, int y_center) : width(Engine::get().get_screen_width() * 0.03), height(Engine::get().get_screen_width() * 0.03), v_x(Engine::get().get_screen_width() * 0.0003), v_y(Engine::get().get_screen_width() * 0.0003) {
+Player_EnemyTurn::Player_EnemyTurn(int x_center, int y_center) : v_x(Engine::get().get_screen_width() * 0.0003), v_y(Engine::get().get_screen_width() * 0.0003), x_center(x_center), y_center(y_center), width(Engine::get().get_screen_width() * 0.03), height(Engine::get().get_screen_width() * 0.03) {
     texture = loadTexture("sprites/soul.png");
     obj_name = "Player_EnemyTurn";
     this->z_index = 3;

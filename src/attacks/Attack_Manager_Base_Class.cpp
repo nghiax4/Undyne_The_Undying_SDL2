@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Utils.h"
 #include "core/Engine.h"
+#include "core/Scene.h"
 #include <Arrow_For_Green_Attack.h>
 #include <algorithm>
 
@@ -22,14 +23,14 @@ void Attack_Manager_Base_Class::ready_to_be_removed() {
 void Attack_Manager_Base_Class::_teardown_green_mode() {
     this->to_be_removed = true;
 
-    GameObject *player = find_object_by_name("Player_EnemyTurn_Green");
+    GameObject *player = Scene::get().find_object_by_name("Player_EnemyTurn_Green");
     player->to_be_removed = true;
 
-    GameObject *shield = find_object_by_name("Shield");
+    GameObject *shield = Scene::get().find_object_by_name("Shield");
     shield->to_be_removed = true;
 
     // Remove all arrows/attacks specific to this attack
-    for (auto &obj : objs) {
+    for (auto &obj : Scene::get().get_objects()) {
         if (obj->obj_name.find(attack_prefix) == 0) {
             obj->to_be_removed = true;
         }

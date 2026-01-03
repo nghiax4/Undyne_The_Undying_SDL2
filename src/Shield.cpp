@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "Player_EnemyTurn_Green.h"
 #include "Utils.h"
+#include "core/Scene.h"
 
 Shield::Shield() : width(Engine::get().get_screen_width() * 0.1), height(Engine::get().get_screen_height() * 0.007), distance_from_soul(Engine::get().get_screen_height() * 0.07) {
     texture = loadTexture("sprites/shield.png");
@@ -12,7 +13,7 @@ Shield::Shield() : width(Engine::get().get_screen_width() * 0.1), height(Engine:
 }
 
 void Shield::update() {
-    Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(find_object_by_name("Player_EnemyTurn_Green"));
+    Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(Scene::get().find_object_by_name("Player_EnemyTurn_Green"));
 
     if (cur_keyboard_state[SDL_SCANCODE_UP]) {
         target_angle = 270;

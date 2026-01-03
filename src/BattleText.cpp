@@ -30,7 +30,7 @@ void BattleText::render() {
 
     std::string current_text = full_text.substr(0, char_count);
 
-    SDL_Color color = {255, 255, 255};
+    SDL_Color color{255, 255, 255, 0};
     int wrap_width = global_battlebox->width * 0.9;
 
     // TTF_RenderText_Blended_Wrapped may return NULL if current_text is empty

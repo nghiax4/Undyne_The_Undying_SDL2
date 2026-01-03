@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <cmath>
 
-Spinning_Arrow::Spinning_Arrow(double origin_x, double origin_y, double start_angle_deg, double start_radius, std::string obj_name) : origin_x(origin_x), origin_y(origin_y), current_radius(start_radius), initial_radius(start_radius), radial_speed(start_radius / TRAVEL_DURATION_MS), radial_speed_pixels_per_ms(Engine::get().get_screen_width() * 0.00017) {
+Spinning_Arrow::Spinning_Arrow(double origin_x, double origin_y, double start_angle_deg, double start_radius, std::string obj_name) : radial_speed_pixels_per_ms(Engine::get().get_screen_width() * 0.00017), origin_x(origin_x), origin_y(origin_y), current_radius(start_radius), initial_radius(start_radius), radial_speed(start_radius / TRAVEL_DURATION_MS) {
     this->obj_name = obj_name;
     z_index = 5; // Above the box
 

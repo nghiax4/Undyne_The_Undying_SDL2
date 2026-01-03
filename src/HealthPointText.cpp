@@ -16,7 +16,7 @@ HealthPointText::HealthPointText(int x_center, int y_center) : x_center(x_center
 void HealthPointText::update() {}
 
 void HealthPointText::render() {
-    SDL_Color color = {255, 255, 255}; // white
+    SDL_Color color = {255, 255, 255, 0}; // white
     SDL_Surface *surface = TTF_RenderText_Blended(font.get(), (std::string("HP: ") + std::to_string(hp)).c_str(), color);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(Engine::get().get_renderer(), surface);
 

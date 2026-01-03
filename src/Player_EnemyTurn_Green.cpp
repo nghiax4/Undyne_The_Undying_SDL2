@@ -4,6 +4,7 @@
 #include "HealthPointText.h"
 #include "Utils.h"
 #include "core/Engine.h"
+#include "core/Scene.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include <SDL2/SDL.h>
@@ -32,12 +33,12 @@ void Player_EnemyTurn_Green::update() {
         }
     }
 
-    for (auto &obj : objs) {
+    for (auto &obj : Scene::get().get_objects()) {
         Arrow_For_Green_Attack *arrow = dynamic_cast<Arrow_For_Green_Attack *>(obj.get());
         if (arrow == nullptr)
             continue;
 
-        HealthPointText *healthpoint = static_cast<HealthPointText *>(find_object_by_name("HealthPointText"));
+        HealthPointText *healthpoint = static_cast<HealthPointText *>(Scene::get().find_object_by_name("HealthPointText"));
 
         if (distance(x_center, y_center, arrow->x_center, arrow->y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
             if (!enable_invisbility_frame) {

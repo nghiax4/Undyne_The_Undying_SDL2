@@ -14,7 +14,7 @@ INCLUDE_FLAGS = -Isrc -Isrc/attacks
 LIBRARY_FLAGS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 
 # Combine all flags for the Desktop build
-DESKTOP_COMPILE_FLAGS = $(DEBUG_FLAGS) $(SANITIZER_FLAGS) $(INCLUDE_FLAGS)
+DESKTOP_COMPILE_FLAGS = -Wall -Wextra $(DEBUG_FLAGS) $(SANITIZER_FLAGS) $(INCLUDE_FLAGS)
 
 # The final executable file path
 DESKTOP_EXECUTABLE = $(DESKTOP_OUTPUT_DIRECTORY)/$(APP_NAME)

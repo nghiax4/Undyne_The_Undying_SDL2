@@ -5,7 +5,7 @@
 #include "core/Engine.h"
 #include <string>
 
-White_Arrow_Medium_Box_Attack::White_Arrow_Medium_Box_Attack(int x_center, int y_center, int x_target, int y_target, std::string obj_name, int delay_before_charge_ms) : x_center(x_center), y_center(y_center), x_target(x_target), y_target(y_target), dx(x_target - x_center), dy(y_target - y_center), delay_before_charge_ms(delay_before_charge_ms), v_x(Engine::get().get_screen_width() * 0.0008), v_y(Engine::get().get_screen_height() * 0.0008) {
+White_Arrow_Medium_Box_Attack::White_Arrow_Medium_Box_Attack(int x_center, int y_center, int x_target, int y_target, std::string obj_name, int delay_before_charge_ms) : x_center(x_center), y_center(y_center), x_target(x_target), y_target(y_target), dx(x_target - x_center), dy(y_target - y_center), v_x(Engine::get().get_screen_width() * 0.0008), v_y(Engine::get().get_screen_height() * 0.0008), delay_before_charge_ms(delay_before_charge_ms) {
     target_angle = std::atan2(dy, dx) * 180.0 / M_PI + 90.0;
     this->obj_name = obj_name;
     width = Engine::get().get_screen_width() * 0.025;

@@ -12,6 +12,7 @@
 #include "Utils.h"
 #include "VirtualController.h"
 #include "core/Engine.h"
+#include "core/Scene.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
@@ -27,12 +28,9 @@ const int FPS = 100;
 const int FRAME_DELAY = 1000 / FPS;
 
 Mix_Music *song = nullptr;
-double deltaTime;
 int last_tick = 0;
 SDL_Event event;
-SDL_Window *window;
-SDL_Renderer *renderer;
-std::vector<std::unique_ptr<GameObject>> objs;
+// std::vector<std::unique_ptr<GameObject>> objs;
 std::vector<Uint8> prev_keyboard_state;
 std::vector<Uint8> cur_keyboard_state;
 int time_since_enemy_turn = 0;
@@ -78,32 +76,32 @@ void start_music() {
     Mix_PlayMusic(song, -1);
 }
 
-int main(int argc, char *args[]) {
+int main(int, char *[]) {
     Engine::get().init("Undyne SDL2 Refactored", SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    objs.push_back(std::make_unique<Player>(1, 1));
+    Scene::get().spawn(std::make_unique<Player>(1, 1));
 
     std::vector<std::unique_ptr<MenuButton>> menu_buttons = init_menu_buttons(0.2 * SCREEN_WIDTH);
     const int first_btn_y_center = menu_buttons.at(0)->y_center;
     const int first_btn_height = menu_buttons.at(0)->height;
 
     for (auto &menu_button : menu_buttons) {
-        objs.push_back(std::move(menu_button));
+        Scene::get().spawn(std::move(menu_button));
     }
 
     auto battlebox = std::make_unique<BattleBox>(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.67, SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.3);
     global_battlebox = battlebox.get();
-    objs.push_back(std::move(battlebox));
-    objs.push_back(std::make_unique<Undyne>(SCREEN_WIDTH * 0.57, SCREEN_HEIGHT / 4, SCREEN_HEIGHT * 0.48));
-    objs.push_back(std::make_unique<SelectedMenuButtonContainer>());
-    objs.push_back(std::make_unique<GameManager>());
-    objs.push_back(std::make_unique<HealthPointText>(SCREEN_WIDTH / 2, (global_battlebox->y_center + global_battlebox->height / 2 + first_btn_y_center - first_btn_height / 2) / 2));
-    objs.push_back(std::make_unique<BattleText>());
-    objs.push_back(std::make_unique<HelpText>());
+    Scene::get().spawn(std::move(battlebox));
+    Scene::get().spawn(std::make_unique<Undyne>(SCREEN_WIDTH * 0.57, SCREEN_HEIGHT / 4, SCREEN_HEIGHT * 0.48));
+    Scene::get().spawn(std::make_unique<SelectedMenuButtonContainer>());
+    Scene::get().spawn(std::make_unique<GameManager>());
+    Scene::get().spawn(std::make_unique<HealthPointText>(SCREEN_WIDTH / 2, (global_battlebox->y_center + global_battlebox->height / 2 + first_btn_y_center - first_btn_height / 2) / 2));
+    Scene::get().spawn(std::make_unique<BattleText>());
+    Scene::get().spawn(std::make_unique<HelpText>());
 
     std::unique_ptr<VirtualController> virtual_controller_ptr = std::make_unique<VirtualController>();
     global_virtual_controller = virtual_controller_ptr.get();
-    objs.push_back(std::move(virtual_controller_ptr));
+    Scene::get().spawn(std::move(virtual_controller_ptr));
 
     start_music();
 
@@ -130,26 +128,15 @@ int main(int argc, char *args[]) {
         // Force virtual controller to update first before any other objects
         global_virtual_controller->update();
 
-        _remove_objs_that_are_to_be_removed();
-        // _print_objs_names();
-        _verify_objs_correct();
+        Scene::get().cleanup_marked_objects();
 
-        // Use index instead of iterator to handle vector resizing during update
-        for (size_t i = 0; i < objs.size(); i++) {
-            objs[i]->update();
-        }
+        Scene::get().update_all();
+
+        Scene::get().debug_verify_nonempty_names();
 
         Engine::get().clear_screen();
 
-        sort(objs.begin(), objs.end(), [](const std::unique_ptr<GameObject> &obj1, const std::unique_ptr<GameObject> &obj2) {
-            return obj1->z_index < obj2->z_index;
-        });
-
-        for (auto &obj : objs) {
-            if (obj->show) {
-                obj->render();
-            }
-        }
+        Scene::get().render_all();
 
         Engine::get().present_screen();
 
@@ -164,5 +151,7 @@ int main(int argc, char *args[]) {
 
         prev_keyboard_state = cur_keyboard_state;
     }
+
+    Engine::get().cleanup();
     return 0;
 }

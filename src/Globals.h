@@ -5,7 +5,6 @@
 #include <memory>
 #include <vector>
 
-extern std::vector<std::unique_ptr<GameObject>> objs;
 extern BattleBox *global_battlebox;
 extern int time_since_enemy_turn;
 extern int current_attack_idx;

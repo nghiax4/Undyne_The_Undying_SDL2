@@ -7,7 +7,7 @@ struct Undyne : public GameObject {
     const double UNDYNE_SPRITE_WIDTH_OVER_HEIGHT = 314.0 / 246;
     const int MILLISECOND_BETWEEN_SPRITE_FRAME = 30;
 
-    int x_center, y_center, width, height;
+    int x_center, y_center, height, width;
     double time_elapsed_since_last_sprite_frame = 0;
     int current_sprite_frame = 0;
     const int NUM_OF_SPRITE_FRAMES = 107;

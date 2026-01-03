@@ -8,6 +8,7 @@
 #include "Shield.h"
 #include "Utils.h"
 #include "core/Engine.h"
+#include "core/Scene.h"
 
 GameManager::GameManager() {
     obj_name = "GameManager";
@@ -29,8 +30,8 @@ void GameManager::update() {
 
         current_attack_idx += 1;
 
-        if (!object_by_name_exists("BattleText")) {
-            objs.push_back(std::make_unique<BattleText>());
+        if (!Scene::get().object_exists("BattleText")) {
+            Scene::get().spawn(std::make_unique<BattleText>());
         }
     }
 
@@ -44,11 +45,11 @@ void GameManager::render() {}
 
 void GameManager::play_attack(int attack_idx) {
     Attack_Manager_Base_Class *attack = AttackRegistry::create_attack(attack_idx);
-    objs.push_back(std::unique_ptr<Attack_Manager_Base_Class>(attack));
+    Scene::get().spawn(std::unique_ptr<Attack_Manager_Base_Class>(attack));
 }
 
 Attack_Manager_Base_Class *GameManager::find_attack_manager() {
-    for (auto &obj : objs) {
+    for (auto &obj : Scene::get().get_objects()) {
         if (obj->obj_name.find("Attack_Manager_") == 0) {
             return static_cast<Attack_Manager_Base_Class *>(obj.get());
         }

@@ -1,10 +1,11 @@
 #include "Shield.h"
 #include "GameObject.h"
-#include "core/Engine.h"
 #include "Globals.h"
 #include "Player_EnemyTurn_Green.h"
 #include "Utils.h"
+#include "core/Engine.h"
 #include "core/Scene.h"
+#include "core/Input.h"
 
 Shield::Shield() : width(Engine::get().get_screen_width() * 0.1), height(Engine::get().get_screen_height() * 0.007), distance_from_soul(Engine::get().get_screen_height() * 0.07) {
     texture = loadTexture("sprites/shield.png");
@@ -15,20 +16,22 @@ Shield::Shield() : width(Engine::get().get_screen_width() * 0.1), height(Engine:
 void Shield::update() {
     Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(Scene::get().find_object_by_name("Player_EnemyTurn_Green"));
 
-    if (cur_keyboard_state[SDL_SCANCODE_UP]) {
+    if (Input::get().is_key_down(SDL_SCANCODE_UP)) {
         target_angle = 270;
     }
-    if (cur_keyboard_state[SDL_SCANCODE_RIGHT]) {
+    if (Input::get().is_key_down(SDL_SCANCODE_RIGHT)) {
         target_angle = 0;
     }
-    if (cur_keyboard_state[SDL_SCANCODE_DOWN]) {
+    if (Input::get().is_key_down(SDL_SCANCODE_DOWN)) {
         target_angle = 90;
     }
-    if (cur_keyboard_state[SDL_SCANCODE_LEFT]) {
+    if (Input::get().is_key_down(SDL_SCANCODE_LEFT)) {
         target_angle = 180;
     }
 
-    auto mod360 = [](double x) { return std::fmod(std::fmod(x, 360.0) + 360.0, 360.0); };
+    auto mod360 = [](double x) {
+        return std::fmod(std::fmod(x, 360.0) + 360.0, 360.0);
+    };
 
     double increment_distance = mod360(target_angle - cur_angle);
     double decrement_distance = mod360(cur_angle - target_angle);

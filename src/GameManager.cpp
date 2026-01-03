@@ -9,6 +9,7 @@
 #include "Utils.h"
 #include "core/Engine.h"
 #include "core/Scene.h"
+#include "core/Input.h"
 
 GameManager::GameManager() {
     obj_name = "GameManager";
@@ -35,7 +36,7 @@ void GameManager::update() {
         }
     }
 
-    if (current_turn == Turn::PlayerTurn && cur_keyboard_state[SDL_SCANCODE_RETURN]) {
+    if (current_turn == Turn::PlayerTurn && Input::get().is_key_down(SDL_SCANCODE_RETURN)) {
         current_turn = Turn::EnemyTurn;
         play_attack(current_attack_idx);
     }

@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "Utils.h"
 #include "core/Engine.h"
+#include "core/Input.h"
 
 VirtualController::VirtualController() {
     obj_name = "VirtualController";
@@ -73,7 +74,7 @@ void VirtualController::update() {
 
             for (const auto &button : buttons) {
                 if (SDL_PointInRect(&touch_point, &button.screen_area)) {
-                    cur_keyboard_state[button.scancode_target] = 1;
+                    Input::get().set_virtual_key(button.scancode_target, true);
                 }
             }
         }

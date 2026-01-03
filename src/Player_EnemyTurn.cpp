@@ -8,6 +8,7 @@
 #include "White_Arrow_Small_Box_Attack.h"
 #include "core/Engine.h"
 #include "core/Scene.h"
+#include "core/Input.h"
 
 template <typename AttackType>
 void apply_collision_logic_for_type(Player_EnemyTurn *player) {
@@ -63,18 +64,18 @@ void Player_EnemyTurn::update() {
     }
 
     int x_multiplier = 0;
-    if (cur_keyboard_state[SDL_SCANCODE_LEFT]) {
+    if (Input::get().is_key_down(SDL_SCANCODE_LEFT)) {
         x_multiplier = -1;
     }
-    if (cur_keyboard_state[SDL_SCANCODE_RIGHT]) {
+    if (Input::get().is_key_down(SDL_SCANCODE_RIGHT)) {
         x_multiplier = 1;
     }
 
     int y_multiplier = 0;
-    if (cur_keyboard_state[SDL_SCANCODE_UP]) {
+    if (Input::get().is_key_down(SDL_SCANCODE_UP)) {
         y_multiplier = -1;
     }
-    if (cur_keyboard_state[SDL_SCANCODE_DOWN]) {
+    if (Input::get().is_key_down(SDL_SCANCODE_DOWN)) {
         y_multiplier = 1;
     }
 

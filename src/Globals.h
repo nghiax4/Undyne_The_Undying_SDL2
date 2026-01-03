@@ -10,8 +10,8 @@ extern int time_since_enemy_turn;
 extern int current_attack_idx;
 extern SDL_Event event;
 extern Turn current_turn;
-extern std::vector<Uint8> prev_keyboard_state;
-extern std::vector<Uint8> cur_keyboard_state;
+// extern std::vector<Uint8> prev_keyboard_state;
+// extern std::vector<Uint8> cur_keyboard_state;
 
 // Direction represents where the arrow points
 enum class Direction { UP,

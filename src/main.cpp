@@ -12,6 +12,7 @@
 #include "Utils.h"
 #include "VirtualController.h"
 #include "core/Engine.h"
+#include "core/Input.h"
 #include "core/Scene.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
@@ -31,8 +32,8 @@ Mix_Music *song = nullptr;
 int last_tick = 0;
 SDL_Event event;
 // std::vector<std::unique_ptr<GameObject>> objs;
-std::vector<Uint8> prev_keyboard_state;
-std::vector<Uint8> cur_keyboard_state;
+// std::vector<Uint8> prev_keyboard_state;
+// std::vector<Uint8> cur_keyboard_state;
 int time_since_enemy_turn = 0;
 int current_attack_idx = 0;
 Turn current_turn = Turn::PlayerTurn;
@@ -118,15 +119,9 @@ int main(int, char *[]) {
             }
         }
 
-        int num_keys;
-        const Uint8 *sdl_keys = SDL_GetKeyboardState(&num_keys);
-        cur_keyboard_state.assign(sdl_keys, sdl_keys + num_keys);
-        if (prev_keyboard_state.empty()) {
-            prev_keyboard_state.resize(num_keys, 0);
-        }
-
-        // Force virtual controller to update first before any other objects
+        // Force virtual controller and input handler to update first before any other objects
         global_virtual_controller->update();
+        Input::get().update();
 
         Scene::get().cleanup_marked_objects();
 
@@ -148,8 +143,6 @@ int main(int, char *[]) {
         // Gemini's solution to making the code work in both desktop and emscripten
         // Gemini explained: yields the CPU to the operating system’s scheduler
         SDL_Delay(0);
-
-        prev_keyboard_state = cur_keyboard_state;
     }
 
     Engine::get().cleanup();

@@ -1,16 +1,12 @@
+#include "Utils.h"
 #include "GameObject.h"
 #include "Globals.h"
-#include <SDL2/SDL.h>
+#include "core/Engine.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <algorithm>
-#include <cassert>
 #include <map>
 #include <random>
-#include <stdexcept>
-#include <stdio.h>
-#include <string>
-#include <vector>
 
 SDL_Texture *loadTexture(SDL_Renderer *renderer, std::string path) {
     static std::map<std::string, SDL_Texture *> texture_cache;
@@ -20,16 +16,13 @@ SDL_Texture *loadTexture(SDL_Renderer *renderer, std::string path) {
         return texture_cache_find_iterator->second;
     }
 
-    // The final texture
-    SDL_Texture *newTexture = NULL;
-
     // Load image at specified path
     SDL_Surface *loadedSurface = IMG_Load(path.c_str());
     if (loadedSurface == NULL) {
         throw std::runtime_error("Unable to load image " + path + "! SDL_image Error: " + IMG_GetError());
     }
     // Create texture from surface pixels
-    newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    SDL_Texture *newTexture = SDL_CreateTextureFromSurface(Engine::get().get_renderer(), loadedSurface);
     // Get rid of old loaded surface
     SDL_FreeSurface(loadedSurface);
 
@@ -104,7 +97,7 @@ void _print_objs_names() {
 }
 
 void play_sound_effect(std::string path) {
-    // Instead of using Mix_FreeChunk, use a cache to keep chunks in memory so we don't accidentally free audio while it's playing (and to avoid slow disk I/O!)
+    // Instead of using Mix_FreeChunk, use a cache to keep chunks in memory so we don't accidentally free audio while it's playing (and to avoid slow disk I/O)
     static std::map<std::string, Mix_Chunk *> sound_cache;
 
     Mix_Chunk *chunk = nullptr;

@@ -1,14 +1,9 @@
 #pragma once
-#include "GameObject.h"
-#include "Globals.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <cassert>
 #include <memory>
-#include <stdexcept>
-#include <stdio.h>
 #include <string>
-#include <vector>
+
+struct GameObject;
 
 // Define a functor (a struct that acts like a function) to destroy textures
 struct TextureDeleter {
@@ -20,7 +15,7 @@ struct TextureDeleter {
 
 using SmartTexture = std::unique_ptr<SDL_Texture, TextureDeleter>;
 
-SDL_Texture *loadTexture(SDL_Renderer *renderer, std::string path);
+SDL_Texture *loadTexture(std::string path);
 
 GameObject *find_object_by_name(std::string obj_name);
 

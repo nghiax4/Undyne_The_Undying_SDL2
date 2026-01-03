@@ -1,6 +1,7 @@
 #include "Ring_Spear.h"
 #include "Utils.h"
 #include "White_Arrow_Medium_Box_Attack.h"
+#include "core/Engine.h"
 #include <algorithm>
 #include <cmath>
 
@@ -12,23 +13,23 @@ Ring_Spear::Ring_Spear(double x, double y, double angle_deg, double radius, std:
     // Calculate speed so it reaches center exactly when TRAVEL_DURATION_MS passes
     charge_speed = radius / TRAVEL_DURATION_MS;
 
-    width = SCREEN_WIDTH * 0.025;
+    width = Engine::get().get_screen_width() * 0.025;
     height = width / White_Arrow_Medium_Box_Attack::SPRITE_WIDTH_TO_HEIGHT;
 
     x_center = origin_x + current_radius * std::cos(current_angle_rad);
     y_center = origin_y + current_radius * std::sin(current_angle_rad);
 
-    texture = loadTexture(renderer, "sprites/white_arrow.png");
+    texture = loadTexture("sprites/white_arrow.png");
     SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(texture, 0); // Start invisible
 }
 
 void Ring_Spear::update() {
-    time_alive += deltaTime;
+    time_alive += Engine::get().get_delta_time();
 
     // Stage 3: Charge
     if (time_alive >= (SPIN_DURATION_MS + LOCK_DURATION_MS)) {
-        current_radius -= charge_speed * deltaTime;
+        current_radius -= charge_speed * Engine::get().get_delta_time();
 
         if (current_radius <= 0) {
             to_be_removed = true;
@@ -59,5 +60,5 @@ void Ring_Spear::render() {
         final_render_angle += spin_offset;
     }
 
-    SDL_RenderCopyEx(renderer, texture, nullptr, &rect, final_render_angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(Engine::get().get_renderer(), texture, nullptr, &rect, final_render_angle, NULL, SDL_FLIP_NONE);
 }

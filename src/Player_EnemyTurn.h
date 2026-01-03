@@ -4,7 +4,7 @@
 #include "Utils.h"
 
 struct Player_EnemyTurn : public GameObject {
-    const double v_x = SCREEN_WIDTH * 0.0003, v_y = SCREEN_WIDTH * 0.0003;
+    const double v_x, v_y;
     double x_center, y_center;
     int width, height;
     SDL_Texture *texture;

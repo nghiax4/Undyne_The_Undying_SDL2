@@ -5,8 +5,8 @@
 
 struct White_Arrow_Small_Box_Attack : public GameObject {
     const double SPRITE_WIDTH_TO_HEIGHT = 60.0 / 196;
-    const double GETTING_READY_V_Y = SCREEN_HEIGHT * 0.00015;
-    const double CHARGE_V_Y = SCREEN_HEIGHT * 0.0008;
+    const double GETTING_READY_V_Y = Engine::get().get_screen_height() * 0.00015;
+    const double CHARGE_V_Y = Engine::get().get_screen_height() * 0.0008;
 
     bool played_ready_sound = false;
     bool played_charge_sound = false;

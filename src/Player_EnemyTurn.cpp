@@ -6,6 +6,7 @@
 #include "Utils.h"
 #include "White_Arrow_Medium_Box_Attack.h"
 #include "White_Arrow_Small_Box_Attack.h"
+#include "core/Engine.h"
 
 template <typename AttackType>
 void apply_collision_logic_for_type(Player_EnemyTurn *player) {
@@ -37,15 +38,15 @@ void apply_collision_logic_for_type(Player_EnemyTurn *player) {
     }
 }
 
-Player_EnemyTurn::Player_EnemyTurn(int x_center, int y_center) : width(SCREEN_WIDTH * 0.03), height(SCREEN_WIDTH * 0.03) {
-    texture = loadTexture(renderer, "sprites/soul.png");
+Player_EnemyTurn::Player_EnemyTurn(int x_center, int y_center) : width(Engine::get().get_screen_width() * 0.03), height(Engine::get().get_screen_width() * 0.03), v_x(Engine::get().get_screen_width() * 0.0003), v_y(Engine::get().get_screen_width() * 0.0003) {
+    texture = loadTexture("sprites/soul.png");
     obj_name = "Player_EnemyTurn";
     this->z_index = 3;
 }
 
 void Player_EnemyTurn::update() {
-    time_elapsed_since_invisibility_frame += deltaTime;
-    time_elapsed_since_transparent += deltaTime;
+    time_elapsed_since_invisibility_frame += Engine::get().get_delta_time();
+    time_elapsed_since_transparent += Engine::get().get_delta_time();
 
     if (enable_invisbility_frame == true) {
         if (time_elapsed_since_transparent >= 140) {
@@ -76,8 +77,8 @@ void Player_EnemyTurn::update() {
         y_multiplier = 1;
     }
 
-    x_center += x_multiplier * v_x * deltaTime;
-    y_center += y_multiplier * v_y * deltaTime;
+    x_center += x_multiplier * v_x * Engine::get().get_delta_time();
+    y_center += y_multiplier * v_y * Engine::get().get_delta_time();
 
     x_center = std::max(x_center, (double)(global_battlebox->x_center - global_battlebox->width / 2 + width / 2));
     x_center = std::min(x_center, (double)(global_battlebox->x_center + global_battlebox->width / 2 - width / 2));
@@ -95,5 +96,5 @@ void Player_EnemyTurn::render() {
     SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), (int)width, (int)height};
     SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(texture, render_texture_transparent ? 128 : 255);
-    SDL_RenderCopy(renderer, texture, NULL, &rect);
+    SDL_RenderCopy(Engine::get().get_renderer(), texture, NULL, &rect);
 }

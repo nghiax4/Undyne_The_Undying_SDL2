@@ -2,23 +2,24 @@
 #include "Player_EnemyTurn_Green.h"
 #include "Shield.h"
 #include "Utils.h"
+#include "core/Engine.h"
 #include <algorithm>
 
 Arrow_For_Green_Attack::Arrow_For_Green_Attack(double x_center, double y_center, double v_x, double v_y, Direction direction, std::string obj_name, ArrowType arrow_type) : x_center(x_center), y_center(y_center), v_x(v_x), v_y(v_y), direction(direction), arrow_type(arrow_type) {
-    height = SCREEN_HEIGHT * 0.06;
+    height = Engine::get().get_screen_height() * 0.06;
     width = height * SPRITE_WIDTH_TO_HEIGHT_RATIO;
 
     this->obj_name = obj_name;
     z_index = 4;
 
     std::string sprite_path = arrow_type == ArrowType::Yellow ? "sprites/down_arrow_yellow.png" : "sprites/down_arrow.png";
-    texture = loadTexture(renderer, sprite_path);
+    texture = loadTexture(sprite_path);
 }
 
 void Arrow_For_Green_Attack::update() {
     if (state == State::APPROACHING_BEFORE_ROTATE || state == State::APPROACHING_AFTER_ROTATE) {
-        x_center += v_x * deltaTime;
-        y_center += v_y * deltaTime;
+        x_center += v_x * Engine::get().get_delta_time();
+        y_center += v_y * Engine::get().get_delta_time();
     }
 
     Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(find_object_by_name("Player_EnemyTurn_Green"));
@@ -40,7 +41,7 @@ void Arrow_For_Green_Attack::update() {
     }
 
     if (state == State::ROTATING) {
-        double rotation_speed = ROTATION_SPEED_DEGREE_PER_MS * deltaTime;
+        double rotation_speed = ROTATION_SPEED_DEGREE_PER_MS * Engine::get().get_delta_time();
 
         orbit_angle_deg = std::min(orbit_angle_deg + rotation_speed, target_orbit_angle_deg);
 
@@ -96,5 +97,5 @@ void Arrow_For_Green_Attack::render() {
         angle = 90;
     }
 
-    SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(Engine::get().get_renderer(), texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 }

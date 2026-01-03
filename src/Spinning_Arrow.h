@@ -4,7 +4,7 @@
 #include "Utils.h"
 
 struct Spinning_Arrow : public GameObject {
-    const double RADIAL_SPEED_PIXELS_PER_MS = SCREEN_WIDTH * 0.00017;
+    const double radial_speed_pixels_per_ms;
     const double TRAVEL_DURATION_MS = 1800.0;
     const double INITIAL_ANGULAR_SPEED_RAD_PER_MS = 0.006;
     const double FADE_DURATION_MS = 234.0;

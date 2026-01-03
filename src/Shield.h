@@ -9,7 +9,7 @@
 struct Shield : public GameObject {
     double x_center, y_center;
     int width, height;
-    const double distance_from_soul = SCREEN_HEIGHT * 0.07;
+    const double distance_from_soul;
     double cur_angle = 0, target_angle = 0;
     SDL_Texture *texture;
 

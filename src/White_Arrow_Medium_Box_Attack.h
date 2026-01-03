@@ -9,7 +9,7 @@ struct White_Arrow_Medium_Box_Attack : public GameObject {
     int width, height;
     double dx, dy;
 
-    const double v_x = SCREEN_WIDTH * 0.0008, v_y = SCREEN_HEIGHT * 0.0008;
+    const double v_x, v_y;
 
     SDL_Texture *texture;
     int time_elapsed_since_creation = 0;

@@ -36,6 +36,6 @@ void White_Arrow_Medium_Box_Attack::update() {
 void White_Arrow_Medium_Box_Attack::render() {
     // Reset transparency in case a Spinning_Arrow made the texture transparent
     SDL_SetTextureAlphaMod(texture, 255);
-    SDL_Rect rect{x_center - width / 2, y_center - height / 2, width, height};
+    SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), width, height};
     SDL_RenderCopyEx(renderer, texture, nullptr, &rect, angle, NULL, SDL_FLIP_NONE);
 }

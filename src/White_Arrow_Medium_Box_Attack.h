@@ -5,7 +5,8 @@
 
 struct White_Arrow_Medium_Box_Attack : public GameObject {
     constexpr static double SPRITE_WIDTH_TO_HEIGHT = 60.0 / 196;
-    int x_center, y_center, x_target, y_target, width, height;
+    double x_center, y_center, x_target, y_target;
+    int width, height;
     double dx, dy;
 
     const double v_x = SCREEN_WIDTH * 0.0008, v_y = SCREEN_HEIGHT * 0.0008;

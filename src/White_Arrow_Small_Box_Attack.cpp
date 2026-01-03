@@ -7,7 +7,7 @@
 White_Arrow_Small_Box_Attack::White_Arrow_Small_Box_Attack(double x_center, double y_center, std::string obj_name, int total_time_before_charge_ms) : x_center(x_center), y_center(y_center) {
     width = global_battlebox->width * 0.25;
     height = width / SPRITE_WIDTH_TO_HEIGHT;
-    texture = loadTexture("sprites/white_arrow.png");
+    texture = ResourceManager::get().get_texture("sprites/white_arrow.png");
     this->obj_name = obj_name;
     this->z_index = 5;
 
@@ -51,7 +51,7 @@ void White_Arrow_Small_Box_Attack::update() {
 }
 
 void White_Arrow_Small_Box_Attack::render() {
-    SDL_SetTextureAlphaMod(texture, 255);
+    SDL_SetTextureAlphaMod(texture.get(), 255);
     SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), width, height};
-    SDL_RenderCopy(Engine::get().get_renderer(), texture, NULL, &rect);
+    SDL_RenderCopy(Engine::get().get_renderer(), texture.get(), NULL, &rect);
 }

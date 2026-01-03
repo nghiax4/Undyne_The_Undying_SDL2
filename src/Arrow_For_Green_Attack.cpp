@@ -14,7 +14,7 @@ Arrow_For_Green_Attack::Arrow_For_Green_Attack(double x_center, double y_center,
     z_index = 4;
 
     std::string sprite_path = arrow_type == ArrowType::Yellow ? "sprites/down_arrow_yellow.png" : "sprites/down_arrow.png";
-    texture = loadTexture(sprite_path);
+    texture = ResourceManager::get().get_texture(sprite_path);
 }
 
 void Arrow_For_Green_Attack::update() {
@@ -98,5 +98,5 @@ void Arrow_For_Green_Attack::render() {
         angle = 90;
     }
 
-    SDL_RenderCopyEx(Engine::get().get_renderer(), texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(Engine::get().get_renderer(), texture.get(), NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 }

@@ -13,6 +13,7 @@
 #include "VirtualController.h"
 #include "core/Engine.h"
 #include "core/Input.h"
+#include "core/ResourceManager.h"
 #include "core/Scene.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
@@ -70,11 +71,9 @@ std::vector<std::unique_ptr<MenuButton>> init_menu_buttons(int button_width) {
 }
 
 void start_music() {
-    song = Mix_LoadMUS("audio/music.ogg");
-    if (song == NULL) {
-        throw std::runtime_error(std::string("Failed to load music: ") + Mix_GetError());
-    }
-    Mix_PlayMusic(song, -1);
+    // "static" keeps the song not freed for the lifetime of the game
+    static SmartMusic song = ResourceManager::get().get_music("audio/music.ogg");
+    Mix_PlayMusic(song.get(), -1);
 }
 
 int main(int, char *[]) {

@@ -11,7 +11,7 @@ struct Shield : public GameObject {
     int width, height;
     const double distance_from_soul;
     double cur_angle = 0, target_angle = 0;
-    SDL_Texture *texture;
+    SmartTexture texture;
 
     Shield();
 

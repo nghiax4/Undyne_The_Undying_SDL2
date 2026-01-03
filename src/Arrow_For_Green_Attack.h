@@ -26,7 +26,7 @@ struct Arrow_For_Green_Attack : public GameObject {
 
     // Dont use SmartTexture here or it will delete the cached texture when the arrow dies
     // Same applies to other projectiles
-    SDL_Texture *texture;
+    SmartTexture texture;
 
     Arrow_For_Green_Attack(double x_center, double y_center, double v_x, double v_y, Direction direction, std::string obj_name, ArrowType arrow_type);
     virtual void update() override;

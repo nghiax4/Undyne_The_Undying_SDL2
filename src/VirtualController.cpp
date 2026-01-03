@@ -8,8 +8,8 @@ VirtualController::VirtualController() {
     obj_name = "VirtualController";
     z_index = 999;
 
-    arrow_texture.reset(loadTexture("sprites/control_up_arrow.png"));
-    enter_texture.reset(loadTexture("sprites/control_enter_key.png"));
+    arrow_texture = ResourceManager::get().get_texture("sprites/control_up_arrow.png");
+    enter_texture = ResourceManager::get().get_texture("sprites/control_enter_key.png");
 
     SDL_SetTextureBlendMode(arrow_texture.get(), SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(arrow_texture.get(), 128);

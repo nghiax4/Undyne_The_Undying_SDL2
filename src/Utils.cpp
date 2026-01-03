@@ -9,32 +9,32 @@
 #include <map>
 #include <random>
 
-SDL_Texture *loadTexture(std::string path) {
-    static std::map<std::string, SDL_Texture *> texture_cache;
+// SDL_Texture *loadTexture(std::string path) {
+//     static std::map<std::string, SDL_Texture *> texture_cache;
 
-    auto texture_cache_find_iterator = texture_cache.find(path);
-    if (texture_cache_find_iterator != texture_cache.end()) {
-        return texture_cache_find_iterator->second;
-    }
+//     auto texture_cache_find_iterator = texture_cache.find(path);
+//     if (texture_cache_find_iterator != texture_cache.end()) {
+//         return texture_cache_find_iterator->second;
+//     }
 
-    // Load image at specified path
-    SDL_Surface *loadedSurface = IMG_Load(path.c_str());
-    if (loadedSurface == NULL) {
-        throw std::runtime_error("Unable to load image " + path + "! SDL_image Error: " + IMG_GetError());
-    }
-    // Create texture from surface pixels
-    SDL_Texture *newTexture = SDL_CreateTextureFromSurface(Engine::get().get_renderer(), loadedSurface);
-    // Get rid of old loaded surface
-    SDL_FreeSurface(loadedSurface);
+//     // Load image at specified path
+//     SDL_Surface *loadedSurface = IMG_Load(path.c_str());
+//     if (loadedSurface == NULL) {
+//         throw std::runtime_error("Unable to load image " + path + "! SDL_image Error: " + IMG_GetError());
+//     }
+//     // Create texture from surface pixels
+//     SDL_Texture *newTexture = SDL_CreateTextureFromSurface(Engine::get().get_renderer(), loadedSurface);
+//     // Get rid of old loaded surface
+//     SDL_FreeSurface(loadedSurface);
 
-    if (newTexture == NULL) {
-        throw std::runtime_error("Unable to create texture from " + path + "! SDL Error: " + SDL_GetError());
-    }
+//     if (newTexture == NULL) {
+//         throw std::runtime_error("Unable to create texture from " + path + "! SDL Error: " + SDL_GetError());
+//     }
 
-    texture_cache[path] = newTexture;
+//     texture_cache[path] = newTexture;
 
-    return newTexture;
-}
+//     return newTexture;
+// }
 
 void _print_all_objs_names() {
     printf("All objects names:\n");
@@ -69,22 +69,8 @@ void _print_objs_names() {
 }
 
 void play_sound_effect(std::string path) {
-    // Instead of using Mix_FreeChunk, use a cache to keep chunks in memory so we don't accidentally free audio while it's playing (and to avoid slow disk I/O)
-    static std::map<std::string, Mix_Chunk *> sound_cache;
-
-    Mix_Chunk *chunk = nullptr;
-
-    if (sound_cache.find(path) == sound_cache.end()) {
-        chunk = Mix_LoadWAV(path.c_str());
-        if (!chunk) {
-            throw std::runtime_error(std::string("Failed to load SFX: ") + Mix_GetError());
-        }
-        sound_cache[path] = chunk;
-    } else {
-        chunk = sound_cache[path];
-    }
-
-    Mix_PlayChannel(-1, chunk, 0); // -1 = first free channel, 0 = play once
+    SmartChunk chunk = ResourceManager::get().get_sound(path);
+    Mix_PlayChannel(-1, chunk.get(), 0); // -1 = first free channel, 0 = play once
 }
 
 double distance(double x1, double y1, double x2, double y2) {

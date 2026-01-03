@@ -2,20 +2,11 @@
 #include <SDL2/SDL.h>
 #include <memory>
 #include <string>
+#include "core/ResourceManager.h"
 
 struct GameObject;
 
-// Define a functor (a struct that acts like a function) to destroy textures
-struct TextureDeleter {
-    void operator()(SDL_Texture *t) const {
-        if (t)
-            SDL_DestroyTexture(t);
-    }
-};
-
-using SmartTexture = std::unique_ptr<SDL_Texture, TextureDeleter>;
-
-SDL_Texture *loadTexture(std::string path);
+// SDL_Texture *loadTexture(std::string path);
 
 void _print_all_objs_names();
 

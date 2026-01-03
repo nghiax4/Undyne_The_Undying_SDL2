@@ -2,12 +2,13 @@
 #include "Player.h"
 #include "Utils.h"
 #include "core/Engine.h"
+#include "core/ResourceManager.h"
 #include "core/Scene.h"
 
 MenuButton::MenuButton(int x_center, int y_center, int width, int height, std::string sprite_unselected_path, std::string sprite_selected_path, int button_index) : x_center(x_center), y_center(y_center), width(width), height(height), sprite_unselected_path(sprite_unselected_path), sprite_selected_path(sprite_selected_path) {
     obj_name = "Menu_Button_" + std::to_string(button_index);
-    texture_unselected_obj.reset(loadTexture(sprite_unselected_path));
-    texture_selected_obj.reset(loadTexture(sprite_selected_path));
+    texture_unselected_obj = ResourceManager::get().get_texture(sprite_unselected_path);
+    texture_selected_obj = ResourceManager::get().get_texture(sprite_selected_path);
 }
 
 void MenuButton::update() {}

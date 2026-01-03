@@ -3,12 +3,13 @@
 #include "SelectedMenuButtonContainer.h"
 #include "Utils.h"
 #include "core/Engine.h"
+#include "core/ResourceManager.h"
 #include "core/Scene.h"
 #include <string>
 #include <vector>
 
 Player::Player(int x_center, int y_center) : x_center(x_center), y_center(y_center), width(Engine::get().get_screen_width() * 0.03), height(Engine::get().get_screen_width() * 0.03) {
-    player_texture.reset(loadTexture("sprites/soul.png"));
+    player_texture = ResourceManager::get().get_texture("sprites/soul.png");
     obj_name = "Player";
     this->z_index = 3;
 }

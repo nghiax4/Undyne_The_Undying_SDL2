@@ -13,8 +13,7 @@ Undyne::Undyne(int x_center, int y_center, int height) : x_center(x_center), y_c
 
         std::string path = "sprites/undyne_sprite/frame_" + frame_num + ".png";
 
-        SmartTexture tex(loadTexture(path));
-        sprite_frames.push_back(std::move(tex));
+        sprite_frames.push_back(ResourceManager::get().get_texture(path));
     }
 }
 

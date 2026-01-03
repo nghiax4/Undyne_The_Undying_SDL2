@@ -7,10 +7,7 @@
 
 HealthPointText::HealthPointText(int x_center, int y_center) : x_center(x_center), y_center(y_center) {
     obj_name = "HealthPointText";
-    font.reset(TTF_OpenFont("fonts/font.ttf", Engine::get().get_screen_height() * 0.03));
-    if (!font) {
-        throw std::runtime_error("Failed to load font: " + std::string(TTF_GetError()));
-    }
+    font = ResourceManager::get().get_font("fonts/font.ttf", Engine::get().get_screen_height() * 0.03);
 }
 
 void HealthPointText::update() {}

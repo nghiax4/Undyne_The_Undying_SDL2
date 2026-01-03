@@ -6,7 +6,6 @@
 #include <cmath>
 
 Ring_Spear::Ring_Spear(double x, double y, double angle_deg, double radius, std::string name) : origin_x(x), origin_y(y), current_radius(radius), current_angle_rad(angle_deg * M_PI / 180.0) {
-
     obj_name = name;
     z_index = 5;
 
@@ -19,9 +18,9 @@ Ring_Spear::Ring_Spear(double x, double y, double angle_deg, double radius, std:
     x_center = origin_x + current_radius * std::cos(current_angle_rad);
     y_center = origin_y + current_radius * std::sin(current_angle_rad);
 
-    texture = loadTexture("sprites/white_arrow.png");
-    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
-    SDL_SetTextureAlphaMod(texture, 0); // Start invisible
+    texture = ResourceManager::get().get_texture("sprites/white_arrow.png");
+    SDL_SetTextureBlendMode(texture.get(), SDL_BLENDMODE_BLEND);
+    SDL_SetTextureAlphaMod(texture.get(), 0); // Start invisible
 }
 
 void Ring_Spear::update() {
@@ -49,7 +48,7 @@ void Ring_Spear::render() {
     // Handle Opacity Fade-in
     // 0 to 1 over SPIN_DURATION_MS
     double alpha_ratio = std::min(1.0, time_alive / SPIN_DURATION_MS);
-    SDL_SetTextureAlphaMod(texture, (Uint8)(alpha_ratio * 255));
+    SDL_SetTextureAlphaMod(texture.get(), (Uint8)(alpha_ratio * 255));
 
     if (time_alive < SPIN_DURATION_MS) {
         // Linear Interpolation for Spin:
@@ -60,5 +59,5 @@ void Ring_Spear::render() {
         final_render_angle += spin_offset;
     }
 
-    SDL_RenderCopyEx(Engine::get().get_renderer(), texture, nullptr, &rect, final_render_angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(Engine::get().get_renderer(), texture.get(), nullptr, &rect, final_render_angle, NULL, SDL_FLIP_NONE);
 }

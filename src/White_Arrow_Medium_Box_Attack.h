@@ -11,7 +11,7 @@ struct White_Arrow_Medium_Box_Attack : public GameObject {
 
     const double v_x, v_y;
 
-    SDL_Texture *texture;
+    SmartTexture texture;
     int time_elapsed_since_creation = 0;
     int delay_before_charge_ms;
 

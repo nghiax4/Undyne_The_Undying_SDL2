@@ -19,15 +19,16 @@ Undyne::Undyne(int x_center, int y_center, int height) : x_center(x_center), y_c
 
 void Undyne::update() {
     time_elapsed_since_last_sprite_frame += deltaTime;
-    if (time_elapsed_since_last_sprite_frame > MILLISECOND_BETWEEN_SPRITE_FRAME) {
+    if (time_elapsed_since_last_sprite_frame >= MILLISECOND_BETWEEN_SPRITE_FRAME) {
         current_sprite_frame = (current_sprite_frame + 1) % NUM_OF_SPRITE_FRAMES;
-        time_elapsed_since_last_sprite_frame = 0;
+        // Subtract precisely to preserve fractional time drifts rather than hard reset to 0
+        time_elapsed_since_last_sprite_frame -= MILLISECOND_BETWEEN_SPRITE_FRAME;
     }
 }
 
 void Undyne::render() {
     SDL_Texture *texture = sprite_frames[current_sprite_frame].get();
     SDL_Rect rect = {x_center - width / 2, y_center - height / 2, width, height};
-    
+
     SDL_RenderCopy(renderer, texture, NULL, &rect);
 }

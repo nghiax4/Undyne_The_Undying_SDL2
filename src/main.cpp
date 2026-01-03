@@ -22,7 +22,7 @@
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
-const int FPS = 60;
+const int FPS = 100;
 const int FRAME_DELAY = 1000 / FPS;
 
 Mix_Music *song;

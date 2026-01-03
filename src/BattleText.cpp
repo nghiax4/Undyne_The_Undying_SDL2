@@ -1,5 +1,6 @@
 #include "BattleText.h"
 #include "Globals.h"
+#include "core/Engine.h"
 #include <algorithm>
 #include <cassert>
 
@@ -7,13 +8,13 @@ BattleText::BattleText() {
     obj_name = "BattleText";
     z_index = 3;
 
-    int font_size = SCREEN_HEIGHT * 0.07;
+    int font_size = Engine::get().get_screen_height() * 0.07;
     font.reset(TTF_OpenFont("fonts/determination-mono.otf", font_size));
     // printf("[DEBUG] BattleText created\n");
 }
 
 void BattleText::update() {
-    time_elapsed_since_spawn += deltaTime;
+    time_elapsed_since_spawn += Engine::get().get_delta_time();
 
     if (current_turn != Turn::PlayerTurn) {
         this->to_be_removed = true;
@@ -36,16 +37,16 @@ void BattleText::render() {
     if (!current_text.empty()) {
         SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(font.get(), current_text.c_str(), color, wrap_width);
 
-        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(Engine::get().get_renderer(), surface);
 
-        int padding_x = SCREEN_WIDTH * 0.023;
-        int padding_y = SCREEN_HEIGHT * 0.048;
+        int padding_x = Engine::get().get_screen_width() * 0.023;
+        int padding_y = Engine::get().get_screen_height() * 0.048;
 
         int x_pos = (global_battlebox->x_center - global_battlebox->width / 2) + padding_x;
         int y_pos = (global_battlebox->y_center - global_battlebox->height / 2) + padding_y;
 
         SDL_Rect dst_rect = {x_pos, y_pos, surface->w, surface->h};
-        SDL_RenderCopy(renderer, texture, NULL, &dst_rect);
+        SDL_RenderCopy(Engine::get().get_renderer(), texture, NULL, &dst_rect);
 
         SDL_FreeSurface(surface);
         SDL_DestroyTexture(texture);

@@ -2,14 +2,15 @@
 #include "BattleBox.h"
 #include "Player_EnemyTurn.h"
 #include "Utils.h"
+#include "core/Engine.h"
 
 Red_Mode_Manager::Red_Mode_Manager(int attack_id, int duration_ms, double box_center_y_ratio, double box_width_ratio, double box_height_ratio) : Attack_Manager_Base_Class(attack_id) {
     MILLISECONDS_LENGTH = duration_ms;
 
-    global_battlebox->x_center = SCREEN_WIDTH / 2;
-    global_battlebox->y_center = SCREEN_HEIGHT * box_center_y_ratio;
-    global_battlebox->width = SCREEN_WIDTH * box_width_ratio;
-    global_battlebox->height = SCREEN_HEIGHT * box_height_ratio;
+    global_battlebox->x_center = Engine::get().get_screen_width() / 2;
+    global_battlebox->y_center = Engine::get().get_screen_height() * box_center_y_ratio;
+    global_battlebox->width = Engine::get().get_screen_width() * box_width_ratio;
+    global_battlebox->height = Engine::get().get_screen_height() * box_height_ratio;
 
     Player_EnemyTurn *player = new Player_EnemyTurn(global_battlebox->x_center, global_battlebox->y_center);
     objs.push_back(std::unique_ptr<Player_EnemyTurn>(player));

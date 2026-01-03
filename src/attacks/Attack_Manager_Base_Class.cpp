@@ -2,6 +2,7 @@
 #include "Arrow_For_Green_Attack.h"
 #include "Globals.h"
 #include "Utils.h"
+#include "core/Engine.h"
 #include <Arrow_For_Green_Attack.h>
 #include <algorithm>
 
@@ -10,9 +11,13 @@ Attack_Manager_Base_Class::Attack_Manager_Base_Class(int _attack_id) : attack_id
     obj_name = "Attack_Manager_" + std::to_string(attack_id);
 }
 
-void Attack_Manager_Base_Class::update() { time_elapsed_since_creation += deltaTime; }
+void Attack_Manager_Base_Class::update() {
+    time_elapsed_since_creation += Engine::get().get_delta_time();
+}
 
-void Attack_Manager_Base_Class::ready_to_be_removed() { this->to_be_removed = true; }
+void Attack_Manager_Base_Class::ready_to_be_removed() {
+    this->to_be_removed = true;
+}
 
 void Attack_Manager_Base_Class::_teardown_green_mode() {
     this->to_be_removed = true;
@@ -46,8 +51,8 @@ Arrow_For_Green_Attack *Attack_Manager_Base_Class::create_arrow_for_green_attack
         time_to_impact_ms = std::max(time_to_impact_ms - rotation_duration_ms, 0.0);
     }
 
-    double target_x = SCREEN_WIDTH / 2.0;
-    double target_y = SCREEN_HEIGHT / 2.0;
+    double target_x = Engine::get().get_screen_width() / 2.0;
+    double target_y = Engine::get().get_screen_height() / 2.0;
     double distance_to_travel = speed * time_to_impact_ms;
 
     double start_x = target_x;

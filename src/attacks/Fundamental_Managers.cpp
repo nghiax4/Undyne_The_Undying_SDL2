@@ -6,12 +6,13 @@
 #include "Utils.h"
 #include "White_Arrow_Medium_Box_Attack.h"
 #include "White_Arrow_Small_Box_Attack.h"
+#include "core/Engine.h"
 
 Three_Lane_Rising_Arrow_Attack::Three_Lane_Rising_Arrow_Attack(int attack_id, int duration_ms, int time_between_arrows_ms, int arrow_prep_time_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.72, 0.12, 0.19), time_between_arrows_ms(time_between_arrows_ms), arrow_prep_time_ms(arrow_prep_time_ms) {}
 
 void Three_Lane_Rising_Arrow_Attack::update() {
     Red_Mode_Manager::update();
-    time_elapsed_since_last_arrow += deltaTime;
+    time_elapsed_since_last_arrow += Engine::get().get_delta_time();
 
     if (time_elapsed_since_last_arrow > time_between_arrows_ms) {
         std::vector<double> x_multipliers = {0.2, 0.5, 0.8};
@@ -25,16 +26,16 @@ void Three_Lane_Rising_Arrow_Attack::update() {
     }
 }
 
-Random_Spawn_Player_Aimed_Arrow_Attack::Random_Spawn_Player_Aimed_Arrow_Attack(int attack_id, int duration_ms, int time_between_arrows_ms, int arrow_rotation_time_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.63, 0.28, (SCREEN_WIDTH * 0.28) / SCREEN_HEIGHT), time_between_arrows_ms(time_between_arrows_ms), arrow_rotation_time_ms(arrow_rotation_time_ms) {}
+Random_Spawn_Player_Aimed_Arrow_Attack::Random_Spawn_Player_Aimed_Arrow_Attack(int attack_id, int duration_ms, int time_between_arrows_ms, int arrow_rotation_time_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.63, 0.28, (Engine::get().get_screen_width() * 0.28) / Engine::get().get_screen_height()), time_between_arrows_ms(time_between_arrows_ms), arrow_rotation_time_ms(arrow_rotation_time_ms) {}
 
 void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
     Red_Mode_Manager::update();
-    time_elapsed_since_last_arrow += deltaTime;
+    time_elapsed_since_last_arrow += Engine::get().get_delta_time();
 
     if (time_elapsed_since_last_arrow > time_between_arrows_ms) {
         Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(find_object_by_name("Player_EnemyTurn"));
 
-        double spawn_radius = get_random(SCREEN_WIDTH * 0.2, SCREEN_WIDTH * 0.3);
+        double spawn_radius = get_random(Engine::get().get_screen_width() * 0.2, Engine::get().get_screen_width() * 0.3);
         double angle_deg = get_random(0, 360);
         double spawn_x = global_battlebox->x_center + spawn_radius * cos(angle_deg * M_PI / 180.0);
         double spawn_y = global_battlebox->y_center + spawn_radius * sin(angle_deg * M_PI / 180.0);
@@ -46,7 +47,7 @@ void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
     }
 }
 
-Inward_Spiraling_Arrow_Ring_Attack::Inward_Spiraling_Arrow_Ring_Attack(int attack_id, int duration_ms, int interval_ms) : Circle_Spawn_Manager(attack_id, duration_ms, interval_ms, SCREEN_WIDTH * 0.35) {}
+Inward_Spiraling_Arrow_Ring_Attack::Inward_Spiraling_Arrow_Ring_Attack(int attack_id, int duration_ms, int interval_ms) : Circle_Spawn_Manager(attack_id, duration_ms, interval_ms, Engine::get().get_screen_width() * 0.35) {}
 
 void Inward_Spiraling_Arrow_Ring_Attack::spawn_on_ring(double center_x, double center_y) {
     double angle_offset = get_random(0, 360);

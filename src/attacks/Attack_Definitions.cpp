@@ -1,56 +1,68 @@
 #include "AttackRegistry.h"
 #include "Fundamental_Managers.h"
+#include "core/Engine.h"
 
 // Standard Speeds
-const double SPD_X = SCREEN_WIDTH * 0.001;
-const double SPD_Y = SCREEN_HEIGHT * 0.001;
-const double SLOW_Y = SCREEN_HEIGHT * 0.0002;
-const double MED_X = SCREEN_WIDTH * 0.00075;
-const double MED_Y = SCREEN_HEIGHT * 0.00075;
+// Converted constants to helper functions to avoid initialization before Engine
+inline double SPD_X() {
+    return Engine::get().get_screen_width() * 0.001;
+}
+inline double SPD_Y() {
+    return Engine::get().get_screen_height() * 0.001;
+}
+inline double SLOW_Y() {
+    return Engine::get().get_screen_height() * 0.0002;
+}
+inline double MED_X() {
+    return Engine::get().get_screen_width() * 0.00075;
+}
+inline double MED_Y() {
+    return Engine::get().get_screen_height() * 0.00075;
+}
 
 // Helper to register all attacks on startup
 static struct Attack_Definitions_Loader {
     Attack_Definitions_Loader() {
         AttackRegistry::register_attack(0, []() {
             return new Green_Mode_Manager(0, 10000, {
-                                                        {Direction::DOWN, 3500, SLOW_Y},
-                                                        {Direction::DOWN, 4250, SLOW_Y},
-                                                        {Direction::DOWN, 5000, SLOW_Y},
-                                                        {Direction::LEFT, 5000, SPD_X},
-                                                        {Direction::UP, 5400, SPD_Y},
-                                                        {Direction::RIGHT, 5800, SPD_X},
-                                                        {Direction::DOWN, 6200, SPD_Y},
-                                                        {Direction::RIGHT, 6600, SPD_X},
-                                                        {Direction::UP, 7000, SPD_Y},
-                                                        {Direction::LEFT, 7400, SPD_X},
-                                                        {Direction::UP, 7800, SPD_Y},
-                                                        {Direction::RIGHT, 8200, SPD_X},
-                                                        {Direction::DOWN, 8600, SPD_Y},
+                                                        {Direction::DOWN, 3500, SLOW_Y()},
+                                                        {Direction::DOWN, 4250, SLOW_Y()},
+                                                        {Direction::DOWN, 5000, SLOW_Y()},
+                                                        {Direction::LEFT, 5000, SPD_X()},
+                                                        {Direction::UP, 5400, SPD_Y()},
+                                                        {Direction::RIGHT, 5800, SPD_X()},
+                                                        {Direction::DOWN, 6200, SPD_Y()},
+                                                        {Direction::RIGHT, 6600, SPD_X()},
+                                                        {Direction::UP, 7000, SPD_Y()},
+                                                        {Direction::LEFT, 7400, SPD_X()},
+                                                        {Direction::UP, 7800, SPD_Y()},
+                                                        {Direction::RIGHT, 8200, SPD_X()},
+                                                        {Direction::DOWN, 8600, SPD_Y()},
                                                     });
         });
 
         AttackRegistry::register_attack(1, []() {
             return new Green_Mode_Manager(1, 5000, {
-                                                       {Direction::RIGHT, 1000, SPD_X},
-                                                       {Direction::LEFT, 1300, SPD_X},
-                                                       {Direction::RIGHT, 1600, SPD_X},
-                                                       {Direction::RIGHT, 1750, SPD_X},
-                                                       {Direction::LEFT, 2050, SPD_X},
-                                                       {Direction::LEFT, 2350, SPD_X},
-                                                       {Direction::RIGHT, 2750, SPD_X},
-                                                       {Direction::LEFT, 3000, SPD_X},
-                                                       {Direction::LEFT, 3150, SPD_X},
-                                                       {Direction::RIGHT, 3450, SPD_X},
-                                                       {Direction::LEFT, 3700, SPD_X},
-                                                       {Direction::RIGHT, 4000, SPD_X},
-                                                       {Direction::LEFT, 4300, SPD_X},
-                                                       {Direction::RIGHT, 4600, SPD_X},
+                                                       {Direction::RIGHT, 1000, SPD_X()},
+                                                       {Direction::LEFT, 1300, SPD_X()},
+                                                       {Direction::RIGHT, 1600, SPD_X()},
+                                                       {Direction::RIGHT, 1750, SPD_X()},
+                                                       {Direction::LEFT, 2050, SPD_X()},
+                                                       {Direction::LEFT, 2350, SPD_X()},
+                                                       {Direction::RIGHT, 2750, SPD_X()},
+                                                       {Direction::LEFT, 3000, SPD_X()},
+                                                       {Direction::LEFT, 3150, SPD_X()},
+                                                       {Direction::RIGHT, 3450, SPD_X()},
+                                                       {Direction::LEFT, 3700, SPD_X()},
+                                                       {Direction::RIGHT, 4000, SPD_X()},
+                                                       {Direction::LEFT, 4300, SPD_X()},
+                                                       {Direction::RIGHT, 4600, SPD_X()},
                                                    });
         });
 
         AttackRegistry::register_attack(2, []() {
-            double s_x = SCREEN_WIDTH * 0.0002;
-            double s_y = SCREEN_HEIGHT * 0.0002;
+            double s_x = Engine::get().get_screen_width() * 0.0002;
+            double s_y = Engine::get().get_screen_height() * 0.0002;
             return new Green_Mode_Manager(2, 11000, {
                                                         {Direction::UP, 3500, s_y},
                                                         {Direction::DOWN, 3750, s_y},
@@ -83,9 +95,9 @@ static struct Attack_Definitions_Loader {
         });
 
         AttackRegistry::register_attack(5, []() {
-            double sx = SCREEN_WIDTH * 0.0007;
-            double sy = SCREEN_HEIGHT * 0.0004;
-            double sy_fast = SCREEN_WIDTH * 0.0004;
+            double sx = Engine::get().get_screen_width() * 0.0007;
+            double sy = Engine::get().get_screen_height() * 0.0004;
+            double sy_fast = Engine::get().get_screen_width() * 0.0004;
             return new Green_Mode_Manager(5, 6000, {
                                                        {Direction::RIGHT, 1000, sx},
                                                        {Direction::DOWN, 1750, sy},
@@ -100,32 +112,32 @@ static struct Attack_Definitions_Loader {
 
         AttackRegistry::register_attack(6, []() {
             return new Green_Mode_Manager(6, 5500, {
-                                                       {Direction::DOWN, 700, SPD_Y},
-                                                       {Direction::DOWN, 850, SPD_Y},
-                                                       {Direction::DOWN, 1000, SPD_Y},
-                                                       {Direction::DOWN, 1150, SPD_Y},
-                                                       {Direction::RIGHT, 1400, SPD_X},
-                                                       {Direction::DOWN, 1650, SPD_Y},
-                                                       {Direction::DOWN, 1800, SPD_Y},
-                                                       {Direction::DOWN, 1950, SPD_Y},
-                                                       {Direction::DOWN, 2100, SPD_Y},
-                                                       {Direction::LEFT, 2250, SPD_X},
-                                                       {Direction::DOWN, 2600, SPD_Y},
-                                                       {Direction::DOWN, 2750, SPD_Y},
-                                                       {Direction::DOWN, 2900, SPD_Y},
-                                                       {Direction::DOWN, 3050, SPD_Y},
-                                                       {Direction::RIGHT, 3220, SPD_X},
-                                                       {Direction::DOWN, 3550, SPD_Y},
-                                                       {Direction::DOWN, 3700, SPD_Y},
-                                                       {Direction::DOWN, 3850, SPD_Y},
-                                                       {Direction::DOWN, 4000, SPD_Y},
-                                                       {Direction::LEFT, 4050, SPD_X},
+                                                       {Direction::DOWN, 700, SPD_Y()},
+                                                       {Direction::DOWN, 850, SPD_Y()},
+                                                       {Direction::DOWN, 1000, SPD_Y()},
+                                                       {Direction::DOWN, 1150, SPD_Y()},
+                                                       {Direction::RIGHT, 1400, SPD_X()},
+                                                       {Direction::DOWN, 1650, SPD_Y()},
+                                                       {Direction::DOWN, 1800, SPD_Y()},
+                                                       {Direction::DOWN, 1950, SPD_Y()},
+                                                       {Direction::DOWN, 2100, SPD_Y()},
+                                                       {Direction::LEFT, 2250, SPD_X()},
+                                                       {Direction::DOWN, 2600, SPD_Y()},
+                                                       {Direction::DOWN, 2750, SPD_Y()},
+                                                       {Direction::DOWN, 2900, SPD_Y()},
+                                                       {Direction::DOWN, 3050, SPD_Y()},
+                                                       {Direction::RIGHT, 3220, SPD_X()},
+                                                       {Direction::DOWN, 3550, SPD_Y()},
+                                                       {Direction::DOWN, 3700, SPD_Y()},
+                                                       {Direction::DOWN, 3850, SPD_Y()},
+                                                       {Direction::DOWN, 4000, SPD_Y()},
+                                                       {Direction::LEFT, 4050, SPD_X()},
                                                    });
         });
 
         AttackRegistry::register_attack(7, []() {
-            double sx = SCREEN_WIDTH * 0.0005;
-            double sy = SCREEN_HEIGHT * 0.0005;
+            double sx = Engine::get().get_screen_width() * 0.0005;
+            double sy = Engine::get().get_screen_height() * 0.0005;
             return new Green_Mode_Manager(7, 6500, {
                                                        {Direction::RIGHT, 1067, sx},
                                                        {Direction::DOWN, 1400, sy},
@@ -153,8 +165,8 @@ static struct Attack_Definitions_Loader {
         });
 
         AttackRegistry::register_attack(10, []() {
-            double sx = SCREEN_WIDTH * 0.0012;
-            double sy = SCREEN_HEIGHT * 0.0012;
+            double sx = Engine::get().get_screen_width() * 0.0012;
+            double sy = Engine::get().get_screen_height() * 0.0012;
             return new Green_Mode_Manager(10, 7000, {
                                                         {Direction::RIGHT, 1700, sx, ArrowType::Yellow},
                                                         {Direction::UP, 2033, sy, ArrowType::Yellow},
@@ -173,47 +185,47 @@ static struct Attack_Definitions_Loader {
 
         AttackRegistry::register_attack(11, []() {
             return new Green_Mode_Manager(11, 7000, {
-                                                        {Direction::RIGHT, 900, MED_X, ArrowType::Blue},
-                                                        {Direction::LEFT, 1234, MED_X, ArrowType::Blue},
-                                                        {Direction::DOWN, 1567, MED_Y, ArrowType::Blue},
-                                                        {Direction::DOWN, 1867, MED_Y, ArrowType::Yellow},
-                                                        {Direction::RIGHT, 2200, MED_X, ArrowType::Blue},
-                                                        {Direction::LEFT, 2467, MED_X, ArrowType::Blue},
-                                                        {Direction::UP, 2800, MED_Y, ArrowType::Blue},
-                                                        {Direction::UP, 3134, MED_Y, ArrowType::Yellow},
-                                                        {Direction::RIGHT, 3500, MED_X, ArrowType::Blue},
-                                                        {Direction::LEFT, 3767, MED_X, ArrowType::Blue},
-                                                        {Direction::DOWN, 4134, MED_Y, ArrowType::Blue},
-                                                        {Direction::DOWN, 4500, MED_Y, ArrowType::Yellow},
-                                                        {Direction::RIGHT, 4800, MED_X, ArrowType::Blue},
-                                                        {Direction::LEFT, 5067, MED_X, ArrowType::Blue},
-                                                        {Direction::UP, 5367, MED_Y, ArrowType::Blue},
-                                                        {Direction::UP, 5767, MED_Y, ArrowType::Yellow},
+                                                        {Direction::RIGHT, 900, MED_X(), ArrowType::Blue},
+                                                        {Direction::LEFT, 1234, MED_X(), ArrowType::Blue},
+                                                        {Direction::DOWN, 1567, MED_Y(), ArrowType::Blue},
+                                                        {Direction::DOWN, 1867, MED_Y(), ArrowType::Yellow},
+                                                        {Direction::RIGHT, 2200, MED_X(), ArrowType::Blue},
+                                                        {Direction::LEFT, 2467, MED_X(), ArrowType::Blue},
+                                                        {Direction::UP, 2800, MED_Y(), ArrowType::Blue},
+                                                        {Direction::UP, 3134, MED_Y(), ArrowType::Yellow},
+                                                        {Direction::RIGHT, 3500, MED_X(), ArrowType::Blue},
+                                                        {Direction::LEFT, 3767, MED_X(), ArrowType::Blue},
+                                                        {Direction::DOWN, 4134, MED_Y(), ArrowType::Blue},
+                                                        {Direction::DOWN, 4500, MED_Y(), ArrowType::Yellow},
+                                                        {Direction::RIGHT, 4800, MED_X(), ArrowType::Blue},
+                                                        {Direction::LEFT, 5067, MED_X(), ArrowType::Blue},
+                                                        {Direction::UP, 5367, MED_Y(), ArrowType::Blue},
+                                                        {Direction::UP, 5767, MED_Y(), ArrowType::Yellow},
                                                     });
         });
 
         AttackRegistry::register_attack(12, []() {
             return new Green_Mode_Manager(12, 7000, {
-                                                        {Direction::RIGHT, 800, MED_X, ArrowType::Blue},
-                                                        {Direction::LEFT, 1333, MED_X, ArrowType::Yellow},
-                                                        {Direction::UP, 1567, MED_Y, ArrowType::Blue},
-                                                        {Direction::DOWN, 2167, MED_Y, ArrowType::Yellow},
-                                                        {Direction::LEFT, 2400, MED_X, ArrowType::Blue},
-                                                        {Direction::RIGHT, 2933, MED_X, ArrowType::Yellow},
-                                                        {Direction::DOWN, 3233, MED_Y, ArrowType::Blue},
-                                                        {Direction::UP, 3800, MED_Y, ArrowType::Yellow},
-                                                        {Direction::RIGHT, 4067, MED_X, ArrowType::Blue},
-                                                        {Direction::LEFT, 4633, MED_X, ArrowType::Yellow},
-                                                        {Direction::UP, 4833, MED_Y, ArrowType::Blue},
-                                                        {Direction::DOWN, 5433, MED_Y, ArrowType::Yellow},
-                                                        {Direction::LEFT, 5667, MED_X, ArrowType::Blue},
-                                                        {Direction::RIGHT, 6233, MED_X, ArrowType::Yellow},
+                                                        {Direction::RIGHT, 800, MED_X(), ArrowType::Blue},
+                                                        {Direction::LEFT, 1333, MED_X(), ArrowType::Yellow},
+                                                        {Direction::UP, 1567, MED_Y(), ArrowType::Blue},
+                                                        {Direction::DOWN, 2167, MED_Y(), ArrowType::Yellow},
+                                                        {Direction::LEFT, 2400, MED_X(), ArrowType::Blue},
+                                                        {Direction::RIGHT, 2933, MED_X(), ArrowType::Yellow},
+                                                        {Direction::DOWN, 3233, MED_Y(), ArrowType::Blue},
+                                                        {Direction::UP, 3800, MED_Y(), ArrowType::Yellow},
+                                                        {Direction::RIGHT, 4067, MED_X(), ArrowType::Blue},
+                                                        {Direction::LEFT, 4633, MED_X(), ArrowType::Yellow},
+                                                        {Direction::UP, 4833, MED_Y(), ArrowType::Blue},
+                                                        {Direction::DOWN, 5433, MED_Y(), ArrowType::Yellow},
+                                                        {Direction::LEFT, 5667, MED_X(), ArrowType::Blue},
+                                                        {Direction::RIGHT, 6233, MED_X(), ArrowType::Yellow},
                                                     });
         });
 
         AttackRegistry::register_attack(13, []() {
-            double sx = SCREEN_WIDTH * 0.00012;
-            double sy = SCREEN_HEIGHT * 0.00012;
+            double sx = Engine::get().get_screen_width() * 0.00012;
+            double sy = Engine::get().get_screen_height() * 0.00012;
             return new Green_Mode_Manager(13, 12500, {
                                                          {Direction::DOWN, 5733, sy},
                                                          {Direction::LEFT, 5967, sx},
@@ -243,7 +255,7 @@ static struct Attack_Definitions_Loader {
         });
 
         AttackRegistry::register_attack(14, []() {
-            return new Contracting_Rotating_Spear_Ring_Attack(14, 12000, SCREEN_WIDTH * 0.25, [](int time_elapsed) {
+            return new Contracting_Rotating_Spear_Ring_Attack(14, 12000, Engine::get().get_screen_width() * 0.25, [](int time_elapsed) {
                 // If 5 seconds passed, spawn faster (333ms), else normal (633ms)
                 return (time_elapsed > 5000) ? 333 : 633;
             });

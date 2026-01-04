@@ -47,6 +47,5 @@ void Shield::update() {
 }
 
 void Shield::render() {
-    SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), width, height};
-    SDL_RenderCopyEx(Engine::get().get_renderer(), texture.get(), NULL, &rect, cur_angle + 90, NULL, SDL_FLIP_NONE);
+    Engine::get().draw_texture(texture, x_center, y_center, width, height, cur_angle + 90);
 }

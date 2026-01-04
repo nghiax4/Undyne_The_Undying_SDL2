@@ -34,25 +34,16 @@ void BattleText::render() {
 
     std::string current_text = full_text.substr(0, char_count);
 
+    if (current_text.empty())
+        return;
+
     SDL_Color color{255, 255, 255, 0};
-    int wrap_width = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width * 0.9;
+    // int wrap_width = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width * 0.9;
 
-    // TTF_RenderText_Blended_Wrapped may return NULL if current_text is empty
-    if (!current_text.empty()) {
-        SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(font.get(), current_text.c_str(), color, wrap_width);
+    int padding_x = Engine::get().get_screen_width() * 0.023;
+    int padding_y = Engine::get().get_screen_height() * 0.048;
+    int x_pos = (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width / 2) + padding_x;
+    int y_pos = (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height / 2) + padding_y;
 
-        SDL_Texture *texture = SDL_CreateTextureFromSurface(Engine::get().get_renderer(), surface);
-
-        int padding_x = Engine::get().get_screen_width() * 0.023;
-        int padding_y = Engine::get().get_screen_height() * 0.048;
-
-        int x_pos = (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width / 2) + padding_x;
-        int y_pos = (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height / 2) + padding_y;
-
-        SDL_Rect dst_rect = {x_pos, y_pos, surface->w, surface->h};
-        SDL_RenderCopy(Engine::get().get_renderer(), texture, NULL, &dst_rect);
-
-        SDL_FreeSurface(surface);
-        SDL_DestroyTexture(texture);
-    }
+    Engine::get().draw_text(font, current_text.c_str(), x_pos, y_pos, color, false);
 }

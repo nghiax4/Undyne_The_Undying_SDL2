@@ -1,4 +1,5 @@
 #pragma once
+#include "ResourceManager.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -18,6 +19,10 @@ class Engine {
     void cleanup();
     void clear_screen();
     void present_screen();
+
+    void draw_texture(const SmartTexture &tex, double x_center, double y_center, double width, double height, double angle_deg = 0, Uint8 alpha = 255);
+    void draw_rect(double x_center, double y_center, double width, double height, SDL_Color color, bool filled);
+    void draw_text(const SmartFont &font, const std::string &text, double x, double y, SDL_Color color, bool center, Uint8 alpha = 255);
 
     SDL_Renderer *get_renderer() const;
     int get_screen_width() const;

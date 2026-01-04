@@ -26,8 +26,8 @@ struct AttackRegistry {
     static Attack_Manager_Base_Class *create_attack(int attack_id) {
         std::map<int, AttackFactoryFunction> &map = get_registry_map();
 
-        if (attack_id < 15) {
-            return map[attack_id]();
+        if (attack_id <= 15) {
+            return map.at(attack_id)();
         } else {
             int random_pick = get_random(0, 3);
             const int DURATION = 10000;

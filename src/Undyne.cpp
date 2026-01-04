@@ -27,8 +27,5 @@ void Undyne::update() {
 }
 
 void Undyne::render() {
-    SDL_Texture *texture = sprite_frames[current_sprite_frame].get();
-    SDL_Rect rect = {x_center - width / 2, y_center - height / 2, width, height};
-
-    SDL_RenderCopy(Engine::get().get_renderer(), texture, NULL, &rect);
+    Engine::get().draw_texture(sprite_frames[current_sprite_frame], x_center, y_center, width, height);
 }

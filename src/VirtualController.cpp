@@ -11,11 +11,6 @@ VirtualController::VirtualController() {
     arrow_texture = ResourceManager::get().get_texture("sprites/control_up_arrow.png");
     enter_texture = ResourceManager::get().get_texture("sprites/control_enter_key.png");
 
-    SDL_SetTextureBlendMode(arrow_texture.get(), SDL_BLENDMODE_BLEND);
-    SDL_SetTextureAlphaMod(arrow_texture.get(), 128);
-    SDL_SetTextureBlendMode(enter_texture.get(), SDL_BLENDMODE_BLEND);
-    SDL_SetTextureAlphaMod(enter_texture.get(), 128);
-
     int btn_size = Engine::get().get_screen_width() * 0.14;
 
     int dpad_radius = btn_size * 0.85;
@@ -83,7 +78,11 @@ void VirtualController::update() {
 
 void VirtualController::render() {
     for (const auto &button : buttons) {
-        SDL_Texture *texture_to_use = button.is_enter_key ? enter_texture.get() : arrow_texture.get();
-        SDL_RenderCopyEx(Engine::get().get_renderer(), texture_to_use, NULL, &button.screen_area, button.rotation_angle_deg, NULL, SDL_FLIP_NONE);
+        SmartTexture texture = button.is_enter_key ? enter_texture : arrow_texture;
+
+        double x_center = button.screen_area.x + button.screen_area.w / 2.0;
+        double y_center = button.screen_area.y + button.screen_area.h / 2.0;
+
+        Engine::get().draw_texture(texture, x_center, y_center, button.screen_area.w, button.screen_area.h, button.rotation_angle_deg, 128);
     }
 }

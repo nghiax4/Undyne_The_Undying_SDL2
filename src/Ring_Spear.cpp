@@ -40,24 +40,21 @@ void Ring_Spear::update() {
 }
 
 void Ring_Spear::render() {
-    SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), width, height};
-
     double target_facing_angle = (current_angle_rad * 180.0 / M_PI) + 270;
     double final_render_angle = target_facing_angle;
-
-    // Handle Opacity Fade-in
-    // 0 to 1 over SPIN_DURATION_MS
-    double alpha_ratio = std::min(1.0, time_alive / SPIN_DURATION_MS);
-    SDL_SetTextureAlphaMod(texture.get(), (Uint8)(alpha_ratio * 255));
 
     if (time_alive < SPIN_DURATION_MS) {
         // Linear Interpolation for Spin:
         // Start at -360 offset, reach 0 offset exactly when time_alive == SPIN_DURATION_MS
         double progress = time_alive / SPIN_DURATION_MS;
         double spin_offset = -360.0 + (progress * 360.0);
-
         final_render_angle += spin_offset;
     }
 
-    SDL_RenderCopyEx(Engine::get().get_renderer(), texture.get(), nullptr, &rect, final_render_angle, NULL, SDL_FLIP_NONE);
+    // Handle Opacity Fade-in
+    // 0 to 1 over SPIN_DURATION_MS
+    double alpha_ratio = std::min(1.0, time_alive / SPIN_DURATION_MS);
+    int alpha = (int)(alpha_ratio * 255);
+
+    Engine::get().draw_texture(texture, x_center, y_center, width, height, final_render_angle, alpha);
 }

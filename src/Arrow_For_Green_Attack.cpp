@@ -82,8 +82,6 @@ void Arrow_For_Green_Attack::update() {
 }
 
 void Arrow_For_Green_Attack::render() {
-    SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), width, height};
-
     int angle;
     if (direction == Direction::DOWN) {
         angle = 0;
@@ -98,5 +96,5 @@ void Arrow_For_Green_Attack::render() {
         angle = 90;
     }
 
-    SDL_RenderCopyEx(Engine::get().get_renderer(), texture.get(), NULL, &rect, angle, NULL, SDL_FLIP_NONE);
+    Engine::get().draw_texture(texture, x_center, y_center, width, height, angle);
 }

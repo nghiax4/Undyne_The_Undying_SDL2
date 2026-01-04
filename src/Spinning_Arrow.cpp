@@ -50,9 +50,6 @@ void Spinning_Arrow::update() {
 void Spinning_Arrow::render() {
     double alpha_ratio = std::min(1.0, time_elapsed_since_spawn / FADE_DURATION_MS);
     Uint8 alpha = static_cast<Uint8>(alpha_ratio * 255);
-    SDL_SetTextureAlphaMod(texture.get(), alpha);
-
-    SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), width, height};
 
     // Rotate texture to point inward to the center (+90 degree adjustment for sprite orientation)
     double angle_deg = current_angle_rad * 180.0 / M_PI;
@@ -61,5 +58,5 @@ void Spinning_Arrow::render() {
     // We add 180 to make it point INWARD.
     double render_angle = angle_deg + 90 + 180;
 
-    SDL_RenderCopyEx(Engine::get().get_renderer(), texture.get(), nullptr, &rect, render_angle, NULL, SDL_FLIP_NONE);
+    Engine::get().draw_texture(texture, x_center, y_center, width, height, render_angle, alpha);
 }

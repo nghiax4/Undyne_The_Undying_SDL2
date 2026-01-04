@@ -14,13 +14,9 @@ MenuButton::MenuButton(int x_center, int y_center, int width, int height, std::s
 void MenuButton::update() {}
 
 void MenuButton::render() {
-    int left_x = x_center - width / 2;
-    int top_y = y_center - height / 2;
+    SmartTexture texture = is_selected_by_player() ? texture_selected_obj : texture_unselected_obj;
 
-    SDL_Texture *texture_to_draw = is_selected_by_player() ? texture_selected_obj.get() : texture_unselected_obj.get();
-    SDL_Rect button_rect = {left_x, top_y, width, height};
-
-    SDL_RenderCopy(Engine::get().get_renderer(), texture_to_draw, NULL, &button_rect);
+    Engine::get().draw_texture(texture, x_center, y_center, width, height);
 }
 
 // Check if the button is currently selected by checking if the player's position is within the button

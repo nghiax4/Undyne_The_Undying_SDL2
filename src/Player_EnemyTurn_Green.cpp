@@ -55,8 +55,5 @@ void Player_EnemyTurn_Green::update() {
 }
 
 void Player_EnemyTurn_Green::render() {
-    SDL_Rect rect{x_center - width / 2, y_center - height / 2, width, height};
-    SDL_SetTextureBlendMode(texture.get(), SDL_BLENDMODE_BLEND);
-    SDL_SetTextureAlphaMod(texture.get(), render_texture_transparent ? 128 : 255);
-    SDL_RenderCopy(Engine::get().get_renderer(), texture.get(), NULL, &rect);
+    Engine::get().draw_texture(texture, x_center, y_center, width, height, 0, render_texture_transparent ? 128 : 255);
 }

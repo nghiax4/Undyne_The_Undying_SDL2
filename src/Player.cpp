@@ -24,10 +24,5 @@ void Player::update() {
 }
 
 void Player::render() {
-    int left_x = x_center - width / 2;
-    int top_y = y_center - height / 2;
-
-    SDL_Rect player_rect = {left_x, top_y, width, height};
-
-    SDL_RenderCopy(Engine::get().get_renderer(), player_texture.get(), NULL, &player_rect);
+    Engine::get().draw_texture(player_texture, x_center, y_center, width, height);
 }

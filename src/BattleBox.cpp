@@ -12,13 +12,11 @@ void BattleBox::update() {}
 
 void BattleBox::render() {
     const int BORDER_THICKNESS = 4;
+    // Draw white background
+    Engine::get().draw_rect(x_center, y_center, width, height, {255, 255, 255, 255}, true);
 
-    SDL_Rect rect{x_center - width / 2, y_center - height / 2, width, height};
-    SDL_Rect inner = {rect.x + BORDER_THICKNESS, rect.y + BORDER_THICKNESS, rect.w - 2 * BORDER_THICKNESS, rect.h - 2 * BORDER_THICKNESS};
-
-    SDL_SetRenderDrawColor(Engine::get().get_renderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
-    SDL_RenderFillRect(Engine::get().get_renderer(), &rect);
-
-    SDL_SetRenderDrawColor(Engine::get().get_renderer(), 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderFillRect(Engine::get().get_renderer(), &inner);
+    // Draw inner black box
+    int inner_width = width - 2 * BORDER_THICKNESS;
+    int inner_height = height - 2 * BORDER_THICKNESS;
+    Engine::get().draw_rect(x_center, y_center, inner_width, inner_height, {0, 0, 0, 255}, true);
 }

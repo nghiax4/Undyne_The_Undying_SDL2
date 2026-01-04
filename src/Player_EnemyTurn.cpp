@@ -7,8 +7,8 @@
 #include "White_Arrow_Medium_Box_Attack.h"
 #include "White_Arrow_Small_Box_Attack.h"
 #include "core/Engine.h"
-#include "core/Scene.h"
 #include "core/Input.h"
+#include "core/Scene.h"
 
 template <typename AttackType>
 void apply_collision_logic_for_type(Player_EnemyTurn *player) {
@@ -82,11 +82,11 @@ void Player_EnemyTurn::update() {
     x_center += x_multiplier * v_x * Engine::get().get_delta_time();
     y_center += y_multiplier * v_y * Engine::get().get_delta_time();
 
-    x_center = std::max(x_center, (double)(static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->x_center - static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->width / 2 + width / 2));
-    x_center = std::min(x_center, (double)(static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->x_center + static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->width / 2 - width / 2));
+    x_center = std::max(x_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width / 2 + width / 2));
+    x_center = std::min(x_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width / 2 - width / 2));
 
-    y_center = std::max(y_center, (double)(static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->y_center - static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->height / 2 + height / 2));
-    y_center = std::min(y_center, (double)(static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->y_center + static_cast<BattleBox*>(Scene::get().find_object_by_name("BattleBox"))->height / 2 - height / 2));
+    y_center = std::max(y_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height / 2 + height / 2));
+    y_center = std::min(y_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height / 2 - height / 2));
 
     apply_collision_logic_for_type<White_Arrow_Small_Box_Attack>(this);
     apply_collision_logic_for_type<White_Arrow_Medium_Box_Attack>(this);
@@ -95,8 +95,5 @@ void Player_EnemyTurn::update() {
 }
 
 void Player_EnemyTurn::render() {
-    SDL_Rect rect{(int)(x_center - width / 2), (int)(y_center - height / 2), (int)width, (int)height};
-    SDL_SetTextureBlendMode(texture.get(), SDL_BLENDMODE_BLEND);
-    SDL_SetTextureAlphaMod(texture.get(), render_texture_transparent ? 128 : 255);
-    SDL_RenderCopy(Engine::get().get_renderer(), texture.get(), NULL, &rect);
+    Engine::get().draw_texture(texture, x_center, y_center, width, height, 0, render_texture_transparent ? 128 : 255);
 }

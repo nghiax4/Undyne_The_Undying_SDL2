@@ -29,17 +29,6 @@ const int SCREEN_HEIGHT = 600;
 const int FPS = 100;
 const int FRAME_DELAY = 1000 / FPS;
 
-// Mix_Music *song = nullptr;
-// SDL_Event event;
-// std::vector<std::unique_ptr<GameObject>> objs;
-// std::vector<Uint8> prev_keyboard_state;
-// std::vector<Uint8> cur_keyboard_state;
-// int time_since_enemy_turn = 0;
-// int current_attack_idx = 0;
-// Turn current_turn = Turn::PlayerTurn;
-// BattleBox *global_battlebox = nullptr;
-// VirtualController *global_virtual_controller = nullptr;
-
 std::vector<std::unique_ptr<MenuButton>> init_menu_buttons(int button_width) {
     const double BUTTON_WIDTH_TO_HEIGHT = 367.0 / 140;
     int button_height = button_width / BUTTON_WIDTH_TO_HEIGHT;

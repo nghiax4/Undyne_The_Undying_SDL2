@@ -57,8 +57,7 @@ std::vector<std::unique_ptr<MenuButton>> init_menu_buttons(double button_width) 
 }
 
 void start_music() {
-    // "static" keeps the song not freed for the lifetime of the game
-    static SmartMusic song = ResourceManager::get().get_music("audio/music.ogg");
+    SmartMusic song = ResourceManager::get().get_music("audio/music.ogg");
     Mix_PlayMusic(song.get(), -1);
 }
 
@@ -128,6 +127,8 @@ int main(int, char *[]) {
         SDL_Delay(0);
     }
 
+    Scene::get().clear();
+    ResourceManager::get().clear();
     Engine::get().cleanup();
     return 0;
 }

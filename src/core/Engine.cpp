@@ -29,7 +29,9 @@ void Engine::cleanup() {
     if (m_window)
         SDL_DestroyWindow(m_window);
     TTF_Quit();
+    Mix_CloseAudio();
     Mix_Quit();
+    IMG_Quit();
     SDL_Quit();
 }
 

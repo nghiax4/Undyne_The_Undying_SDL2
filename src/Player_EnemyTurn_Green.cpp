@@ -10,7 +10,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-Player_EnemyTurn_Green::Player_EnemyTurn_Green(int x_center, int y_center) : m_x_center(x_center), m_y_center(y_center), m_width(Engine::get().get_screen_width() * 0.03), m_height(Engine::get().get_screen_width() * 0.03) {
+Player_EnemyTurn_Green::Player_EnemyTurn_Green(int x_center, int y_center) : m_x_center(x_center), m_y_center(y_center), m_width(Engine::SCREEN_WIDTH * 0.03), m_height(Engine::SCREEN_WIDTH * 0.03) {
     m_texture = ResourceManager::get().get_texture("sprites/soul_green.png");
     m_obj_name = "Player_EnemyTurn_Green";
     m_z_index = 3;

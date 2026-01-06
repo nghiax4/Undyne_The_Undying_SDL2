@@ -27,7 +27,7 @@ void Three_Lane_Rising_Arrow_Attack::update() {
     }
 }
 
-Random_Spawn_Player_Aimed_Arrow_Attack::Random_Spawn_Player_Aimed_Arrow_Attack(int attack_id, Uint32 duration_ms, Uint32 time_between_arrows_ms, Uint32 arrow_rotation_time_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.63, 0.28, (Engine::get().get_screen_width() * 0.28) / Engine::get().get_screen_height()), m_time_between_arrows_ms(time_between_arrows_ms), m_arrow_rotation_time_ms(arrow_rotation_time_ms) {}
+Random_Spawn_Player_Aimed_Arrow_Attack::Random_Spawn_Player_Aimed_Arrow_Attack(int attack_id, Uint32 duration_ms, Uint32 time_between_arrows_ms, Uint32 arrow_rotation_time_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.63, 0.28, (Engine::SCREEN_WIDTH * 0.28) / Engine::SCREEN_HEIGHT), m_time_between_arrows_ms(time_between_arrows_ms), m_arrow_rotation_time_ms(arrow_rotation_time_ms) {}
 
 void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
     Red_Mode_Manager::update();
@@ -36,7 +36,7 @@ void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
     if (m_time_elapsed_since_last_arrow > m_time_between_arrows_ms) {
         Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(Scene::get().find_object_by_name("Player_EnemyTurn"));
 
-        double spawn_radius = get_random(Engine::get().get_screen_width() * 0.2, Engine::get().get_screen_width() * 0.3);
+        double spawn_radius = get_random(Engine::SCREEN_WIDTH * 0.2, Engine::SCREEN_WIDTH * 0.3);
         double angle_deg = get_random(0, 360);
         double spawn_x = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center + spawn_radius * cos(angle_deg * M_PI / 180.0);
         double spawn_y = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center + spawn_radius * sin(angle_deg * M_PI / 180.0);
@@ -48,7 +48,7 @@ void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
     }
 }
 
-Inward_Spiraling_Arrow_Ring_Attack::Inward_Spiraling_Arrow_Ring_Attack(int attack_id, Uint32 duration_ms, Uint32 interval_ms) : Circle_Spawn_Manager(attack_id, duration_ms, interval_ms, Engine::get().get_screen_width() * 0.35) {}
+Inward_Spiraling_Arrow_Ring_Attack::Inward_Spiraling_Arrow_Ring_Attack(int attack_id, Uint32 duration_ms, Uint32 interval_ms) : Circle_Spawn_Manager(attack_id, duration_ms, interval_ms, Engine::SCREEN_WIDTH * 0.35) {}
 
 void Inward_Spiraling_Arrow_Ring_Attack::spawn_on_ring(double center_x, double center_y) {
     double angle_offset = get_random(0, 360);

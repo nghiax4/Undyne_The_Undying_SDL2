@@ -11,14 +11,14 @@ VirtualController::VirtualController() {
     m_arrow_texture = ResourceManager::get().get_texture("sprites/control_up_arrow.png");
     m_enter_texture = ResourceManager::get().get_texture("sprites/control_enter_key.png");
 
-    double btn_size = Engine::get().get_screen_width() * 0.14;
+    double btn_size = Engine::SCREEN_WIDTH * 0.14;
 
     double dpad_radius = btn_size * 0.85;
 
-    double padding = Engine::get().get_screen_width() * 0.04;
+    double padding = Engine::SCREEN_WIDTH * 0.04;
 
     double dpad_center_x = padding + btn_size;
-    double dpad_center_y = Engine::get().get_screen_height() - padding - btn_size;
+    double dpad_center_y = Engine::SCREEN_HEIGHT - padding - btn_size;
 
     // Helper lambda to create a centered rectangle
     auto make_rect = [&](double center_x, double center_y, double w, double h) {
@@ -39,7 +39,7 @@ VirtualController::VirtualController() {
 
     // -- ENTER KEY --
     double enter_width = btn_size * 1.5;
-    double enter_center_x = Engine::get().get_screen_width() - padding - (enter_width / 2);
+    double enter_center_x = Engine::SCREEN_WIDTH - padding - (enter_width / 2);
     double enter_center_y = dpad_center_y;
 
     m_buttons.push_back({make_rect(enter_center_x, enter_center_y, enter_width, btn_size), 0.0, SDL_SCANCODE_RETURN, true});
@@ -62,8 +62,8 @@ void VirtualController::update() {
                 continue;
 
             // finger->x and finger->y are percentages of the window size
-            int touch_x = static_cast<int>(static_cast<double>(finger->x) * Engine::get().get_screen_width());
-            int touch_y = static_cast<int>(static_cast<double>(finger->y) * Engine::get().get_screen_height());
+            int touch_x = static_cast<int>(static_cast<double>(finger->x) * Engine::SCREEN_WIDTH);
+            int touch_y = static_cast<int>(static_cast<double>(finger->y) * Engine::SCREEN_HEIGHT);
 
             SDL_Point touch_point = {touch_x, touch_y};
 

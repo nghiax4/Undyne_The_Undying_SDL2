@@ -12,7 +12,7 @@ Ring_Spear::Ring_Spear(double x, double y, double angle_deg, double radius, std:
     // Calculate speed so it reaches center exactly when TRAVEL_DURATION_MS passes
     m_charge_speed = radius / TRAVEL_DURATION_MS;
 
-    m_width = Engine::get().get_screen_width() * 0.025;
+    m_width = Engine::SCREEN_WIDTH * 0.025;
     m_height = m_width / White_Arrow_Medium_Box_Attack::SPRITE_WIDTH_TO_HEIGHT;
 
     m_x_center = m_origin_x + m_current_radius * std::cos(m_current_angle_rad);

@@ -40,7 +40,7 @@ void apply_collision_logic_for_type(Player_EnemyTurn *player) {
     }
 }
 
-Player_EnemyTurn::Player_EnemyTurn(double x_center, double y_center) : m_v_x(Engine::get().get_screen_width() * 0.0003), m_v_y(Engine::get().get_screen_width() * 0.0003), m_x_center(x_center), m_y_center(y_center), m_width(Engine::get().get_screen_width() * 0.03), m_height(Engine::get().get_screen_width() * 0.03) {
+Player_EnemyTurn::Player_EnemyTurn(double x_center, double y_center) : m_v_x(Engine::SCREEN_WIDTH * 0.0003), m_v_y(Engine::SCREEN_WIDTH * 0.0003), m_x_center(x_center), m_y_center(y_center), m_width(Engine::SCREEN_WIDTH * 0.03), m_height(Engine::SCREEN_WIDTH * 0.03) {
     m_texture = ResourceManager::get().get_texture("sprites/soul.png");
     m_obj_name = "Player_EnemyTurn";
     m_z_index = 3;

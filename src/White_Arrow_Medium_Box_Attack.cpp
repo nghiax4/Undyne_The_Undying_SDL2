@@ -5,10 +5,10 @@
 #include "core/Engine.h"
 #include <string>
 
-White_Arrow_Medium_Box_Attack::White_Arrow_Medium_Box_Attack(int x_center, int y_center, int x_target, int y_target, std::string obj_name, Uint32 delay_before_charge_ms) : m_x_center(x_center), m_y_center(y_center), m_x_target(x_target), m_y_target(y_target), m_dx(x_target - x_center), m_dy(y_target - y_center), m_v_x(Engine::get().get_screen_width() * 0.0008), m_v_y(Engine::get().get_screen_height() * 0.0008), m_delay_before_charge_ms(delay_before_charge_ms) {
+White_Arrow_Medium_Box_Attack::White_Arrow_Medium_Box_Attack(int x_center, int y_center, int x_target, int y_target, std::string obj_name, Uint32 delay_before_charge_ms) : m_x_center(x_center), m_y_center(y_center), m_x_target(x_target), m_y_target(y_target), m_dx(x_target - x_center), m_dy(y_target - y_center), m_v_x(Engine::SCREEN_WIDTH * 0.0008), m_v_y(Engine::SCREEN_HEIGHT * 0.0008), m_delay_before_charge_ms(delay_before_charge_ms) {
     m_target_angle = std::atan2(m_dy, m_dx) * 180.0 / M_PI + 90.0;
     m_obj_name = obj_name;
-    m_width = Engine::get().get_screen_width() * 0.025;
+    m_width = Engine::SCREEN_WIDTH * 0.025;
     m_height = m_width / SPRITE_WIDTH_TO_HEIGHT;
     m_texture = ResourceManager::get().get_texture("sprites/white_arrow.png");
     m_angle = get_random(0, 360);

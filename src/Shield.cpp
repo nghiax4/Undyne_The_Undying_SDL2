@@ -7,7 +7,7 @@
 #include "core/Input.h"
 #include "core/Scene.h"
 
-Shield::Shield() : m_width(Engine::get().get_screen_width() * 0.1), m_height(Engine::get().get_screen_height() * 0.007), m_distance_from_soul(Engine::get().get_screen_height() * 0.07) {
+Shield::Shield() : m_width(Engine::SCREEN_WIDTH * 0.1), m_height(Engine::SCREEN_HEIGHT * 0.007), m_distance_from_soul(Engine::SCREEN_HEIGHT * 0.07) {
     m_texture = ResourceManager::get().get_texture("sprites/shield.png");
     m_obj_name = "Shield";
     m_z_index = 3;

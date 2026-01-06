@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-Player::Player(double x_center, double y_center) : m_x_center(x_center), m_y_center(y_center), m_width(Engine::get().get_screen_width() * 0.03), m_height(Engine::get().get_screen_width() * 0.03) {
+Player::Player(double x_center, double y_center) : m_x_center(x_center), m_y_center(y_center), m_width(Engine::SCREEN_WIDTH * 0.03), m_height(Engine::SCREEN_WIDTH * 0.03) {
     m_player_texture = ResourceManager::get().get_texture("sprites/soul.png");
     m_obj_name = "Player";
     m_z_index = 3;

@@ -48,12 +48,12 @@ Arrow_For_Green_Attack *Attack_Manager_Base_Class::create_arrow_for_green_attack
 
     if (type == ArrowType::Yellow) {
         // Yellow arrows have rotation which makes the arrow stop moving toward to the soul, so we need to subtract the rotation time
-        Uint32 rotation_duration_ms = 257; //180.0 / Arrow_For_Green_Attack::ROTATION_SPEED_DEGREE_PER_MS;
+        Uint32 rotation_duration_ms = 257; // 180.0 / Arrow_For_Green_Attack::ROTATION_SPEED_DEGREE_PER_MS;
         time_to_impact_ms = std::max(time_to_impact_ms - rotation_duration_ms, static_cast<Uint32>(0));
     }
 
-    double target_x = Engine::get().get_screen_width() / 2.0;
-    double target_y = Engine::get().get_screen_height() / 2.0;
+    double target_x = Engine::SCREEN_WIDTH / 2.0;
+    double target_y = Engine::SCREEN_HEIGHT / 2.0;
     double distance_to_travel = speed * time_to_impact_ms;
 
     double start_x = target_x;

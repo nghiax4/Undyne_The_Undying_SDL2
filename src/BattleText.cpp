@@ -12,7 +12,7 @@ BattleText::BattleText() {
     m_obj_name = "BattleText";
     m_z_index = 3;
 
-    m_font = ResourceManager::get().get_font("fonts/determination-mono.otf", static_cast<int>(Engine::get().get_screen_height() * 0.07));
+    m_font = ResourceManager::get().get_font("fonts/determination-mono.otf", static_cast<int>(Engine::SCREEN_HEIGHT * 0.07));
     // printf("[DEBUG] BattleText created\n");
 }
 
@@ -39,8 +39,8 @@ void BattleText::render() {
     SDL_Color color{255, 255, 255, 0};
     // int wrap_width = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width * 0.9;
 
-    double padding_x = Engine::get().get_screen_width() * 0.023;
-    double padding_y = Engine::get().get_screen_height() * 0.048;
+    double padding_x = Engine::SCREEN_WIDTH * 0.023;
+    double padding_y = Engine::SCREEN_HEIGHT * 0.048;
     double x_pos = (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width / 2) + padding_x;
     double y_pos = (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height / 2) + padding_y;
 

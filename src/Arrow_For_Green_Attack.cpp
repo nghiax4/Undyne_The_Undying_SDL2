@@ -7,7 +7,7 @@
 #include <algorithm>
 
 Arrow_For_Green_Attack::Arrow_For_Green_Attack(double x_center, double y_center, double v_x, double v_y, Direction direction, std::string obj_name, ArrowType arrow_type) : m_x_center(x_center), m_y_center(y_center), m_v_x(v_x), m_v_y(v_y), m_direction(direction), m_arrow_type(arrow_type) {
-    m_height = (Engine::get().get_screen_height() * 0.06);
+    m_height = (Engine::SCREEN_HEIGHT * 0.06);
     m_width = m_height * SPRITE_WIDTH_TO_HEIGHT_RATIO;
 
     m_obj_name = obj_name;

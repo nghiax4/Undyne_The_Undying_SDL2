@@ -1,8 +1,8 @@
 #include "GameManager.h"
-#include "AttackRegistry.h"
 #include "Attack_Manager_Base_Class.h"
 #include "BattleBox.h"
 #include "BattleText.h"
+#include "CreateAttackFromAttackId.h"
 #include "GameplayTypes.h"
 #include "Player_EnemyTurn_Green.h"
 #include "Shield.h"
@@ -25,10 +25,10 @@ void GameManager::update() {
         m_current_turn = Turn::PlayerTurn;
         attack_manager->ready_to_be_removed();
 
-        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center = Engine::get().get_screen_width() / 2;
-        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center = Engine::get().get_screen_height() * 0.67;
-        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width = Engine::get().get_screen_width() * 0.9;
-        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height = Engine::get().get_screen_height() * 0.3;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center = Engine::SCREEN_WIDTH / 2;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center = Engine::SCREEN_HEIGHT * 0.67;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width = Engine::SCREEN_WIDTH * 0.9;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height = Engine::SCREEN_HEIGHT * 0.3;
 
         m_current_attack_idx += 1;
 
@@ -46,7 +46,7 @@ void GameManager::update() {
 void GameManager::render() {}
 
 void GameManager::play_attack(int attack_idx) {
-    Attack_Manager_Base_Class *attack = AttackRegistry::create_attack(attack_idx);
+    Attack_Manager_Base_Class *attack = create_attack(attack_idx);
     Scene::get().spawn(std::unique_ptr<Attack_Manager_Base_Class>(attack));
 }
 

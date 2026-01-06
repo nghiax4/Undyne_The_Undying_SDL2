@@ -49,13 +49,6 @@ SDL_Renderer *Engine::get_renderer() const {
     return m_renderer;
 }
 
-double Engine::get_screen_width() const {
-    return Engine::get().SCREEN_WIDTH;
-}
-double Engine::get_screen_height() const {
-    return Engine::get().SCREEN_HEIGHT;
-}
-
 void Engine::update_time() {
     Uint32 now = SDL_GetTicks();
     m_delta_time = now - m_last_tick;

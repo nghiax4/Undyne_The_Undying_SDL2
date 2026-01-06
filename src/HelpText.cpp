@@ -7,7 +7,7 @@ HelpText::HelpText() {
     m_obj_name = "HelpText";
     m_z_index = 1000;
 
-    m_font = ResourceManager::get().get_font("fonts/ui_font.ttf", static_cast<int>(Engine::get().get_screen_height() * 0.05));
+    m_font = ResourceManager::get().get_font("fonts/ui_font.ttf", static_cast<int>(Engine::SCREEN_HEIGHT * 0.05));
 }
 
 void HelpText::update() {}

@@ -5,7 +5,7 @@
 
 HealthPointText::HealthPointText(int x_center, int y_center) : m_x_center(x_center), m_y_center(y_center) {
     m_obj_name = "HealthPointText";
-    m_font = ResourceManager::get().get_font("fonts/font.ttf", static_cast<int>(Engine::get().get_screen_height() * 0.03));
+    m_font = ResourceManager::get().get_font("fonts/font.ttf", static_cast<int>(Engine::SCREEN_HEIGHT * 0.03));
 }
 
 void HealthPointText::update() {}

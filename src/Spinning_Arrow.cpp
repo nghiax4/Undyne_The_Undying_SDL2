@@ -5,14 +5,14 @@
 #include <algorithm>
 #include <cmath>
 
-Spinning_Arrow::Spinning_Arrow(double origin_x, double origin_y, double start_angle_deg, double start_radius, std::string obj_name) : m_radial_speed_pixels_per_ms(Engine::get().get_screen_width() * 0.00017), m_origin_x(origin_x), m_origin_y(origin_y), m_current_radius(start_radius), m_initial_radius(start_radius), m_radial_speed(start_radius / TRAVEL_DURATION_MS) {
+Spinning_Arrow::Spinning_Arrow(double origin_x, double origin_y, double start_angle_deg, double start_radius, std::string obj_name) : m_radial_speed_pixels_per_ms(Engine::SCREEN_WIDTH * 0.00017), m_origin_x(origin_x), m_origin_y(origin_y), m_current_radius(start_radius), m_initial_radius(start_radius), m_radial_speed(start_radius / TRAVEL_DURATION_MS) {
     m_obj_name = obj_name;
     m_z_index = 5; // Above the box
 
     // Convert to radians for math
     m_current_angle_rad = start_angle_deg * M_PI / 180.0;
 
-    m_width = Engine::get().get_screen_width() * 0.025;
+    m_width = Engine::SCREEN_WIDTH * 0.025;
     m_height = m_width / White_Arrow_Medium_Box_Attack::SPRITE_WIDTH_TO_HEIGHT;
 
     // Reusing the white arrow texture

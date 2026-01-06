@@ -14,7 +14,7 @@ void Engine::init(const std::string &title) {
         throw std::runtime_error("TTF_Init Error: " + std::string(TTF_GetError()));
     }
 
-    m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, static_cast<int>(SCREEN_WIDTH), static_cast<int>(SCREEN_HEIGHT), SDL_WINDOW_SHOWN);
     assert(m_window != nullptr);
 
     m_renderer = SDL_CreateRenderer(m_window, -1, 0);

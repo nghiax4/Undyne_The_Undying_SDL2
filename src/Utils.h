@@ -4,7 +4,7 @@
 #include <string>
 #include "core/ResourceManager.h"
 
-struct GameObject;
+class GameObject;
 
 // SDL_Texture *loadTexture(std::string path);
 

@@ -13,33 +13,33 @@
 #include "core/Scene.h"
 
 GameManager::GameManager() {
-    obj_name = "GameManager";
+    m_obj_name = "GameManager";
 }
 
 void GameManager::update() {
-    if (current_turn == Turn::EnemyTurn) {
+    if (m_current_turn == Turn::EnemyTurn) {
         Attack_Manager_Base_Class *attack_manager = find_attack_manager();
-        if (attack_manager->time_elapsed_since_creation <= attack_manager->MILLISECONDS_LENGTH)
+        if (attack_manager->m_time_elapsed_since_creation <= attack_manager->m_milliseconds_length)
             return;
 
-        current_turn = Turn::PlayerTurn;
+        m_current_turn = Turn::PlayerTurn;
         attack_manager->ready_to_be_removed();
 
-        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center = Engine::get().get_screen_width() / 2;
-        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center = Engine::get().get_screen_height() * 0.67;
-        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width = Engine::get().get_screen_width() * 0.9;
-        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height = Engine::get().get_screen_height() * 0.3;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center = Engine::get().get_screen_width() / 2;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center = Engine::get().get_screen_height() * 0.67;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width = Engine::get().get_screen_width() * 0.9;
+        static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height = Engine::get().get_screen_height() * 0.3;
 
-        current_attack_idx += 1;
+        m_current_attack_idx += 1;
 
         if (!Scene::get().object_exists("BattleText")) {
             Scene::get().spawn(std::make_unique<BattleText>());
         }
     }
 
-    if (current_turn == Turn::PlayerTurn && Input::get().is_key_down(SDL_SCANCODE_RETURN)) {
-        current_turn = Turn::EnemyTurn;
-        play_attack(current_attack_idx);
+    if (m_current_turn == Turn::PlayerTurn && Input::get().is_key_down(SDL_SCANCODE_RETURN)) {
+        m_current_turn = Turn::EnemyTurn;
+        play_attack(m_current_attack_idx);
     }
 }
 
@@ -52,7 +52,7 @@ void GameManager::play_attack(int attack_idx) {
 
 Attack_Manager_Base_Class *GameManager::find_attack_manager() {
     for (auto &obj : Scene::get().get_objects()) {
-        if (obj->obj_name.find("Attack_Manager_") == 0) {
+        if (obj->m_obj_name.find("Attack_Manager_") == 0) {
             return static_cast<Attack_Manager_Base_Class *>(obj.get());
         }
     }

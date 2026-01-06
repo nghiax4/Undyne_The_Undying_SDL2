@@ -7,15 +7,15 @@
 #include <string>
 
 struct Player_EnemyTurn_Green : public GameObject {
-    constexpr static double PLAYER_ARROW_COLLISION_DISTANCE = 10;
-    int x_center, y_center, width, height;
-    int time_elapsed_since_invisibility_frame = 0;
-    bool enable_invisbility_frame = 0;
+    static constexpr double PLAYER_ARROW_COLLISION_DISTANCE = 10;
+    double m_x_center, m_y_center, m_width, m_height;
+    Uint32 m_time_elapsed_since_invisibility_frame = 0;
+    bool m_enable_invisbility_frame = 0;
     // Render transparently for the invisibility frame (it flickers between transparent and opaque)
-    bool render_texture_transparent = false;
-    int time_elapsed_since_transparent = 0;
+    bool m_render_texture_transparent = false;
+    Uint32 m_time_elapsed_since_transparent = 0;
 
-    SmartTexture texture;
+    SmartTexture m_texture;
 
     Player_EnemyTurn_Green(int x_center, int y_center);
 

@@ -7,8 +7,8 @@ struct GameManager : public GameObject {
   public:
     GameManager();
 
-    Turn current_turn = Turn::PlayerTurn;
-    int current_attack_idx = 0;
+    Turn m_current_turn = Turn::PlayerTurn;
+    int m_current_attack_idx = 8;
 
     void update() override;
     void render() override;

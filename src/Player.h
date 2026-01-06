@@ -7,10 +7,10 @@
 #include <string>
 
 struct Player : public GameObject {
-    int x_center, y_center, width, height;
-    SmartTexture player_texture;
+    double m_x_center, m_y_center, m_width, m_height;
+    SmartTexture m_player_texture;
 
-    Player(int x_center, int y_center);
+    Player(double x_center, double y_center);
 
     virtual void update() override;
 

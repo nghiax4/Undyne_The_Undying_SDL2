@@ -23,13 +23,13 @@ class Input {
   private:
     Input() = default;
 
-    int num_keys = 0;
-    const Uint8 *sdl_key_states = nullptr;
+    int m_num_keys = 0;
+    const Uint8 *m_sdl_key_states = nullptr;
 
-    std::vector<Uint8> current_state;
-    std::vector<Uint8> previous_state;
+    std::vector<Uint8> m_current_state;
+    std::vector<Uint8> m_previous_state;
 
     // Buffer for virtual keys (button presses on mobile)
     // Needs to be reset manually each frame because it's not handled by SDL_GetKeyboardState()
-    std::vector<Uint8> virtual_key_state;
+    std::vector<Uint8> m_virtual_key_state;
 };

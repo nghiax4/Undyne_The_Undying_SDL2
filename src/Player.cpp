@@ -8,21 +8,21 @@
 #include <string>
 #include <vector>
 
-Player::Player(int x_center, int y_center) : x_center(x_center), y_center(y_center), width(Engine::get().get_screen_width() * 0.03), height(Engine::get().get_screen_width() * 0.03) {
-    player_texture = ResourceManager::get().get_texture("sprites/soul.png");
-    obj_name = "Player";
-    this->z_index = 3;
+Player::Player(double x_center, double y_center) : m_x_center(x_center), m_y_center(y_center), m_width(Engine::get().get_screen_width() * 0.03), m_height(Engine::get().get_screen_width() * 0.03) {
+    m_player_texture = ResourceManager::get().get_texture("sprites/soul.png");
+    m_obj_name = "Player";
+    m_z_index = 3;
 }
 
 void Player::update() {
-    int selected_menu_button = static_cast<SelectedMenuButtonContainer *>(Scene::get().find_object_by_name("SelectedMenuButtonContainer"))->selected_menu_button;
+    size_t selected_menu_button = static_cast<SelectedMenuButtonContainer *>(Scene::get().find_object_by_name("SelectedMenuButtonContainer"))->m_selected_menu_button;
 
     std::vector<MenuButton *> menu_buttons = {static_cast<MenuButton *>(Scene::get().find_object_by_name("Menu_Button_0")), static_cast<MenuButton *>(Scene::get().find_object_by_name("Menu_Button_1")), static_cast<MenuButton *>(Scene::get().find_object_by_name("Menu_Button_2")), static_cast<MenuButton *>(Scene::get().find_object_by_name("Menu_Button_3"))};
 
-    x_center = menu_buttons[selected_menu_button]->x_center - menu_buttons[selected_menu_button]->width / 2 + width;
-    y_center = menu_buttons[selected_menu_button]->y_center;
+    m_x_center = menu_buttons[selected_menu_button]->m_x_center - menu_buttons[selected_menu_button]->m_width / 2 + m_width;
+    m_y_center = menu_buttons[selected_menu_button]->m_y_center;
 }
 
 void Player::render() {
-    Engine::get().draw_texture(player_texture, x_center, y_center, width, height);
+    Engine::get().draw_texture(m_player_texture, m_x_center, m_y_center, m_width, m_height);
 }

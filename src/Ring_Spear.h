@@ -4,19 +4,19 @@
 #include "Utils.h"
 
 struct Ring_Spear : public GameObject {
-    const double SPIN_DURATION_MS = 567.0;
-    const double LOCK_DURATION_MS = 200.0;
-    const double TRAVEL_DURATION_MS = 434.0;
+    static constexpr double SPIN_DURATION_MS = 567.0;
+    static constexpr double LOCK_DURATION_MS = 200.0;
+    static constexpr double TRAVEL_DURATION_MS = 434.0;
 
-    double x_center, y_center;
-    double origin_x, origin_y;
-    double current_radius;
-    double current_angle_rad;
-    double time_alive = 0;
-    double charge_speed;
+    double m_x_center, m_y_center;
+    double m_origin_x, m_origin_y;
+    double m_current_radius;
+    double m_current_angle_rad;
+    Uint32 m_time_alive = 0;
+    double m_charge_speed;
 
-    SmartTexture texture;
-    int width, height;
+    SmartTexture m_texture;
+    double m_width, m_height;
 
     Ring_Spear(double x, double y, double angle_deg, double radius, std::string name);
 

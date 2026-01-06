@@ -7,49 +7,49 @@
 #include <Arrow_For_Green_Attack.h>
 #include <algorithm>
 
-Attack_Manager_Base_Class::Attack_Manager_Base_Class(int _attack_id) : attack_id(_attack_id) {
-    attack_prefix = "Attack_" + std::to_string(attack_id);
-    obj_name = "Attack_Manager_" + std::to_string(attack_id);
+Attack_Manager_Base_Class::Attack_Manager_Base_Class(int attack_id, Uint32 milliseconds_length) : m_milliseconds_length(milliseconds_length), m_attack_id(attack_id) {
+    m_attack_prefix = "Attack_" + std::to_string(m_attack_id);
+    m_obj_name = "Attack_Manager_" + std::to_string(m_attack_id);
 }
 
 void Attack_Manager_Base_Class::update() {
-    time_elapsed_since_creation += Engine::get().get_delta_time();
+    m_time_elapsed_since_creation += Engine::get().get_delta_time();
 }
 
 void Attack_Manager_Base_Class::ready_to_be_removed() {
-    this->to_be_removed = true;
+    m_to_be_removed = true;
 }
 
 void Attack_Manager_Base_Class::_teardown_green_mode() {
-    this->to_be_removed = true;
+    m_to_be_removed = true;
 
     GameObject *player = Scene::get().find_object_by_name("Player_EnemyTurn_Green");
-    player->to_be_removed = true;
+    player->m_to_be_removed = true;
 
     GameObject *shield = Scene::get().find_object_by_name("Shield");
-    shield->to_be_removed = true;
+    shield->m_to_be_removed = true;
 
     // Remove all arrows/attacks specific to this attack
     for (auto &obj : Scene::get().get_objects()) {
-        if (obj->obj_name.find(attack_prefix) == 0) {
-            obj->to_be_removed = true;
+        if (obj->m_obj_name.find(m_attack_prefix) == 0) {
+            obj->m_to_be_removed = true;
         }
     }
 }
 
 Arrow_For_Green_Attack *Attack_Manager_Base_Class::create_arrow_for_green_attack(double x, double y, double v_x, double v_y, Direction direction, int arrow_number, ArrowType type) {
-    std::string arrow_name = attack_prefix + "_Arrow_For_Green_Attack_" + std::to_string(arrow_number);
+    std::string arrow_name = m_attack_prefix + "_Arrow_For_Green_Attack_" + std::to_string(arrow_number);
     return new Arrow_For_Green_Attack(x, y, v_x, v_y, direction, arrow_name, type);
 }
 
-Arrow_For_Green_Attack *Attack_Manager_Base_Class::create_arrow_for_green_attack_with_impact_time(Direction direction, double speed, int time_to_impact_ms, int arrow_number, ArrowType type) {
+Arrow_For_Green_Attack *Attack_Manager_Base_Class::create_arrow_for_green_attack_with_impact_time(Direction direction, double speed, Uint32 time_to_impact_ms, int arrow_number, ArrowType type) {
     assert(speed > 0);
     assert(time_to_impact_ms > 0);
 
     if (type == ArrowType::Yellow) {
         // Yellow arrows have rotation which makes the arrow stop moving toward to the soul, so we need to subtract the rotation time
-        double rotation_duration_ms = 180.0 / Arrow_For_Green_Attack::ROTATION_SPEED_DEGREE_PER_MS;
-        time_to_impact_ms = std::max(time_to_impact_ms - rotation_duration_ms, 0.0);
+        Uint32 rotation_duration_ms = 257; //180.0 / Arrow_For_Green_Attack::ROTATION_SPEED_DEGREE_PER_MS;
+        time_to_impact_ms = std::max(time_to_impact_ms - rotation_duration_ms, static_cast<Uint32>(0));
     }
 
     double target_x = Engine::get().get_screen_width() / 2.0;

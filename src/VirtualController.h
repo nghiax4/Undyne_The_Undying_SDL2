@@ -5,17 +5,17 @@
 #include <utility>
 
 struct VirtualController : public GameObject {
-    SmartTexture arrow_texture;
-    SmartTexture enter_texture;
+    SmartTexture m_arrow_texture;
+    SmartTexture m_enter_texture;
 
     struct ButtonMapping {
-        SDL_Rect screen_area;
-        double rotation_angle_deg;
-        SDL_Scancode scancode_target;
-        bool is_enter_key;
+        SDL_Rect m_screen_area;
+        double m_rotation_angle_deg;
+        SDL_Scancode m_scancode_target;
+        bool m_is_enter_key;
     };
 
-    std::vector<ButtonMapping> buttons;
+    std::vector<ButtonMapping> m_buttons;
 
     VirtualController();
 

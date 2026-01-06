@@ -4,20 +4,19 @@
 #include <string>
 
 HelpText::HelpText() {
-    obj_name = "HelpText";
-    z_index = 1000;
+    m_obj_name = "HelpText";
+    m_z_index = 1000;
 
-    int font_size = Engine::get().get_screen_height() * 0.05;
-    font = ResourceManager::get().get_font("fonts/ui_font.ttf", font_size);
+    m_font = ResourceManager::get().get_font("fonts/ui_font.ttf", static_cast<int>(Engine::get().get_screen_height() * 0.05));
 }
 
 void HelpText::update() {}
 
 void HelpText::render() {
-    SDL_Color text_color = {255, 255, 255, 0};
-    const int ALPHA_TRANSPARENCY = 128; // 0-255, where 128 is ~50% transparent
-    const int PADDING_LEFT = 10;
-    const int PADDING_TOP = 10;
+    constexpr SDL_Color text_color = {255, 255, 255, 0};
+    constexpr int ALPHA_TRANSPARENCY = 128; // 0-255, where 128 is ~50% transparent
+    constexpr int PADDING_LEFT = 10;
+    constexpr int PADDING_TOP = 10;
 
-    Engine::get().draw_text(font, "Keyboard: Arrow keys, Enter key\nTouchscreen: Buttons on screen", PADDING_LEFT, PADDING_TOP, text_color, false, ALPHA_TRANSPARENCY);
+    Engine::get().draw_text(m_font, "Keyboard: Arrow keys, Enter key\nTouchscreen: Buttons on screen", PADDING_LEFT, PADDING_TOP, text_color, false, ALPHA_TRANSPARENCY);
 }

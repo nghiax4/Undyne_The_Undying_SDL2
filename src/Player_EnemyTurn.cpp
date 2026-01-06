@@ -23,43 +23,43 @@ void apply_collision_logic_for_type(Player_EnemyTurn *player) {
         if (specific_attack == nullptr)
             continue;
 
-        double distance_to_attack = distance(player->x_center, player->y_center, specific_attack->x_center, specific_attack->y_center);
+        double distance_to_attack = distance(player->m_x_center, player->m_y_center, specific_attack->m_x_center, specific_attack->m_y_center);
         bool is_colliding = distance_to_attack <= PLAYER_ARROW_COLLISION_DISTANCE;
 
         if (is_colliding) {
-            if (!player->enable_invisbility_frame) {
-                player->enable_invisbility_frame = true;
-                player->render_texture_transparent = true;
-                player->time_elapsed_since_invisibility_frame = 0;
+            if (!player->m_enable_invisbility_frame) {
+                player->m_enable_invisbility_frame = true;
+                player->m_render_texture_transparent = true;
+                player->m_time_elapsed_since_invisibility_frame = 0;
 
-                hp_text_obj->hp -= DAMAGE_AMOUNT;
+                hp_text_obj->m_hp -= DAMAGE_AMOUNT;
                 play_sound_effect("audio/damage_taken.ogg");
             }
-            game_obj->to_be_removed = true;
+            game_obj->m_to_be_removed = true;
         }
     }
 }
 
-Player_EnemyTurn::Player_EnemyTurn(int x_center, int y_center) : v_x(Engine::get().get_screen_width() * 0.0003), v_y(Engine::get().get_screen_width() * 0.0003), x_center(x_center), y_center(y_center), width(Engine::get().get_screen_width() * 0.03), height(Engine::get().get_screen_width() * 0.03) {
-    texture = ResourceManager::get().get_texture("sprites/soul.png");
-    obj_name = "Player_EnemyTurn";
-    this->z_index = 3;
+Player_EnemyTurn::Player_EnemyTurn(double x_center, double y_center) : m_v_x(Engine::get().get_screen_width() * 0.0003), m_v_y(Engine::get().get_screen_width() * 0.0003), m_x_center(x_center), m_y_center(y_center), m_width(Engine::get().get_screen_width() * 0.03), m_height(Engine::get().get_screen_width() * 0.03) {
+    m_texture = ResourceManager::get().get_texture("sprites/soul.png");
+    m_obj_name = "Player_EnemyTurn";
+    m_z_index = 3;
 }
 
 void Player_EnemyTurn::update() {
-    time_elapsed_since_invisibility_frame += Engine::get().get_delta_time();
-    time_elapsed_since_transparent += Engine::get().get_delta_time();
+    m_time_elapsed_since_invisibility_frame += Engine::get().get_delta_time();
+    m_time_elapsed_since_transparent += Engine::get().get_delta_time();
 
-    if (enable_invisbility_frame == true) {
-        if (time_elapsed_since_transparent >= 140) {
-            render_texture_transparent = !render_texture_transparent;
-            time_elapsed_since_transparent = 0;
+    if (m_enable_invisbility_frame == true) {
+        if (m_time_elapsed_since_transparent >= 140) {
+            m_render_texture_transparent = !m_render_texture_transparent;
+            m_time_elapsed_since_transparent = 0;
         }
 
-        if (time_elapsed_since_invisibility_frame >= 700) {
-            enable_invisbility_frame = false;
-            render_texture_transparent = false;
-            time_elapsed_since_invisibility_frame = 0;
+        if (m_time_elapsed_since_invisibility_frame >= 700) {
+            m_enable_invisbility_frame = false;
+            m_render_texture_transparent = false;
+            m_time_elapsed_since_invisibility_frame = 0;
         }
     }
 
@@ -79,14 +79,14 @@ void Player_EnemyTurn::update() {
         y_multiplier = 1;
     }
 
-    x_center += x_multiplier * v_x * Engine::get().get_delta_time();
-    y_center += y_multiplier * v_y * Engine::get().get_delta_time();
+    m_x_center += x_multiplier * m_v_x * Engine::get().get_delta_time();
+    m_y_center += y_multiplier * m_v_y * Engine::get().get_delta_time();
 
-    x_center = std::max(x_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width / 2 + width / 2));
-    x_center = std::min(x_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width / 2 - width / 2));
+    m_x_center = std::max(m_x_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width / 2 + m_width / 2));
+    m_x_center = std::min(m_x_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width / 2 - m_width / 2));
 
-    y_center = std::max(y_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height / 2 + height / 2));
-    y_center = std::min(y_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height / 2 - height / 2));
+    m_y_center = std::max(m_y_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height / 2 + m_height / 2));
+    m_y_center = std::min(m_y_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height / 2 - m_height / 2));
 
     apply_collision_logic_for_type<White_Arrow_Small_Box_Attack>(this);
     apply_collision_logic_for_type<White_Arrow_Medium_Box_Attack>(this);
@@ -95,5 +95,5 @@ void Player_EnemyTurn::update() {
 }
 
 void Player_EnemyTurn::render() {
-    Engine::get().draw_texture(texture, x_center, y_center, width, height, 0, render_texture_transparent ? 128 : 255);
+    Engine::get().draw_texture(m_texture, m_x_center, m_y_center, m_width, m_height, 0, m_render_texture_transparent ? 128 : 255);
 }

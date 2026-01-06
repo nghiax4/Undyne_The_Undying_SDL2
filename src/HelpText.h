@@ -6,7 +6,7 @@
 #include <memory>
 
 struct HelpText : public GameObject {
-    SmartFont font;
+    SmartFont m_font;
 
     HelpText();
     void update() override;

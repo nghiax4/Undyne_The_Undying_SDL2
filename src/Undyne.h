@@ -4,17 +4,17 @@
 #include <vector>
 
 struct Undyne : public GameObject {
-    const double UNDYNE_SPRITE_WIDTH_OVER_HEIGHT = 314.0 / 246;
-    const int MILLISECOND_BETWEEN_SPRITE_FRAME = 30;
+    static constexpr double UNDYNE_SPRITE_WIDTH_OVER_HEIGHT = 314.0 / 246;
+    static constexpr int MILLISECOND_BETWEEN_SPRITE_FRAME = 30;
 
-    int x_center, y_center, height, width;
-    double time_elapsed_since_last_sprite_frame = 0;
-    int current_sprite_frame = 0;
-    const int NUM_OF_SPRITE_FRAMES = 107;
+    double m_x_center, m_y_center, m_height, m_width;
+    Uint32 m_time_elapsed_since_last_sprite_frame = 0;
+    size_t m_current_sprite_frame = 0;
+    static constexpr int NUM_OF_SPRITE_FRAMES = 107;
 
-    std::vector<SmartTexture> sprite_frames;
+    std::vector<SmartTexture> m_sprite_frames;
 
-    Undyne(int x_center, int y_center, int height);
+    Undyne(double x_center, double y_center, double height);
 
     virtual void update() override;
 

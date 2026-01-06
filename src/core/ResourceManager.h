@@ -55,9 +55,9 @@ class ResourceManager {
   private:
     ResourceManager() = default;
 
-    std::map<std::string, SmartTexture> textures;
-    std::map<std::string, SmartChunk> sounds;
-    std::map<std::string, SmartMusic> music;
+    std::map<std::string, SmartTexture> m_textures;
+    std::map<std::string, SmartChunk> m_sounds;
+    std::map<std::string, SmartMusic> m_music;
     // Fonts are unique by Path + Font size
-    std::map<std::string, SmartFont> fonts;
+    std::map<std::string, SmartFont> m_fonts;
 };

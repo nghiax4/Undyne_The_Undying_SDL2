@@ -8,13 +8,14 @@ WEB_OUTPUT_DIRECTORY = $(BUILD_DIRECTORY)/web
 DESKTOP_COMPILER = g++
 DEBUG_FLAGS = -g -O0
 SANITIZER_FLAGS = -fno-omit-frame-pointer -fsanitize=address,undefined
+WARNING_FLAGS = -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wundef -Wcast-align
 
 # Include paths (where to look for header files)
 INCLUDE_FLAGS = -Isrc -Isrc/attacks
 LIBRARY_FLAGS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 
 # Combine all flags for the Desktop build
-DESKTOP_COMPILE_FLAGS = -Wall -Wextra $(DEBUG_FLAGS) $(SANITIZER_FLAGS) $(INCLUDE_FLAGS)
+DESKTOP_COMPILE_FLAGS = $(WARNING_FLAGS) $(DEBUG_FLAGS) $(SANITIZER_FLAGS) $(INCLUDE_FLAGS)
 
 # The final executable file path
 DESKTOP_EXECUTABLE = $(DESKTOP_OUTPUT_DIRECTORY)/$(APP_NAME)

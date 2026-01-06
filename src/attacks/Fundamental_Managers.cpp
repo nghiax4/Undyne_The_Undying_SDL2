@@ -9,46 +9,46 @@
 #include "core/Engine.h"
 #include "core/Scene.h"
 
-Three_Lane_Rising_Arrow_Attack::Three_Lane_Rising_Arrow_Attack(int attack_id, int duration_ms, int time_between_arrows_ms, int arrow_prep_time_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.72, 0.12, 0.19), time_between_arrows_ms(time_between_arrows_ms), arrow_prep_time_ms(arrow_prep_time_ms) {}
+Three_Lane_Rising_Arrow_Attack::Three_Lane_Rising_Arrow_Attack(int attack_id, Uint32 duration_ms, Uint32 time_between_arrows_ms, Uint32 arrow_prep_time_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.72, 0.12, 0.19), m_time_between_arrows_ms(time_between_arrows_ms), m_arrow_prep_time_ms(arrow_prep_time_ms) {}
 
 void Three_Lane_Rising_Arrow_Attack::update() {
     Red_Mode_Manager::update();
-    time_elapsed_since_last_arrow += Engine::get().get_delta_time();
+    m_time_elapsed_since_last_arrow += Engine::get().get_delta_time();
 
-    if (time_elapsed_since_last_arrow > time_between_arrows_ms) {
+    if (m_time_elapsed_since_last_arrow > m_time_between_arrows_ms) {
         std::vector<double> x_multipliers = {0.2, 0.5, 0.8};
-        double x_pos = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width / 2 + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width * x_multipliers.at(get_random(0, 2));
-        double y_pos = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height;
+        double x_pos = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width / 2 + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width * x_multipliers.at(static_cast<size_t>(get_random(0, 2)));
+        double y_pos = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height;
 
-        std::string name = attack_prefix + "_Falling_Arrow_" + std::to_string(arrows_created_counter++);
-        Scene::get().spawn(std::make_unique<White_Arrow_Small_Box_Attack>(x_pos, y_pos, name, arrow_prep_time_ms));
+        std::string name = m_attack_prefix + "_Falling_Arrow_" + std::to_string(m_arrows_created_counter++);
+        Scene::get().spawn(std::make_unique<White_Arrow_Small_Box_Attack>(x_pos, y_pos, name, m_arrow_prep_time_ms));
 
-        time_elapsed_since_last_arrow = 0;
+        m_time_elapsed_since_last_arrow = 0;
     }
 }
 
-Random_Spawn_Player_Aimed_Arrow_Attack::Random_Spawn_Player_Aimed_Arrow_Attack(int attack_id, int duration_ms, int time_between_arrows_ms, int arrow_rotation_time_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.63, 0.28, (Engine::get().get_screen_width() * 0.28) / Engine::get().get_screen_height()), time_between_arrows_ms(time_between_arrows_ms), arrow_rotation_time_ms(arrow_rotation_time_ms) {}
+Random_Spawn_Player_Aimed_Arrow_Attack::Random_Spawn_Player_Aimed_Arrow_Attack(int attack_id, Uint32 duration_ms, Uint32 time_between_arrows_ms, Uint32 arrow_rotation_time_ms) : Red_Mode_Manager(attack_id, duration_ms, 0.63, 0.28, (Engine::get().get_screen_width() * 0.28) / Engine::get().get_screen_height()), m_time_between_arrows_ms(time_between_arrows_ms), m_arrow_rotation_time_ms(arrow_rotation_time_ms) {}
 
 void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
     Red_Mode_Manager::update();
-    time_elapsed_since_last_arrow += Engine::get().get_delta_time();
+    m_time_elapsed_since_last_arrow += Engine::get().get_delta_time();
 
-    if (time_elapsed_since_last_arrow > time_between_arrows_ms) {
+    if (m_time_elapsed_since_last_arrow > m_time_between_arrows_ms) {
         Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(Scene::get().find_object_by_name("Player_EnemyTurn"));
 
         double spawn_radius = get_random(Engine::get().get_screen_width() * 0.2, Engine::get().get_screen_width() * 0.3);
         double angle_deg = get_random(0, 360);
-        double spawn_x = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->x_center + spawn_radius * cos(angle_deg * M_PI / 180.0);
-        double spawn_y = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center + spawn_radius * sin(angle_deg * M_PI / 180.0);
+        double spawn_x = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center + spawn_radius * cos(angle_deg * M_PI / 180.0);
+        double spawn_y = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center + spawn_radius * sin(angle_deg * M_PI / 180.0);
 
-        std::string name = attack_prefix + "_Targeted_Arrow_" + std::to_string(arrows_created_counter++);
-        Scene::get().spawn(std::make_unique<White_Arrow_Medium_Box_Attack>(spawn_x, spawn_y, player->x_center, player->y_center, name, arrow_rotation_time_ms));
+        std::string name = m_attack_prefix + "_Targeted_Arrow_" + std::to_string(m_arrows_created_counter++);
+        Scene::get().spawn(std::make_unique<White_Arrow_Medium_Box_Attack>(spawn_x, spawn_y, player->m_x_center, player->m_y_center, name, m_arrow_rotation_time_ms));
 
-        time_elapsed_since_last_arrow = 0;
+        m_time_elapsed_since_last_arrow = 0;
     }
 }
 
-Inward_Spiraling_Arrow_Ring_Attack::Inward_Spiraling_Arrow_Ring_Attack(int attack_id, int duration_ms, int interval_ms) : Circle_Spawn_Manager(attack_id, duration_ms, interval_ms, Engine::get().get_screen_width() * 0.35) {}
+Inward_Spiraling_Arrow_Ring_Attack::Inward_Spiraling_Arrow_Ring_Attack(int attack_id, Uint32 duration_ms, Uint32 interval_ms) : Circle_Spawn_Manager(attack_id, duration_ms, interval_ms, Engine::get().get_screen_width() * 0.35) {}
 
 void Inward_Spiraling_Arrow_Ring_Attack::spawn_on_ring(double center_x, double center_y) {
     double angle_offset = get_random(0, 360);
@@ -56,15 +56,15 @@ void Inward_Spiraling_Arrow_Ring_Attack::spawn_on_ring(double center_x, double c
 
     for (int i = 0; i < ARROWS_PER_RING; i++) {
         double angle = angle_offset + (360.0 / ARROWS_PER_RING) * i;
-        std::string name = attack_prefix + "_Spinning_" + std::to_string(items_created_counter++);
-        Scene::get().spawn(std::make_unique<Spinning_Arrow>(center_x, center_y, angle, spawn_radius, name));
+        std::string name = m_attack_prefix + "_Spinning_" + std::to_string(m_items_created_counter++);
+        Scene::get().spawn(std::make_unique<Spinning_Arrow>(center_x, center_y, angle, m_spawn_radius, name));
     }
 }
 
-Contracting_Rotating_Spear_Ring_Attack::Contracting_Rotating_Spear_Ring_Attack(int attack_id, int duration_ms, double radius, IntervalCalculator get_interval_func) : Circle_Spawn_Manager(attack_id, duration_ms, get_interval_func(0), radius), get_interval_func(get_interval_func) {}
+Contracting_Rotating_Spear_Ring_Attack::Contracting_Rotating_Spear_Ring_Attack(int attack_id, Uint32 duration_ms, double radius, IntervalCalculator get_interval_func) : Circle_Spawn_Manager(attack_id, duration_ms, get_interval_func(0), radius), m_get_interval_func(get_interval_func) {}
 
 void Contracting_Rotating_Spear_Ring_Attack::update() {
-    current_interval = get_interval_func(time_elapsed_since_creation);
+    m_current_interval = m_get_interval_func(m_time_elapsed_since_creation);
     Circle_Spawn_Manager::update();
 }
 
@@ -74,7 +74,7 @@ void Contracting_Rotating_Spear_Ring_Attack::spawn_on_ring(double center_x, doub
 
     for (int i = 0; i < SPEARS_PER_RING; i++) {
         double angle = angle_offset + (360.0 / SPEARS_PER_RING) * i;
-        std::string name = attack_prefix + "_Spear_" + std::to_string(items_created_counter++);
-        Scene::get().spawn(std::make_unique<Ring_Spear>(center_x, center_y, angle, spawn_radius, name));
+        std::string name = m_attack_prefix + "_Spear_" + std::to_string(m_items_created_counter++);
+        Scene::get().spawn(std::make_unique<Ring_Spear>(center_x, center_y, angle, m_spawn_radius, name));
     }
 }

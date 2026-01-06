@@ -15,7 +15,7 @@ class Engine {
         return instance;
     }
 
-    void init(const std::string &title, int width, int height);
+    void init(const std::string &title);
     void cleanup();
     void clear_screen();
     void present_screen();
@@ -25,24 +25,24 @@ class Engine {
     void draw_text(const SmartFont &font, const std::string &text, double x, double y, SDL_Color color, bool center, Uint8 alpha = 255);
 
     SDL_Renderer *get_renderer() const;
-    int get_screen_width() const;
-    int get_screen_height() const;
-    double get_delta_time() const;
+    double get_screen_width() const;
+    double get_screen_height() const;
+    Uint32 get_delta_time() const;
     void update_time();
 
     // Prevent cloning
     Engine(const Engine &) = delete;
     void operator=(const Engine &) = delete;
 
+    static constexpr double SCREEN_WIDTH = 800;
+    static constexpr double SCREEN_HEIGHT = 600;
+
   private:
     Engine() = default;
 
-    SDL_Window *window = nullptr;
-    SDL_Renderer *renderer = nullptr;
+    SDL_Window *m_window = nullptr;
+    SDL_Renderer *m_renderer = nullptr;
 
-    int screen_width = 0;
-    int screen_height = 0;
-
-    Uint32 last_tick = 0;
-    double delta_time = 0.0;
+    Uint32 m_last_tick = 0;
+    Uint32 m_delta_time = 0.0;
 };

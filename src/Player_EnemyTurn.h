@@ -4,16 +4,15 @@
 #include "Utils.h"
 
 struct Player_EnemyTurn : public GameObject {
-    const double v_x, v_y;
-    double x_center, y_center;
-    int width, height;
-    SmartTexture texture;
-    int time_elapsed_since_invisibility_frame = 0;
-    bool enable_invisbility_frame = 0;
+    const double m_v_x, m_v_y;
+    double m_x_center, m_y_center, m_width, m_height;
+    SmartTexture m_texture;
+    Uint32 m_time_elapsed_since_invisibility_frame = 0;
+    bool m_enable_invisbility_frame = 0;
     // Render transparently for the invisibility frame (it flickers between transparent and opaque)
-    bool render_texture_transparent = false;
-    int time_elapsed_since_transparent = 0;
-    Player_EnemyTurn(int x_center, int y_center);
+    bool m_render_texture_transparent = false;
+    Uint32 m_time_elapsed_since_transparent = 0;
+    Player_EnemyTurn(double x_center, double y_center);
 
     virtual void update() override;
     virtual void render() override;

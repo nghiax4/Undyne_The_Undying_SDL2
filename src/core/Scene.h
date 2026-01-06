@@ -26,13 +26,13 @@ class Scene {
 
     // Raw access if absolutely needed (try to avoid)
     const std::vector<std::unique_ptr<GameObject>> &get_objects() const {
-        return objects;
+        return m_objects;
     }
 
   private:
     Scene() = default;
 
-    std::vector<std::unique_ptr<GameObject>> objects;
+    std::vector<std::unique_ptr<GameObject>> m_objects;
 
     static bool z_index_comparator(const std::unique_ptr<GameObject> &a, const std::unique_ptr<GameObject> &b);
 };

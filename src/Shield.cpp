@@ -7,45 +7,45 @@
 #include "core/Input.h"
 #include "core/Scene.h"
 
-Shield::Shield() : width(Engine::get().get_screen_width() * 0.1), height(Engine::get().get_screen_height() * 0.007), distance_from_soul(Engine::get().get_screen_height() * 0.07) {
-    texture = ResourceManager::get().get_texture("sprites/shield.png");
-    obj_name = "Shield";
-    z_index = 3;
+Shield::Shield() : m_width(Engine::get().get_screen_width() * 0.1), m_height(Engine::get().get_screen_height() * 0.007), m_distance_from_soul(Engine::get().get_screen_height() * 0.07) {
+    m_texture = ResourceManager::get().get_texture("sprites/shield.png");
+    m_obj_name = "Shield";
+    m_z_index = 3;
 }
 
 void Shield::update() {
     Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(Scene::get().find_object_by_name("Player_EnemyTurn_Green"));
 
     if (Input::get().is_key_down(SDL_SCANCODE_UP)) {
-        target_angle = 270;
+        m_target_angle = 270;
     }
     if (Input::get().is_key_down(SDL_SCANCODE_RIGHT)) {
-        target_angle = 0;
+        m_target_angle = 0;
     }
     if (Input::get().is_key_down(SDL_SCANCODE_DOWN)) {
-        target_angle = 90;
+        m_target_angle = 90;
     }
     if (Input::get().is_key_down(SDL_SCANCODE_LEFT)) {
-        target_angle = 180;
+        m_target_angle = 180;
     }
 
     auto mod360 = [](double x) {
         return std::fmod(std::fmod(x, 360.0) + 360.0, 360.0);
     };
 
-    double increment_distance = mod360(target_angle - cur_angle);
-    double decrement_distance = mod360(cur_angle - target_angle);
+    double increment_distance = mod360(m_target_angle - m_cur_angle);
+    double decrement_distance = mod360(m_cur_angle - m_target_angle);
 
     if (increment_distance < decrement_distance) {
-        cur_angle += increment_distance * Engine::get().get_delta_time() * 0.03;
+        m_cur_angle += increment_distance * Engine::get().get_delta_time() * 0.03;
     } else {
-        cur_angle -= decrement_distance * Engine::get().get_delta_time() * 0.03;
+        m_cur_angle -= decrement_distance * Engine::get().get_delta_time() * 0.03;
     }
 
-    x_center = player->x_center + distance_from_soul * cos(cur_angle * M_PI / 180);
-    y_center = player->y_center + distance_from_soul * sin(cur_angle * M_PI / 180);
+    m_x_center = player->m_x_center + m_distance_from_soul * cos(m_cur_angle * M_PI / 180);
+    m_y_center = player->m_y_center + m_distance_from_soul * sin(m_cur_angle * M_PI / 180);
 }
 
 void Shield::render() {
-    Engine::get().draw_texture(texture, x_center, y_center, width, height, cur_angle + 90);
+    Engine::get().draw_texture(m_texture, m_x_center, m_y_center, m_width, m_height, m_cur_angle + 90);
 }

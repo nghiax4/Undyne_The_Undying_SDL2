@@ -24,23 +24,21 @@
 #include <stdio.h>
 #include <vector>
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
-const int FPS = 100;
-const int FRAME_DELAY = 1000 / FPS;
+constexpr Uint32 FPS = 100;
+constexpr Uint32 FRAME_DELAY = 1000 / FPS;
 
-std::vector<std::unique_ptr<MenuButton>> init_menu_buttons(int button_width) {
+std::vector<std::unique_ptr<MenuButton>> init_menu_buttons(double button_width) {
     const double BUTTON_WIDTH_TO_HEIGHT = 367.0 / 140;
-    int button_height = button_width / BUTTON_WIDTH_TO_HEIGHT;
+    double button_height = button_width / BUTTON_WIDTH_TO_HEIGHT;
 
-    int Y_POS = SCREEN_HEIGHT * 0.9;
+    double Y_POS = Engine::SCREEN_HEIGHT * 0.9;
     int NUM_BUTTONS = 4;
-    int gap_between_button_edges = (SCREEN_WIDTH - NUM_BUTTONS * button_width) / (NUM_BUTTONS + 1);
+    double gap_between_button_edges = (Engine::SCREEN_WIDTH - NUM_BUTTONS * button_width) / (NUM_BUTTONS + 1);
     std::vector<SDL_Rect> result;
 
-    int cur_left_x = gap_between_button_edges;
+    double cur_left_x = gap_between_button_edges;
     for (int i = 0; i < NUM_BUTTONS; i++) {
-        result.push_back(SDL_Rect{cur_left_x, Y_POS, button_width, button_height});
+        result.push_back(SDL_Rect{static_cast<int>(cur_left_x), static_cast<int>(Y_POS), static_cast<int>(button_width), static_cast<int>(button_height)});
         cur_left_x += button_width + gap_between_button_edges;
     }
 
@@ -65,23 +63,23 @@ void start_music() {
 }
 
 int main(int, char *[]) {
-    Engine::get().init("Undyne SDL2 Refactored", SCREEN_WIDTH, SCREEN_HEIGHT);
+    Engine::get().init("Undyne SDL2 Refactored");
 
     Scene::get().spawn(std::make_unique<Player>(1, 1));
 
-    std::vector<std::unique_ptr<MenuButton>> menu_buttons = init_menu_buttons(0.2 * SCREEN_WIDTH);
-    const int first_btn_y_center = menu_buttons.at(0)->y_center;
-    const int first_btn_height = menu_buttons.at(0)->height;
+    std::vector<std::unique_ptr<MenuButton>> menu_buttons = init_menu_buttons(0.2 * Engine::SCREEN_WIDTH);
+    const double first_btn_y_center = menu_buttons.at(0)->m_y_center;
+    const double first_btn_height = menu_buttons.at(0)->m_height;
 
     for (auto &menu_button : menu_buttons) {
         Scene::get().spawn(std::move(menu_button));
     }
 
-    Scene::get().spawn(std::make_unique<BattleBox>(SCREEN_WIDTH / 2, SCREEN_HEIGHT * 0.67, SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.3));
-    Scene::get().spawn(std::make_unique<Undyne>(SCREEN_WIDTH * 0.57, SCREEN_HEIGHT / 4, SCREEN_HEIGHT * 0.48));
+    Scene::get().spawn(std::make_unique<BattleBox>(Engine::SCREEN_WIDTH / 2, Engine::SCREEN_HEIGHT * 0.67, Engine::SCREEN_WIDTH * 0.9, Engine::SCREEN_HEIGHT * 0.3));
+    Scene::get().spawn(std::make_unique<Undyne>(Engine::SCREEN_WIDTH * 0.57, Engine::SCREEN_HEIGHT / 4, Engine::SCREEN_HEIGHT * 0.48));
     Scene::get().spawn(std::make_unique<SelectedMenuButtonContainer>());
     Scene::get().spawn(std::make_unique<GameManager>());
-    Scene::get().spawn(std::make_unique<HealthPointText>(SCREEN_WIDTH / 2, (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->height / 2 + first_btn_y_center - first_btn_height / 2) / 2));
+    Scene::get().spawn(std::make_unique<HealthPointText>(Engine::SCREEN_WIDTH / 2, (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height / 2 + first_btn_y_center - first_btn_height / 2) / 2));
     Scene::get().spawn(std::make_unique<BattleText>());
     Scene::get().spawn(std::make_unique<HelpText>());
 
@@ -120,7 +118,7 @@ int main(int, char *[]) {
 
         Engine::get().present_screen();
 
-        int frameTime = SDL_GetTicks() - frameStart;
+        Uint32 frameTime = SDL_GetTicks() - frameStart;
         if (FRAME_DELAY > frameTime) {
             SDL_Delay(FRAME_DELAY - frameTime);
         }

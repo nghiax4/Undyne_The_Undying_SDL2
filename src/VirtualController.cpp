@@ -5,44 +5,44 @@
 #include "core/Input.h"
 
 VirtualController::VirtualController() {
-    obj_name = "VirtualController";
-    z_index = 999;
+    m_obj_name = "VirtualController";
+    m_z_index = 999;
 
-    arrow_texture = ResourceManager::get().get_texture("sprites/control_up_arrow.png");
-    enter_texture = ResourceManager::get().get_texture("sprites/control_enter_key.png");
+    m_arrow_texture = ResourceManager::get().get_texture("sprites/control_up_arrow.png");
+    m_enter_texture = ResourceManager::get().get_texture("sprites/control_enter_key.png");
 
-    int btn_size = Engine::get().get_screen_width() * 0.14;
+    double btn_size = Engine::get().get_screen_width() * 0.14;
 
-    int dpad_radius = btn_size * 0.85;
+    double dpad_radius = btn_size * 0.85;
 
-    int padding = Engine::get().get_screen_width() * 0.04;
+    double padding = Engine::get().get_screen_width() * 0.04;
 
-    int dpad_center_x = padding + btn_size;
-    int dpad_center_y = Engine::get().get_screen_height() - padding - btn_size;
+    double dpad_center_x = padding + btn_size;
+    double dpad_center_y = Engine::get().get_screen_height() - padding - btn_size;
 
     // Helper lambda to create a centered rectangle
-    auto make_rect = [&](int center_x, int center_y, int w, int h) {
-        return SDL_Rect{center_x - w / 2, center_y - h / 2, w, h};
+    auto make_rect = [&](double center_x, double center_y, double w, double h) {
+        return SDL_Rect{static_cast<int>(center_x - w / 2), static_cast<int>(center_y - h / 2), static_cast<int>(w), static_cast<int>(h)};
     };
 
     // UP
-    buttons.push_back({make_rect(dpad_center_x, dpad_center_y - dpad_radius, btn_size, btn_size), 0.0, SDL_SCANCODE_UP, false});
+    m_buttons.push_back({make_rect(dpad_center_x, dpad_center_y - dpad_radius, btn_size, btn_size), 0.0, SDL_SCANCODE_UP, false});
 
     // DOWN
-    buttons.push_back({make_rect(dpad_center_x, dpad_center_y + dpad_radius, btn_size, btn_size), 180.0, SDL_SCANCODE_DOWN, false});
+    m_buttons.push_back({make_rect(dpad_center_x, dpad_center_y + dpad_radius, btn_size, btn_size), 180.0, SDL_SCANCODE_DOWN, false});
 
     // LEFT
-    buttons.push_back({make_rect(dpad_center_x - dpad_radius, dpad_center_y, btn_size, btn_size), 270.0, SDL_SCANCODE_LEFT, false});
+    m_buttons.push_back({make_rect(dpad_center_x - dpad_radius, dpad_center_y, btn_size, btn_size), 270.0, SDL_SCANCODE_LEFT, false});
 
     // RIGHT
-    buttons.push_back({make_rect(dpad_center_x + dpad_radius, dpad_center_y, btn_size, btn_size), 90.0, SDL_SCANCODE_RIGHT, false});
+    m_buttons.push_back({make_rect(dpad_center_x + dpad_radius, dpad_center_y, btn_size, btn_size), 90.0, SDL_SCANCODE_RIGHT, false});
 
     // -- ENTER KEY --
-    int enter_width = btn_size * 1.5;
-    int enter_center_x = Engine::get().get_screen_width() - padding - (enter_width / 2);
-    int enter_center_y = dpad_center_y;
+    double enter_width = btn_size * 1.5;
+    double enter_center_x = Engine::get().get_screen_width() - padding - (enter_width / 2);
+    double enter_center_y = dpad_center_y;
 
-    buttons.push_back({make_rect(enter_center_x, enter_center_y, enter_width, btn_size), 0.0, SDL_SCANCODE_RETURN, true});
+    m_buttons.push_back({make_rect(enter_center_x, enter_center_y, enter_width, btn_size), 0.0, SDL_SCANCODE_RETURN, true});
 }
 
 void VirtualController::update() {
@@ -62,14 +62,14 @@ void VirtualController::update() {
                 continue;
 
             // finger->x and finger->y are percentages of the window size
-            int touch_x = static_cast<int>(finger->x * Engine::get().get_screen_width());
-            int touch_y = static_cast<int>(finger->y * Engine::get().get_screen_height());
+            int touch_x = static_cast<int>(static_cast<double>(finger->x) * Engine::get().get_screen_width());
+            int touch_y = static_cast<int>(static_cast<double>(finger->y) * Engine::get().get_screen_height());
 
             SDL_Point touch_point = {touch_x, touch_y};
 
-            for (const auto &button : buttons) {
-                if (SDL_PointInRect(&touch_point, &button.screen_area)) {
-                    Input::get().set_virtual_key(button.scancode_target, true);
+            for (const auto &button : m_buttons) {
+                if (SDL_PointInRect(&touch_point, &button.m_screen_area)) {
+                    Input::get().set_virtual_key(button.m_scancode_target, true);
                 }
             }
         }
@@ -77,12 +77,12 @@ void VirtualController::update() {
 }
 
 void VirtualController::render() {
-    for (const auto &button : buttons) {
-        SmartTexture texture = button.is_enter_key ? enter_texture : arrow_texture;
+    for (const auto &button : m_buttons) {
+        SmartTexture texture = button.m_is_enter_key ? m_enter_texture : m_arrow_texture;
 
-        double x_center = button.screen_area.x + button.screen_area.w / 2.0;
-        double y_center = button.screen_area.y + button.screen_area.h / 2.0;
+        double x_center = button.m_screen_area.x + button.m_screen_area.w / 2.0;
+        double y_center = button.m_screen_area.y + button.m_screen_area.h / 2.0;
 
-        Engine::get().draw_texture(texture, x_center, y_center, button.screen_area.w, button.screen_area.h, button.rotation_angle_deg, 128);
+        Engine::get().draw_texture(texture, x_center, y_center, button.m_screen_area.w, button.m_screen_area.h, button.m_rotation_angle_deg, 128);
     }
 }

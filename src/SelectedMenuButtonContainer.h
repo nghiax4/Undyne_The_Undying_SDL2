@@ -3,7 +3,7 @@
 #include <string>
 
 struct SelectedMenuButtonContainer : public GameObject {
-    int selected_menu_button;
+    size_t m_selected_menu_button;
 
     SelectedMenuButtonContainer();
 

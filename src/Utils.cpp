@@ -39,21 +39,21 @@
 void _print_all_objs_names() {
     printf("All objects names:\n");
     for (const auto &obj : Scene::get().get_objects()) {
-        printf("- %s\n", obj->obj_name.c_str());
+        printf("- %s\n", obj->m_obj_name.c_str());
     }
     printf("\n");
 }
 
 void _verify_objs_correct() {
-    for (int i = 0; i < (int)Scene::get().get_objects().size(); i++) {
-        if (Scene::get().get_objects()[i]->obj_name.empty()) {
+    for (size_t i = 0; i < Scene::get().get_objects().size(); i++) {
+        if (Scene::get().get_objects()[i]->m_obj_name.empty()) {
             throw std::runtime_error("Obj at index " + std::to_string(i) + " have empty name");
         }
     }
 
-    for (int i = 0; i < (int)Scene::get().get_objects().size(); i++) {
-        for (int j = i + 1; j < (int)Scene::get().get_objects().size(); j++) {
-            if (Scene::get().get_objects()[i]->obj_name == Scene::get().get_objects()[j]->obj_name) {
+    for (size_t i = 0; i < Scene::get().get_objects().size(); i++) {
+        for (size_t j = i + 1; j < Scene::get().get_objects().size(); j++) {
+            if (Scene::get().get_objects()[i]->m_obj_name == Scene::get().get_objects()[j]->m_obj_name) {
                 throw std::runtime_error("Obj at index " + std::to_string(i) + " and " + std::to_string(j) + " have same name");
             }
         }
@@ -63,7 +63,7 @@ void _verify_objs_correct() {
 void _print_objs_names() {
     printf("[");
     for (const auto &obj : Scene::get().get_objects()) {
-        printf("'%s', ", obj->obj_name.c_str());
+        printf("'%s', ", obj->m_obj_name.c_str());
     }
     printf("]\n");
 }

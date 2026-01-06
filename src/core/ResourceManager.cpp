@@ -5,8 +5,8 @@
 #include <stdexcept>
 
 SmartTexture ResourceManager::get_texture(const std::string &path) {
-    auto it = textures.find(path);
-    if (it != textures.end()) {
+    auto it = m_textures.find(path);
+    if (it != m_textures.end()) {
         return it->second;
     }
 
@@ -23,15 +23,15 @@ SmartTexture ResourceManager::get_texture(const std::string &path) {
     }
 
     SmartTexture smart_tex(tex, TextureDeleter());
-    textures[path] = smart_tex;
+    m_textures[path] = smart_tex;
     return smart_tex;
 }
 
 SmartFont ResourceManager::get_font(const std::string &path, int size) {
     std::string key = path + "_" + std::to_string(size);
 
-    auto it = fonts.find(key);
-    if (it != fonts.end()) {
+    auto it = m_fonts.find(key);
+    if (it != m_fonts.end()) {
         return it->second;
     }
 
@@ -41,13 +41,13 @@ SmartFont ResourceManager::get_font(const std::string &path, int size) {
     }
 
     SmartFont smart_font(font, FontDeleter());
-    fonts[key] = smart_font;
+    m_fonts[key] = smart_font;
     return smart_font;
 }
 
 SmartChunk ResourceManager::get_sound(const std::string &path) {
-    auto it = sounds.find(path);
-    if (it != sounds.end()) {
+    auto it = m_sounds.find(path);
+    if (it != m_sounds.end()) {
         return it->second;
     }
 
@@ -57,13 +57,13 @@ SmartChunk ResourceManager::get_sound(const std::string &path) {
     }
 
     SmartChunk smart_chunk(chunk, ChunkDeleter());
-    sounds[path] = smart_chunk;
+    m_sounds[path] = smart_chunk;
     return smart_chunk;
 }
 
 SmartMusic ResourceManager::get_music(const std::string &path) {
-    auto it = music.find(path);
-    if (it != music.end()) {
+    auto it = m_music.find(path);
+    if (it != m_music.end()) {
         return it->second;
     }
 
@@ -73,13 +73,13 @@ SmartMusic ResourceManager::get_music(const std::string &path) {
     }
 
     SmartMusic smart_mus(mus, MusicDeleter());
-    music[path] = smart_mus;
+    m_music[path] = smart_mus;
     return smart_mus;
 }
 
 void ResourceManager::clear() {
-    textures.clear();
-    fonts.clear();
-    sounds.clear();
-    music.clear();
+    m_textures.clear();
+    m_fonts.clear();
+    m_sounds.clear();
+    m_music.clear();
 }

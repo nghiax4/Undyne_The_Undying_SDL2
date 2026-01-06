@@ -1,8 +1,8 @@
 #include "Engine.h"
 #include <cstdio>
 
-void Engine::init(const std::string &title, int width, int height) {
-    assert(window == nullptr && "Engine already initialized");
+void Engine::init(const std::string &title) {
+    assert(m_window == nullptr && "Engine already initialized");
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         throw std::runtime_error("SDL_Init Error: " + std::string(SDL_GetError()));
@@ -14,57 +14,54 @@ void Engine::init(const std::string &title, int width, int height) {
         throw std::runtime_error("TTF_Init Error: " + std::string(TTF_GetError()));
     }
 
-    screen_width = width;
-    screen_height = height;
+    m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    assert(m_window != nullptr);
 
-    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
-    assert(window != nullptr);
+    m_renderer = SDL_CreateRenderer(m_window, -1, 0);
+    assert(m_renderer != nullptr);
 
-    renderer = SDL_CreateRenderer(window, -1, 0);
-    assert(renderer != nullptr);
-
-    last_tick = SDL_GetTicks();
+    m_last_tick = SDL_GetTicks();
 }
 
 void Engine::cleanup() {
-    if (renderer)
-        SDL_DestroyRenderer(renderer);
-    if (window)
-        SDL_DestroyWindow(window);
+    if (m_renderer)
+        SDL_DestroyRenderer(m_renderer);
+    if (m_window)
+        SDL_DestroyWindow(m_window);
     TTF_Quit();
     Mix_Quit();
     SDL_Quit();
 }
 
 void Engine::clear_screen() {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
+    SDL_RenderClear(m_renderer);
 }
 
 void Engine::present_screen() {
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(m_renderer);
 }
 
 SDL_Renderer *Engine::get_renderer() const {
-    assert(renderer != nullptr);
-    return renderer;
+    assert(m_renderer != nullptr);
+    return m_renderer;
 }
 
-int Engine::get_screen_width() const {
-    return screen_width;
+double Engine::get_screen_width() const {
+    return Engine::get().SCREEN_WIDTH;
 }
-int Engine::get_screen_height() const {
-    return screen_height;
+double Engine::get_screen_height() const {
+    return Engine::get().SCREEN_HEIGHT;
 }
 
 void Engine::update_time() {
     Uint32 now = SDL_GetTicks();
-    delta_time = now - last_tick;
-    last_tick = now;
+    m_delta_time = now - m_last_tick;
+    m_last_tick = now;
 }
 
-double Engine::get_delta_time() const {
-    return delta_time;
+Uint32 Engine::get_delta_time() const {
+    return m_delta_time;
 }
 
 void Engine::draw_texture(const SmartTexture &tex, double x_center, double y_center, double width, double height, double angle_deg, Uint8 alpha) {
@@ -75,18 +72,18 @@ void Engine::draw_texture(const SmartTexture &tex, double x_center, double y_cen
 
     SDL_SetTextureBlendMode(tex.get(), SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(tex.get(), alpha);
-    SDL_RenderCopyEx(renderer, tex.get(), nullptr, &destination_rect, angle_deg, nullptr, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(m_renderer, tex.get(), nullptr, &destination_rect, angle_deg, nullptr, SDL_FLIP_NONE);
 }
 
 void Engine::draw_rect(double x_center, double y_center, double width, double height, SDL_Color color, bool filled) {
     assert(width > 0 && height > 0);
 
     SDL_Rect destination_rect{(int)(x_center - width / 2), (int)(y_center - height / 2), (int)width, (int)height};
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
     if (filled) {
-        SDL_RenderFillRect(renderer, &destination_rect);
+        SDL_RenderFillRect(m_renderer, &destination_rect);
     } else {
-        SDL_RenderDrawRect(renderer, &destination_rect);
+        SDL_RenderDrawRect(m_renderer, &destination_rect);
     }
 }
 
@@ -99,7 +96,7 @@ void Engine::draw_text(const SmartFont &font, const std::string &text, double x,
 
     assert(surface != nullptr);
 
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(m_renderer, surface);
     SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
     SDL_SetTextureAlphaMod(texture, alpha);
 
@@ -114,7 +111,7 @@ void Engine::draw_text(const SmartFont &font, const std::string &text, double x,
         destination_rect = SDL_Rect{(int)x, (int)y, surface->w, surface->h};
     }
 
-    SDL_RenderCopy(renderer, texture, nullptr, &destination_rect);
+    SDL_RenderCopy(m_renderer, texture, nullptr, &destination_rect);
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
 }

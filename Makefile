@@ -38,8 +38,6 @@ desktop: $(SOURCE_FILES)
 	echo "Building Desktop Version..."
 	mkdir -p $(DESKTOP_OUTPUT_DIRECTORY)
 	$(DESKTOP_COMPILER) $(DESKTOP_COMPILE_FLAGS) $(SOURCE_FILES) $(LIBRARY_FLAGS) -o $(DESKTOP_EXECUTABLE)
-	echo "Build Successful, running game now..."
-	./$(DESKTOP_EXECUTABLE)
 
 # TASK: Build Web Version
 web: $(SOURCE_FILES)

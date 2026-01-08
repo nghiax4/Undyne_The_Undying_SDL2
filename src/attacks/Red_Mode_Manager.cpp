@@ -6,12 +6,14 @@
 #include "core/Scene.h"
 
 Red_Mode_Manager::Red_Mode_Manager(int attack_id, Uint32 duration_ms, double box_center_y_ratio, double box_width_ratio, double box_height_ratio) : Attack_Manager_Base_Class(attack_id, duration_ms) {
-    static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center = Engine::SCREEN_WIDTH / 2;
-    static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center = Engine::SCREEN_HEIGHT * box_center_y_ratio;
-    static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width = Engine::SCREEN_WIDTH * box_width_ratio;
-    static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height = Engine::SCREEN_HEIGHT * box_height_ratio;
+    Transform *battle_box_transform = (Scene::get().find_object_by_name("BattleBox"))->get_component<Transform>();
 
-    Player_EnemyTurn *player = new Player_EnemyTurn(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center, static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center);
+    battle_box_transform->m_x_center = Engine::SCREEN_WIDTH / 2;
+    battle_box_transform->m_y_center = Engine::SCREEN_HEIGHT * box_center_y_ratio;
+    battle_box_transform->m_width = Engine::SCREEN_WIDTH * box_width_ratio;
+    battle_box_transform->m_height = Engine::SCREEN_HEIGHT * box_height_ratio;
+
+    Player_EnemyTurn *player = new Player_EnemyTurn(battle_box_transform->m_x_center, battle_box_transform->m_y_center);
     Scene::get().spawn(std::unique_ptr<Player_EnemyTurn>(player));
 }
 

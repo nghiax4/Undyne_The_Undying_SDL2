@@ -75,10 +75,12 @@ int main(int, char *[]) {
     }
 
     Scene::get().spawn(std::make_unique<BattleBox>(Engine::SCREEN_WIDTH / 2, Engine::SCREEN_HEIGHT * 0.67, Engine::SCREEN_WIDTH * 0.9, Engine::SCREEN_HEIGHT * 0.3));
+    Transform *battle_box_transform = (Scene::get().find_object_by_name("BattleBox"))->get_component<Transform>();
+
     Scene::get().spawn(std::make_unique<Undyne>(Engine::SCREEN_WIDTH * 0.57, Engine::SCREEN_HEIGHT / 4, Engine::SCREEN_HEIGHT * 0.48));
     Scene::get().spawn(std::make_unique<SelectedMenuButtonContainer>());
     Scene::get().spawn(std::make_unique<GameManager>());
-    Scene::get().spawn(std::make_unique<HealthPointText>(Engine::SCREEN_WIDTH / 2, (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height / 2 + first_btn_y_center - first_btn_height / 2) / 2));
+    Scene::get().spawn(std::make_unique<HealthPointText>(Engine::SCREEN_WIDTH / 2, (battle_box_transform->m_y_center + battle_box_transform->m_height / 2 + first_btn_y_center - first_btn_height / 2) / 2));
     Scene::get().spawn(std::make_unique<BattleText>());
     Scene::get().spawn(std::make_unique<HelpText>());
 

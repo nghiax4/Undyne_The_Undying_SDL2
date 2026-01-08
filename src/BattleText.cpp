@@ -37,12 +37,14 @@ void BattleText::render() {
         return;
 
     SDL_Color color{255, 255, 255, 0};
-    // int wrap_width = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->width * 0.9;
+
+    BattleBox *battle_box = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"));
+    Transform *battle_box_transform = battle_box->get_component<Transform>();
 
     double padding_x = Engine::SCREEN_WIDTH * 0.023;
     double padding_y = Engine::SCREEN_HEIGHT * 0.048;
-    double x_pos = (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width / 2) + padding_x;
-    double y_pos = (static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height / 2) + padding_y;
+    double x_pos = (battle_box_transform->m_x_center - battle_box_transform->m_width / 2) + padding_x;
+    double y_pos = (battle_box_transform->m_y_center - battle_box_transform->m_height / 2) + padding_y;
 
     Engine::get().draw_text(m_font, current_text.c_str(), static_cast<int>(x_pos), static_cast<int>(y_pos), color, false);
 }

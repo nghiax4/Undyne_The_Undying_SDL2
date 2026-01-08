@@ -6,7 +6,9 @@
 #include <algorithm>
 
 White_Arrow_Small_Box_Attack::White_Arrow_Small_Box_Attack(double x_center, double y_center, std::string obj_name, Uint32 total_time_before_charge_ms) : m_x_center(x_center), m_y_center(y_center) {
-    m_width = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width * 0.25;
+    Transform *battle_box_transform = (Scene::get().find_object_by_name("BattleBox"))->get_component<Transform>();
+
+    m_width = battle_box_transform->m_width * 0.25;
     m_height = m_width / SPRITE_WIDTH_TO_HEIGHT;
     m_texture = ResourceManager::get().get_texture("sprites/white_arrow.png");
     m_obj_name = obj_name;

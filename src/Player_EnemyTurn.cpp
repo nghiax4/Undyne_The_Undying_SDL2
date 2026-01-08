@@ -82,11 +82,13 @@ void Player_EnemyTurn::update() {
     m_x_center += x_multiplier * m_v_x * Engine::get().get_delta_time();
     m_y_center += y_multiplier * m_v_y * Engine::get().get_delta_time();
 
-    m_x_center = std::max(m_x_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width / 2 + m_width / 2));
-    m_x_center = std::min(m_x_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width / 2 - m_width / 2));
+    Transform *battle_box_transform = (Scene::get().find_object_by_name("BattleBox"))->get_component<Transform>();
 
-    m_y_center = std::max(m_y_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height / 2 + m_height / 2));
-    m_y_center = std::min(m_y_center, (double)(static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height / 2 - m_height / 2));
+    m_x_center = std::max(m_x_center, (double)(battle_box_transform->m_x_center - battle_box_transform->m_width / 2 + m_width / 2));
+    m_x_center = std::min(m_x_center, (double)(battle_box_transform->m_x_center + battle_box_transform->m_width / 2 - m_width / 2));
+
+    m_y_center = std::max(m_y_center, (double)(battle_box_transform->m_y_center - battle_box_transform->m_height / 2 + m_height / 2));
+    m_y_center = std::min(m_y_center, (double)(battle_box_transform->m_y_center + battle_box_transform->m_height / 2 - m_height / 2));
 
     apply_collision_logic_for_type<White_Arrow_Small_Box_Attack>(this);
     apply_collision_logic_for_type<White_Arrow_Medium_Box_Attack>(this);

@@ -7,10 +7,12 @@
 #include "core/Scene.h"
 
 Green_Mode_Manager::Green_Mode_Manager(int attack_id, Uint32 duration_ms, std::vector<GreenModeArrowData> arrows_data) : Attack_Manager_Base_Class(attack_id, duration_ms) {
-    static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center = Engine::SCREEN_WIDTH / 2;
-    static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center = Engine::SCREEN_HEIGHT / 2;
-    static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width = Engine::SCREEN_WIDTH * 0.13;
-    static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height = Engine::SCREEN_WIDTH * 0.13;
+    Transform *battle_box_transform = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->get_component<Transform>();
+
+    battle_box_transform->m_x_center = Engine::SCREEN_WIDTH / 2;
+    battle_box_transform->m_y_center = Engine::SCREEN_HEIGHT / 2;
+    battle_box_transform->m_width = Engine::SCREEN_WIDTH * 0.13;
+    battle_box_transform->m_height = Engine::SCREEN_WIDTH * 0.13;
 
     Scene::get().spawn(std::make_unique<Player_EnemyTurn_Green>(Engine::SCREEN_WIDTH / 2, Engine::SCREEN_HEIGHT / 2));
     Scene::get().spawn(std::make_unique<Shield>());

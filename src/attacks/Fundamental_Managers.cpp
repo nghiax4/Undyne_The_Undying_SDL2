@@ -17,8 +17,10 @@ void Three_Lane_Rising_Arrow_Attack::update() {
 
     if (m_time_elapsed_since_last_arrow > m_time_between_arrows_ms) {
         std::vector<double> x_multipliers = {0.2, 0.5, 0.8};
-        double x_pos = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center - static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width / 2 + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_width * x_multipliers.at(static_cast<size_t>(get_random(0, 2)));
-        double y_pos = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center + static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_height;
+        Transform *battle_box_transform = (Scene::get().find_object_by_name("BattleBox"))->get_component<Transform>();
+
+        double x_pos = battle_box_transform->m_x_center - battle_box_transform->m_width / 2 + battle_box_transform->m_width * x_multipliers.at(static_cast<size_t>(get_random(0, 2)));
+        double y_pos = battle_box_transform->m_y_center + battle_box_transform->m_height;
 
         std::string name = m_attack_prefix + "_Falling_Arrow_" + std::to_string(m_arrows_created_counter++);
         Scene::get().spawn(std::make_unique<White_Arrow_Small_Box_Attack>(x_pos, y_pos, name, m_arrow_prep_time_ms));
@@ -35,11 +37,12 @@ void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
 
     if (m_time_elapsed_since_last_arrow > m_time_between_arrows_ms) {
         Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(Scene::get().find_object_by_name("Player_EnemyTurn"));
+        Transform *battle_box_transform = (Scene::get().find_object_by_name("BattleBox"))->get_component<Transform>();
 
         double spawn_radius = get_random(Engine::SCREEN_WIDTH * 0.2, Engine::SCREEN_WIDTH * 0.3);
         double angle_deg = get_random(0, 360);
-        double spawn_x = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_x_center + spawn_radius * cos(angle_deg * M_PI / 180.0);
-        double spawn_y = static_cast<BattleBox *>(Scene::get().find_object_by_name("BattleBox"))->m_y_center + spawn_radius * sin(angle_deg * M_PI / 180.0);
+        double spawn_x = battle_box_transform->m_x_center + spawn_radius * cos(angle_deg * M_PI / 180.0);
+        double spawn_y = battle_box_transform->m_y_center + spawn_radius * sin(angle_deg * M_PI / 180.0);
 
         std::string name = m_attack_prefix + "_Targeted_Arrow_" + std::to_string(m_arrows_created_counter++);
         Scene::get().spawn(std::make_unique<White_Arrow_Medium_Box_Attack>(spawn_x, spawn_y, player->m_x_center, player->m_y_center, name, m_arrow_rotation_time_ms));

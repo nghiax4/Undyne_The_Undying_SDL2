@@ -8,10 +8,12 @@
 #include <string>
 #include <vector>
 
-Player::Player(double x_center, double y_center) : m_x_center(x_center), m_y_center(y_center), m_width(Engine::SCREEN_WIDTH * 0.03), m_height(Engine::SCREEN_WIDTH * 0.03) {
+Player::Player(double x_center, double y_center) {
     m_player_texture = ResourceManager::get().get_texture("sprites/soul.png");
     m_obj_name = "Player";
     m_z_index = 3;
+
+    add_component<Transform>(x_center, y_center, Engine::SCREEN_WIDTH * 0.03, Engine::SCREEN_WIDTH * 0.03);
 }
 
 void Player::update() {
@@ -19,10 +21,13 @@ void Player::update() {
 
     std::vector<MenuButton *> menu_buttons = {static_cast<MenuButton *>(Scene::get().find_object_by_name("Menu_Button_0")), static_cast<MenuButton *>(Scene::get().find_object_by_name("Menu_Button_1")), static_cast<MenuButton *>(Scene::get().find_object_by_name("Menu_Button_2")), static_cast<MenuButton *>(Scene::get().find_object_by_name("Menu_Button_3"))};
 
-    m_x_center = menu_buttons[selected_menu_button]->m_x_center - menu_buttons[selected_menu_button]->m_width / 2 + m_width;
-    m_y_center = menu_buttons[selected_menu_button]->m_y_center;
+    Transform *transform = get_component<Transform>();
+
+    transform->m_x_center = menu_buttons[selected_menu_button]->m_x_center - menu_buttons[selected_menu_button]->m_width / 2 + transform->m_width;
+    transform->m_y_center = menu_buttons[selected_menu_button]->m_y_center;
 }
 
 void Player::render() {
-    Engine::get().draw_texture(m_player_texture, m_x_center, m_y_center, m_width, m_height);
+    Transform *transform = get_component<Transform>();
+    Engine::get().draw_texture(m_player_texture, transform->m_x_center, transform->m_y_center, transform->m_width, transform->m_height);
 }

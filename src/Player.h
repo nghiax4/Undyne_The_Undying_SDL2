@@ -7,7 +7,6 @@
 #include <string>
 
 struct Player : public GameObject {
-    double m_x_center, m_y_center, m_width, m_height;
     SmartTexture m_player_texture;
 
     Player(double x_center, double y_center);

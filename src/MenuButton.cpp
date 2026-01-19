@@ -26,7 +26,10 @@ bool MenuButton::is_selected_by_player() {
     }
 
     Player *player = static_cast<Player *>(Scene::get().find_object_by_name("Player"));
-    bool x_within = m_x_center - m_width / 2 <= player->m_x_center && player->m_x_center <= m_x_center + m_width / 2;
-    bool y_within = m_y_center - m_height / 2 <= player->m_y_center && player->m_y_center <= m_y_center + m_height / 2;
+    Transform *player_transform = player->get_component<Transform>();
+
+    bool x_within = m_x_center - m_width / 2 <= player_transform->m_x_center && player_transform->m_x_center <= m_x_center + m_width / 2;
+    bool y_within = m_y_center - m_height / 2 <= player_transform->m_y_center && player_transform->m_y_center <= m_y_center + m_height / 2;
+
     return x_within && y_within;
 }

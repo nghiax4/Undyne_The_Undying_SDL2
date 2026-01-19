@@ -67,8 +67,8 @@ int main(int, char *[]) {
     Scene::get().spawn(std::make_unique<Player>(1, 1));
 
     std::vector<std::unique_ptr<MenuButton>> menu_buttons = init_menu_buttons(0.2 * Engine::SCREEN_WIDTH);
-    const double first_btn_y_center = menu_buttons.at(0)->m_y_center;
-    const double first_btn_height = menu_buttons.at(0)->m_height;
+    const double first_btn_y_center = menu_buttons.at(0)->get_component<Transform>()->m_y_center;
+    const double first_btn_height = menu_buttons.at(0)->get_component<Transform>()->m_height;
 
     for (auto &menu_button : menu_buttons) {
         Scene::get().spawn(std::move(menu_button));

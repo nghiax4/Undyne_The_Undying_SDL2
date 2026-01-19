@@ -5,18 +5,21 @@
 #include "core/ResourceManager.h"
 #include "core/Scene.h"
 
-MenuButton::MenuButton(double x_center, double y_center, double width, double height, std::string sprite_unselected_path, std::string sprite_selected_path, int button_index) : m_x_center(x_center), m_y_center(y_center), m_width(width), m_height(height), m_sprite_unselected_path(sprite_unselected_path), m_sprite_selected_path(sprite_selected_path) {
+MenuButton::MenuButton(double x_center, double y_center, double width, double height, std::string sprite_unselected_path, std::string sprite_selected_path, int button_index) {
     m_obj_name = "Menu_Button_" + std::to_string(button_index);
     m_texture_unselected_obj = ResourceManager::get().get_texture(sprite_unselected_path);
     m_texture_selected_obj = ResourceManager::get().get_texture(sprite_selected_path);
+
+    add_component<Transform>(x_center, y_center, width, height);
 }
 
 void MenuButton::update() {}
 
 void MenuButton::render() {
     SmartTexture texture = is_selected_by_player() ? m_texture_selected_obj : m_texture_unselected_obj;
+    Transform *transform = get_component<Transform>();
 
-    Engine::get().draw_texture(texture, m_x_center, m_y_center, m_width, m_height);
+    Engine::get().draw_texture(texture, transform->m_x_center, transform->m_y_center, transform->m_width, transform->m_height);
 }
 
 // Check if the button is currently selected by checking if the player's position is within the button
@@ -26,10 +29,11 @@ bool MenuButton::is_selected_by_player() {
     }
 
     Player *player = static_cast<Player *>(Scene::get().find_object_by_name("Player"));
+    Transform *transform = get_component<Transform>();
     Transform *player_transform = player->get_component<Transform>();
 
-    bool x_within = m_x_center - m_width / 2 <= player_transform->m_x_center && player_transform->m_x_center <= m_x_center + m_width / 2;
-    bool y_within = m_y_center - m_height / 2 <= player_transform->m_y_center && player_transform->m_y_center <= m_y_center + m_height / 2;
+    bool x_within = transform->m_x_center - transform->m_width / 2 <= player_transform->m_x_center && player_transform->m_x_center <= transform->m_x_center + transform->m_width / 2;
+    bool y_within = transform->m_y_center - transform->m_height / 2 <= player_transform->m_y_center && player_transform->m_y_center <= transform->m_y_center + transform->m_height / 2;
 
     return x_within && y_within;
 }

@@ -8,8 +8,6 @@ struct MenuButton : public GameObject {
   public:
     SmartTexture m_texture_unselected_obj;
     SmartTexture m_texture_selected_obj;
-    double m_x_center, m_y_center, m_width, m_height;
-    std::string m_sprite_unselected_path, m_sprite_selected_path;
 
     MenuButton(double x_center, double y_center, double width, double height, std::string sprite_unselected_path, std::string sprite_selected_path, int button_index);
 

@@ -20,7 +20,7 @@ class GameObject {
     std::unordered_map<std::type_index, std::unique_ptr<Component>> m_components;
 
     template <typename T, typename... Args>
-    T *add_component(Args &&...args) {
+    void *add_component(Args &&...args) {
         assert(!has_component<T>());
         m_components[std::type_index(typeid(T))] = std::make_unique<T>(std::forward<Args>(args)...);
         return get_component<T>();

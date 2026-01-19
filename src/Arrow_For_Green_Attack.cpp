@@ -24,16 +24,17 @@ void Arrow_For_Green_Attack::update() {
     }
 
     Player_EnemyTurn_Green *player = static_cast<Player_EnemyTurn_Green *>(Scene::get().find_object_by_name("Player_EnemyTurn_Green"));
+    Transform *player_transform = player->get_component<Transform>();
 
     if (m_arrow_type == ArrowType::Yellow && m_state == State::APPROACHING_BEFORE_ROTATE) {
-        double dist = distance(m_x_center, m_y_center, player->m_x_center, player->m_y_center);
+        double dist = distance(m_x_center, m_y_center, player_transform->m_x_center, player_transform->m_y_center);
 
         if (dist <= DISTANCE_FROM_SOUL_TO_FLIP) {
             m_state = State::ROTATING;
             m_orbit_radius = dist;
 
-            double dx = m_x_center - player->m_x_center;
-            double dy = m_y_center - player->m_y_center;
+            double dx = m_x_center - player_transform->m_x_center;
+            double dy = m_y_center - player_transform->m_y_center;
             // angle relative to soul
             m_orbit_angle_deg = std::atan2(dy, dx) * 180.0 / M_PI;
 
@@ -47,8 +48,8 @@ void Arrow_For_Green_Attack::update() {
         m_orbit_angle_deg = std::min(m_orbit_angle_deg + rotation_speed, m_target_orbit_angle_deg);
 
         double orbit_angle_rad = m_orbit_angle_deg * M_PI / 180.0;
-        m_x_center = player->m_x_center + m_orbit_radius * std::cos(orbit_angle_rad);
-        m_y_center = player->m_y_center + m_orbit_radius * std::sin(orbit_angle_rad);
+        m_x_center = player_transform->m_x_center + m_orbit_radius * std::cos(orbit_angle_rad);
+        m_y_center = player_transform->m_y_center + m_orbit_radius * std::sin(orbit_angle_rad);
 
         // While equality for double is discouraged, equality is guaranteed to happen here due to min() above
         if (m_orbit_angle_deg == m_target_orbit_angle_deg) {

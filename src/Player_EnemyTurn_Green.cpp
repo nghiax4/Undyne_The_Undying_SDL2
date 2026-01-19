@@ -10,10 +10,14 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-Player_EnemyTurn_Green::Player_EnemyTurn_Green(int x_center, int y_center) : m_x_center(x_center), m_y_center(y_center), m_width(Engine::SCREEN_WIDTH * 0.03), m_height(Engine::SCREEN_WIDTH * 0.03) {
+Player_EnemyTurn_Green::Player_EnemyTurn_Green(int x_center, int y_center) {
     m_texture = ResourceManager::get().get_texture("sprites/soul_green.png");
     m_obj_name = "Player_EnemyTurn_Green";
     m_z_index = 3;
+
+    double width = Engine::SCREEN_WIDTH * 0.03;
+    double height = Engine::SCREEN_WIDTH * 0.03;
+    add_component<Transform>(x_center, y_center, width, height);
 }
 
 void Player_EnemyTurn_Green::update() {
@@ -33,6 +37,8 @@ void Player_EnemyTurn_Green::update() {
         }
     }
 
+    Transform* transform = get_component<Transform>();
+
     for (auto &obj : Scene::get().get_objects()) {
         Arrow_For_Green_Attack *arrow = dynamic_cast<Arrow_For_Green_Attack *>(obj.get());
         if (arrow == nullptr)
@@ -40,7 +46,7 @@ void Player_EnemyTurn_Green::update() {
 
         HealthPointText *healthpoint = static_cast<HealthPointText *>(Scene::get().find_object_by_name("HealthPointText"));
 
-        if (distance(m_x_center, m_y_center, arrow->m_x_center, arrow->m_y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
+        if (distance(transform->m_x_center, transform->m_y_center, arrow->m_x_center, arrow->m_y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
             if (!m_enable_invisbility_frame) {
                 m_enable_invisbility_frame = true;
                 m_render_texture_transparent = true;
@@ -55,5 +61,6 @@ void Player_EnemyTurn_Green::update() {
 }
 
 void Player_EnemyTurn_Green::render() {
-    Engine::get().draw_texture(m_texture, m_x_center, m_y_center, m_width, m_height, 0, m_render_texture_transparent ? 128 : 255);
+    Transform* transform = get_component<Transform>();
+    Engine::get().draw_texture(m_texture, transform->m_x_center, transform->m_y_center, transform->m_width, transform->m_height, 0, m_render_texture_transparent ? 128 : 255);
 }

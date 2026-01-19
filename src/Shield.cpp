@@ -42,8 +42,10 @@ void Shield::update() {
         m_cur_angle -= decrement_distance * Engine::get().get_delta_time() * 0.03;
     }
 
-    m_x_center = player->m_x_center + m_distance_from_soul * cos(m_cur_angle * M_PI / 180);
-    m_y_center = player->m_y_center + m_distance_from_soul * sin(m_cur_angle * M_PI / 180);
+    Transform *player_transform = player->get_component<Transform>();
+
+    m_x_center = player_transform->m_x_center + m_distance_from_soul * cos(m_cur_angle * M_PI / 180);
+    m_y_center = player_transform->m_y_center + m_distance_from_soul * sin(m_cur_angle * M_PI / 180);
 }
 
 void Shield::render() {

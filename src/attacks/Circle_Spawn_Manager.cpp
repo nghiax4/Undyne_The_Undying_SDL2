@@ -15,6 +15,7 @@ void Circle_Spawn_Manager::update() {
         m_time_since_last_spawn = 0;
 
         Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(Scene::get().find_object_by_name("Player_EnemyTurn"));
-        spawn_on_ring(player->m_x_center, player->m_y_center);
+        Transform *player_transform = player->get_component<Transform>();
+        spawn_on_ring(player_transform->m_x_center, player_transform->m_y_center);
     }
 }

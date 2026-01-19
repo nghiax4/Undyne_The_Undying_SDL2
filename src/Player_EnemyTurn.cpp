@@ -15,6 +15,8 @@ void apply_collision_logic_for_type(Player_EnemyTurn *player) {
     const double PLAYER_ARROW_COLLISION_DISTANCE = 20.0;
     const int DAMAGE_AMOUNT = 13;
 
+    Transform *player_transform = player->get_component<Transform>();
+
     HealthPointText *hp_text_obj = static_cast<HealthPointText *>(Scene::get().find_object_by_name("HealthPointText"));
 
     for (auto &game_obj : Scene::get().get_objects()) {
@@ -23,7 +25,7 @@ void apply_collision_logic_for_type(Player_EnemyTurn *player) {
         if (specific_attack == nullptr)
             continue;
 
-        double distance_to_attack = distance(player->m_x_center, player->m_y_center, specific_attack->m_x_center, specific_attack->m_y_center);
+        double distance_to_attack = distance(player_transform->m_x_center, player_transform->m_y_center, specific_attack->m_x_center, specific_attack->m_y_center);
         bool is_colliding = distance_to_attack <= PLAYER_ARROW_COLLISION_DISTANCE;
 
         if (is_colliding) {
@@ -40,10 +42,14 @@ void apply_collision_logic_for_type(Player_EnemyTurn *player) {
     }
 }
 
-Player_EnemyTurn::Player_EnemyTurn(double x_center, double y_center) : m_v_x(Engine::SCREEN_WIDTH * 0.0003), m_v_y(Engine::SCREEN_WIDTH * 0.0003), m_x_center(x_center), m_y_center(y_center), m_width(Engine::SCREEN_WIDTH * 0.03), m_height(Engine::SCREEN_WIDTH * 0.03) {
+Player_EnemyTurn::Player_EnemyTurn(double x_center, double y_center) : m_v_x(Engine::SCREEN_WIDTH * 0.0003), m_v_y(Engine::SCREEN_WIDTH * 0.0003) {
     m_texture = ResourceManager::get().get_texture("sprites/soul.png");
     m_obj_name = "Player_EnemyTurn";
     m_z_index = 3;
+
+    double width = Engine::SCREEN_WIDTH * 0.03;
+    double height = Engine::SCREEN_WIDTH * 0.03;
+    add_component<Transform>(x_center, y_center, width, height);
 }
 
 void Player_EnemyTurn::update() {
@@ -79,16 +85,18 @@ void Player_EnemyTurn::update() {
         y_multiplier = 1;
     }
 
-    m_x_center += x_multiplier * m_v_x * Engine::get().get_delta_time();
-    m_y_center += y_multiplier * m_v_y * Engine::get().get_delta_time();
+    Transform *transform = get_component<Transform>();
+
+    transform->m_x_center += x_multiplier * m_v_x * Engine::get().get_delta_time();
+    transform->m_y_center += y_multiplier * m_v_y * Engine::get().get_delta_time();
 
     Transform *battle_box_transform = (Scene::get().find_object_by_name("BattleBox"))->get_component<Transform>();
 
-    m_x_center = std::max(m_x_center, (double)(battle_box_transform->m_x_center - battle_box_transform->m_width / 2 + m_width / 2));
-    m_x_center = std::min(m_x_center, (double)(battle_box_transform->m_x_center + battle_box_transform->m_width / 2 - m_width / 2));
+    transform->m_x_center = std::max(transform->m_x_center, (double)(battle_box_transform->m_x_center - battle_box_transform->m_width / 2 + transform->m_width / 2));
+    transform->m_x_center = std::min(transform->m_x_center, (double)(battle_box_transform->m_x_center + battle_box_transform->m_width / 2 - transform->m_width / 2));
 
-    m_y_center = std::max(m_y_center, (double)(battle_box_transform->m_y_center - battle_box_transform->m_height / 2 + m_height / 2));
-    m_y_center = std::min(m_y_center, (double)(battle_box_transform->m_y_center + battle_box_transform->m_height / 2 - m_height / 2));
+    transform->m_y_center = std::max(transform->m_y_center, (double)(battle_box_transform->m_y_center - battle_box_transform->m_height / 2 + transform->m_height / 2));
+    transform->m_y_center = std::min(transform->m_y_center, (double)(battle_box_transform->m_y_center + battle_box_transform->m_height / 2 - transform->m_height / 2));
 
     apply_collision_logic_for_type<White_Arrow_Small_Box_Attack>(this);
     apply_collision_logic_for_type<White_Arrow_Medium_Box_Attack>(this);
@@ -97,5 +105,6 @@ void Player_EnemyTurn::update() {
 }
 
 void Player_EnemyTurn::render() {
-    Engine::get().draw_texture(m_texture, m_x_center, m_y_center, m_width, m_height, 0, m_render_texture_transparent ? 128 : 255);
+    Transform *transform = get_component<Transform>();
+    Engine::get().draw_texture(m_texture, transform->m_x_center, transform->m_y_center, transform->m_width, transform->m_height, 0, m_render_texture_transparent ? 128 : 255);
 }

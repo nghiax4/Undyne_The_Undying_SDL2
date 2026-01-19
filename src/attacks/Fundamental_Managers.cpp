@@ -37,6 +37,7 @@ void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
 
     if (m_time_elapsed_since_last_arrow > m_time_between_arrows_ms) {
         Player_EnemyTurn *player = static_cast<Player_EnemyTurn *>(Scene::get().find_object_by_name("Player_EnemyTurn"));
+        Transform *player_transform = player->get_component<Transform>();
         Transform *battle_box_transform = (Scene::get().find_object_by_name("BattleBox"))->get_component<Transform>();
 
         double spawn_radius = get_random(Engine::SCREEN_WIDTH * 0.2, Engine::SCREEN_WIDTH * 0.3);
@@ -45,7 +46,7 @@ void Random_Spawn_Player_Aimed_Arrow_Attack::update() {
         double spawn_y = battle_box_transform->m_y_center + spawn_radius * sin(angle_deg * M_PI / 180.0);
 
         std::string name = m_attack_prefix + "_Targeted_Arrow_" + std::to_string(m_arrows_created_counter++);
-        Scene::get().spawn(std::make_unique<White_Arrow_Medium_Box_Attack>(spawn_x, spawn_y, player->m_x_center, player->m_y_center, name, m_arrow_rotation_time_ms));
+        Scene::get().spawn(std::make_unique<White_Arrow_Medium_Box_Attack>(spawn_x, spawn_y, player_transform->m_x_center, player_transform->m_y_center, name, m_arrow_rotation_time_ms));
 
         m_time_elapsed_since_last_arrow = 0;
     }

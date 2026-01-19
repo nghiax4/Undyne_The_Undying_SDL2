@@ -16,7 +16,7 @@ struct White_Arrow_Small_Box_Attack : public GameObject {
                        Freeze,
                        Charge };
     State m_state = State::GettingReady;
-    double m_x_center, m_y_center, m_width, m_height;
+
     Uint32 m_time_elapsed_since_state_change = 0;
 
     Uint32 m_time_getting_ready_ms;

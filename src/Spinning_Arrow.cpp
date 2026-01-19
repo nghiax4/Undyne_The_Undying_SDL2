@@ -12,8 +12,9 @@ Spinning_Arrow::Spinning_Arrow(double origin_x, double origin_y, double start_an
     // Convert to radians for math
     m_current_angle_rad = start_angle_deg * M_PI / 180.0;
 
-    m_width = Engine::SCREEN_WIDTH * 0.025;
-    m_height = m_width / White_Arrow_Medium_Box_Attack::SPRITE_WIDTH_TO_HEIGHT;
+    double width = Engine::SCREEN_WIDTH * 0.025;
+    double height = width / White_Arrow_Medium_Box_Attack::SPRITE_WIDTH_TO_HEIGHT;
+    add_component<Transform>(0, 0, width, height);
 
     // Reusing the white arrow texture
     m_texture = ResourceManager::get().get_texture("sprites/white_arrow.png");
@@ -32,9 +33,11 @@ void Spinning_Arrow::update() {
 
     m_current_angle_rad += current_angular_speed * Engine::get().get_delta_time();
 
+    Transform *transform = get_component<Transform>();
+
     // 3. Convert Polar (r, theta) -> Cartesian (x, y)
-    m_x_center = m_origin_x + m_current_radius * std::cos(m_current_angle_rad);
-    m_y_center = m_origin_y + m_current_radius * std::sin(m_current_angle_rad);
+    transform->m_x_center = m_origin_x + m_current_radius * std::cos(m_current_angle_rad);
+    transform->m_y_center = m_origin_y + m_current_radius * std::sin(m_current_angle_rad);
 
     // 4. Remove if it hits the center (radius < 0)
     if (m_current_radius <= 0) {
@@ -53,5 +56,7 @@ void Spinning_Arrow::render() {
     // We add 180 to make it point INWARD.
     double render_angle = angle_deg + 90 + 180;
 
-    Engine::get().draw_texture(m_texture, m_x_center, m_y_center, m_width, m_height, render_angle, alpha);
+    Transform *transform = get_component<Transform>();
+
+    Engine::get().draw_texture(m_texture, transform->m_x_center, transform->m_y_center, transform->m_width, transform->m_height, render_angle, alpha);
 }

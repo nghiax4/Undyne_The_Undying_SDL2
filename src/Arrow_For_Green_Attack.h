@@ -8,7 +8,7 @@ struct Arrow_For_Green_Attack : public GameObject {
     static constexpr double DISTANCE_FROM_SOUL_TO_FLIP = 150.0;
     static constexpr double ROTATION_SPEED_DEGREE_PER_MS = 0.7;
 
-    double m_x_center, m_y_center, m_v_x, m_v_y, m_width, m_height;
+    double m_v_x, m_v_y;
     Direction m_direction;
     ArrowType m_arrow_type;
 

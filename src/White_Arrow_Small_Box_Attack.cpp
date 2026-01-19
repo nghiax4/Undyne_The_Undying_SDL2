@@ -5,11 +5,13 @@
 #include "core/Scene.h"
 #include <algorithm>
 
-White_Arrow_Small_Box_Attack::White_Arrow_Small_Box_Attack(double x_center, double y_center, std::string obj_name, Uint32 total_time_before_charge_ms) : m_x_center(x_center), m_y_center(y_center) {
+White_Arrow_Small_Box_Attack::White_Arrow_Small_Box_Attack(double x_center, double y_center, std::string obj_name, Uint32 total_time_before_charge_ms) {
     Transform *battle_box_transform = (Scene::get().find_object_by_name("BattleBox"))->get_component<Transform>();
 
-    m_width = battle_box_transform->m_width * 0.25;
-    m_height = m_width / SPRITE_WIDTH_TO_HEIGHT;
+    double width = battle_box_transform->m_width * 0.25;
+    double height = width / SPRITE_WIDTH_TO_HEIGHT;
+    add_component<Transform>(x_center, y_center, width, height);
+
     m_texture = ResourceManager::get().get_texture("sprites/white_arrow.png");
     m_obj_name = obj_name;
     m_z_index = 5;
@@ -45,14 +47,17 @@ void White_Arrow_Small_Box_Attack::update() {
         m_to_be_removed = true;
     }
 
+    Transform *transform = get_component<Transform>();
+
     if (m_state == State::GettingReady) {
-        m_y_center -= GETTING_READY_V_Y * Engine::get().get_delta_time();
+        transform->m_y_center -= GETTING_READY_V_Y * Engine::get().get_delta_time();
     } else if (m_state == State::Freeze) {
     } else {
-        m_y_center -= CHARGE_V_Y * Engine::get().get_delta_time();
+        transform->m_y_center -= CHARGE_V_Y * Engine::get().get_delta_time();
     }
 }
 
 void White_Arrow_Small_Box_Attack::render() {
-    Engine::get().draw_texture(m_texture, m_x_center, m_y_center, m_width, m_height);
+    Transform *transform = get_component<Transform>();
+    Engine::get().draw_texture(m_texture, transform->m_x_center, transform->m_y_center, transform->m_width, transform->m_height);
 }

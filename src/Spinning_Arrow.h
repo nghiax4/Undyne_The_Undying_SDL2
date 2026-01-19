@@ -9,8 +9,6 @@ struct Spinning_Arrow : public GameObject {
     static constexpr double INITIAL_ANGULAR_SPEED_RAD_PER_MS = 0.006;
     static constexpr double FADE_DURATION_MS = 234.0;
 
-    double m_x_center, m_y_center, m_width, m_height;
-
     const double m_origin_x, m_origin_y;
     double m_current_radius;
     double m_current_angle_rad;

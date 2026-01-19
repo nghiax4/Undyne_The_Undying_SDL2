@@ -37,7 +37,7 @@ void Player_EnemyTurn_Green::update() {
         }
     }
 
-    Transform* transform = get_component<Transform>();
+    Transform *transform = get_component<Transform>();
 
     for (auto &obj : Scene::get().get_objects()) {
         Arrow_For_Green_Attack *arrow = dynamic_cast<Arrow_For_Green_Attack *>(obj.get());
@@ -46,7 +46,9 @@ void Player_EnemyTurn_Green::update() {
 
         HealthPointText *healthpoint = static_cast<HealthPointText *>(Scene::get().find_object_by_name("HealthPointText"));
 
-        if (distance(transform->m_x_center, transform->m_y_center, arrow->m_x_center, arrow->m_y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
+        Transform *arrow_transform = arrow->get_component<Transform>();
+
+        if (distance(transform->m_x_center, transform->m_y_center, arrow_transform->m_x_center, arrow_transform->m_y_center) <= PLAYER_ARROW_COLLISION_DISTANCE) {
             if (!m_enable_invisbility_frame) {
                 m_enable_invisbility_frame = true;
                 m_render_texture_transparent = true;
@@ -61,6 +63,6 @@ void Player_EnemyTurn_Green::update() {
 }
 
 void Player_EnemyTurn_Green::render() {
-    Transform* transform = get_component<Transform>();
+    Transform *transform = get_component<Transform>();
     Engine::get().draw_texture(m_texture, transform->m_x_center, transform->m_y_center, transform->m_width, transform->m_height, 0, m_render_texture_transparent ? 128 : 255);
 }

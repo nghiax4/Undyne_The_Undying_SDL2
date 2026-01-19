@@ -12,11 +12,11 @@ Ring_Spear::Ring_Spear(double x, double y, double angle_deg, double radius, std:
     // Calculate speed so it reaches center exactly when TRAVEL_DURATION_MS passes
     m_charge_speed = radius / TRAVEL_DURATION_MS;
 
-    m_width = Engine::SCREEN_WIDTH * 0.025;
-    m_height = m_width / White_Arrow_Medium_Box_Attack::SPRITE_WIDTH_TO_HEIGHT;
-
-    m_x_center = m_origin_x + m_current_radius * std::cos(m_current_angle_rad);
-    m_y_center = m_origin_y + m_current_radius * std::sin(m_current_angle_rad);
+    double width = Engine::SCREEN_WIDTH * 0.025;
+    double height = width / White_Arrow_Medium_Box_Attack::SPRITE_WIDTH_TO_HEIGHT;
+    double x_center = m_origin_x + m_current_radius * std::cos(m_current_angle_rad);
+    double y_center = m_origin_y + m_current_radius * std::sin(m_current_angle_rad);
+    add_component<Transform>(x_center, y_center, width, height);
 
     m_texture = ResourceManager::get().get_texture("sprites/white_arrow.png");
 }
@@ -33,8 +33,10 @@ void Ring_Spear::update() {
         }
     }
 
-    m_x_center = m_origin_x + m_current_radius * std::cos(m_current_angle_rad);
-    m_y_center = m_origin_y + m_current_radius * std::sin(m_current_angle_rad);
+    Transform *transform = get_component<Transform>();
+
+    transform->m_x_center = m_origin_x + m_current_radius * std::cos(m_current_angle_rad);
+    transform->m_y_center = m_origin_y + m_current_radius * std::sin(m_current_angle_rad);
 }
 
 void Ring_Spear::render() {
@@ -54,5 +56,7 @@ void Ring_Spear::render() {
     double alpha_ratio = std::min(1.0, m_time_alive / SPIN_DURATION_MS);
     Uint8 alpha = static_cast<Uint8>(alpha_ratio * 255);
 
-    Engine::get().draw_texture(m_texture, m_x_center, m_y_center, m_width, m_height, final_render_angle, alpha);
+    Transform *transform = get_component<Transform>();
+
+    Engine::get().draw_texture(m_texture, transform->m_x_center, transform->m_y_center, transform->m_width, transform->m_height, final_render_angle, alpha);
 }

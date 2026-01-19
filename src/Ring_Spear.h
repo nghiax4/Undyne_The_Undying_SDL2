@@ -8,7 +8,6 @@ struct Ring_Spear : public GameObject {
     static constexpr double LOCK_DURATION_MS = 200.0;
     static constexpr double TRAVEL_DURATION_MS = 434.0;
 
-    double m_x_center, m_y_center;
     double m_origin_x, m_origin_y;
     double m_current_radius;
     double m_current_angle_rad;
@@ -16,7 +15,6 @@ struct Ring_Spear : public GameObject {
     double m_charge_speed;
 
     SmartTexture m_texture;
-    double m_width, m_height;
 
     Ring_Spear(double x, double y, double angle_deg, double radius, std::string name);
 

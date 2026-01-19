@@ -25,7 +25,9 @@ void apply_collision_logic_for_type(Player_EnemyTurn *player) {
         if (specific_attack == nullptr)
             continue;
 
-        double distance_to_attack = distance(player_transform->m_x_center, player_transform->m_y_center, specific_attack->m_x_center, specific_attack->m_y_center);
+        Transform *attack_transform = specific_attack->template get_component<Transform>();
+
+        double distance_to_attack = distance(player_transform->m_x_center, player_transform->m_y_center, attack_transform->m_x_center, attack_transform->m_y_center);
         bool is_colliding = distance_to_attack <= PLAYER_ARROW_COLLISION_DISTANCE;
 
         if (is_colliding) {

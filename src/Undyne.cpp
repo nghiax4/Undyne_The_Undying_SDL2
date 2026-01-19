@@ -2,8 +2,11 @@
 #include "Utils.h"
 #include "core/Engine.h"
 
-Undyne::Undyne(double x_center, double y_center, double height) : m_x_center(x_center), m_y_center(y_center), m_height(height), m_width(height * UNDYNE_SPRITE_WIDTH_OVER_HEIGHT) {
+Undyne::Undyne(double x_center, double y_center, double height) {
     m_obj_name = "Undyne";
+
+    double width = height * UNDYNE_SPRITE_WIDTH_OVER_HEIGHT;
+    add_component<Transform>(x_center, y_center, width, height);
 
     printf("[DEBUG] Loading Undyne sprites...\n");
     for (int i = 0; i < NUM_OF_SPRITE_FRAMES; ++i) {
@@ -27,5 +30,6 @@ void Undyne::update() {
 }
 
 void Undyne::render() {
-    Engine::get().draw_texture(m_sprite_frames[m_current_sprite_frame], m_x_center, m_y_center, m_width, m_height);
+    Transform *transform = get_component<Transform>();
+    Engine::get().draw_texture(m_sprite_frames[m_current_sprite_frame], transform->m_x_center, transform->m_y_center, transform->m_width, transform->m_height);
 }

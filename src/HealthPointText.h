@@ -5,7 +5,7 @@
 #include <memory>
 
 struct HealthPointText : public GameObject {
-    int m_x_center, m_y_center, m_font_size;
+    int m_font_size;
     SmartFont m_font;
     int m_hp = 50;
 

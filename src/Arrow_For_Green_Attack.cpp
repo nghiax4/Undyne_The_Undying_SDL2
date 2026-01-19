@@ -77,8 +77,9 @@ void Arrow_For_Green_Attack::update() {
 
     if (Scene::get().object_exists("Shield")) {
         Shield *shield = static_cast<Shield *>(Scene::get().find_object_by_name("Shield"));
+        Transform *shield_transform = shield->get_component<Transform>();
 
-        if (distance(transform->m_x_center, transform->m_y_center, shield->m_x_center, shield->m_y_center) <= 20) {
+        if (distance(transform->m_x_center, transform->m_y_center, shield_transform->m_x_center, shield_transform->m_y_center) <= 20) {
             play_sound_effect("audio/shield_reflect.ogg");
             m_to_be_removed = true;
         }

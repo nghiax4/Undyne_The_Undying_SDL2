@@ -7,10 +7,14 @@
 #include "core/Input.h"
 #include "core/Scene.h"
 
-Shield::Shield() : m_width(Engine::SCREEN_WIDTH * 0.1), m_height(Engine::SCREEN_HEIGHT * 0.007), m_distance_from_soul(Engine::SCREEN_HEIGHT * 0.07) {
+Shield::Shield() : m_distance_from_soul(Engine::SCREEN_HEIGHT * 0.07) {
     m_texture = ResourceManager::get().get_texture("sprites/shield.png");
     m_obj_name = "Shield";
     m_z_index = 3;
+
+    double width = Engine::SCREEN_WIDTH * 0.1;
+    double height = Engine::SCREEN_HEIGHT * 0.007;
+    add_component<Transform>(0, 0, width, height);
 }
 
 void Shield::update() {
@@ -43,11 +47,13 @@ void Shield::update() {
     }
 
     Transform *player_transform = player->get_component<Transform>();
+    Transform *transform = get_component<Transform>();
 
-    m_x_center = player_transform->m_x_center + m_distance_from_soul * cos(m_cur_angle * M_PI / 180);
-    m_y_center = player_transform->m_y_center + m_distance_from_soul * sin(m_cur_angle * M_PI / 180);
+    transform->m_x_center = player_transform->m_x_center + m_distance_from_soul * cos(m_cur_angle * M_PI / 180);
+    transform->m_y_center = player_transform->m_y_center + m_distance_from_soul * sin(m_cur_angle * M_PI / 180);
 }
 
 void Shield::render() {
-    Engine::get().draw_texture(m_texture, m_x_center, m_y_center, m_width, m_height, m_cur_angle + 90);
+    Transform *transform = get_component<Transform>();
+    Engine::get().draw_texture(m_texture, transform->m_x_center, transform->m_y_center, transform->m_width, transform->m_height, m_cur_angle + 90);
 }

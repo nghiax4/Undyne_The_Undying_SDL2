@@ -28,7 +28,7 @@ jobs:
       - name: Install Emscripten
         uses: mymindstorm/setup-emsdk@v14
         with:
-          version: latest
+          version: 3.1.74
 
       - name: Compile the game
         run: make web
